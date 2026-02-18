@@ -1,0 +1,147 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="AppMovilTrotaMundos.Views.FormularioClientes"
+             Title="Formulario de Cliente">
+
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <Color x:Key="PrimaryColor">#795548</Color>
+            <Color x:Key="ErrorColor">#D32F2F</Color>
+
+            <Style x:Key="LabelStyle" TargetType="Label">
+                <Setter Property="FontSize" Value="16"/>
+                <Setter Property="Margin" Value="5,2"/>
+                <Setter Property="TextColor" Value="Black"/>
+            </Style>
+
+            <Style x:Key="EntryStyle" TargetType="Entry">
+                <Setter Property="TextColor" Value="Black"/>
+                <Setter Property="PlaceholderColor" Value="#9E9E9E"/>
+                <Setter Property="BackgroundColor" Value="White"/>
+                <Setter Property="FontSize" Value="16"/>
+            </Style>
+
+            <Style x:Key="FrameStyle" TargetType="Frame">
+                <Setter Property="BackgroundColor" Value="White"/>
+                <Setter Property="CornerRadius" Value="12"/>
+                <Setter Property="Padding" Value="10"/>
+                <Setter Property="HasShadow" Value="False"/>
+            </Style>
+
+            <Style x:Key="ErrorLabelStyle" TargetType="Label">
+                <Setter Property="TextColor" Value="{StaticResource ErrorColor}"/>
+                <Setter Property="FontSize" Value="14"/>
+                <Setter Property="Margin" Value="5,0"/>
+                <Setter Property="IsVisible" Value="False"/>
+            </Style>
+
+            <Style x:Key="ButtonStyle" TargetType="Button">
+                <Setter Property="BackgroundColor" Value="{StaticResource PrimaryColor}"/>
+                <Setter Property="TextColor" Value="White"/>
+                <Setter Property="CornerRadius" Value="12"/>
+                <Setter Property="HeightRequest" Value="50"/>
+                <Setter Property="FontSize" Value="18"/>
+                <Setter Property="FontAttributes" Value="Bold"/>
+            </Style>
+        </ResourceDictionary>
+    </ContentPage.Resources>
+
+    <ContentPage.Content>
+        <ScrollView>
+            <StackLayout Padding="20">
+
+                <!-- Facturar a -->
+                <Label Text="Facturar a" Style="{StaticResource LabelStyle}"/>
+                <Frame Style="{StaticResource FrameStyle}">
+                    <Entry Text="{Binding Cliente.Facturar_a}" Placeholder="Ejemplo S.A. de C.V." Style="{StaticResource EntryStyle}"/>
+                </Frame>
+
+                <!-- Nombre (Obligatorio) -->
+                <Label Text="Nombre" Style="{StaticResource LabelStyle}"/>
+                <Frame Style="{StaticResource FrameStyle}">
+                    <Entry x:Name="NombreEntry"
+                           Text="{Binding Cliente.Nombre}"
+                           Placeholder="Ingrese el nombre del cliente"
+                           Style="{StaticResource EntryStyle}"/>
+                </Frame>
+                <Label x:Name="ErrorNombre" Text="El nombre es obligatorio" Style="{StaticResource ErrorLabelStyle}"/>
+
+                <!-- Teléfono (Obligatorio) -->
+                <Label Text="Teléfono" Style="{StaticResource LabelStyle}"/>
+                <Frame Style="{StaticResource FrameStyle}">
+                    <Entry x:Name="TelefonoEntry"
+                           Text="{Binding Cliente.Tel}"
+                           Placeholder="Ejemplo: 8341234567"
+                           Keyboard="Telephone"
+                           Style="{StaticResource EntryStyle}"/>
+                </Frame>
+                <Label x:Name="ErrorTelefono" Text="El teléfono es obligatorio" Style="{StaticResource ErrorLabelStyle}"/>
+
+                <!-- Celular (Obligatorio) -->
+                <Label Text="Celular" Style="{StaticResource LabelStyle}"/>
+                <Frame Style="{StaticResource FrameStyle}">
+                    <Entry x:Name="CelularEntry"
+                           Text="{Binding Cliente.Cel}"
+                           Placeholder="Ejemplo: 8341234567"
+                           Keyboard="Telephone"
+                           Style="{StaticResource EntryStyle}"/>
+                </Frame>
+                <Label x:Name="ErrorCelular" Text="El celular es obligatorio" Style="{StaticResource ErrorLabelStyle}"/>
+
+                <!-- Email (Obligatorio) -->
+                <Label Text="Email" Style="{StaticResource LabelStyle}"/>
+                <Frame Style="{StaticResource FrameStyle}">
+                    <Entry x:Name="EmailEntry"
+                           Text="{Binding Cliente.Email}"
+                           Placeholder="correo@ejemplo.com"
+                           Keyboard="Email"
+                           Style="{StaticResource EntryStyle}"/>
+                </Frame>
+                
+
+                <!-- RFC -->
+                <Label Text="RFC" Style="{StaticResource LabelStyle}"/>
+                <Frame Style="{StaticResource FrameStyle}">
+                    <Entry Text="{Binding Cliente.RFC}" Placeholder="Ingrese el RFC" Style="{StaticResource EntryStyle}"/>
+                </Frame>
+
+
+                <!-- Dirección (Opcional) -->
+                <Label Text="Dirección (Opcional)" FontSize="18" FontAttributes="Bold" TextColor="{StaticResource PrimaryColor}"/>
+
+                <Label Text="Calle" Style="{StaticResource LabelStyle}"/>
+                <Frame Style="{StaticResource FrameStyle}">
+                    <Entry Text="{Binding Cliente.Calle}" Placeholder="Ingrese la calle" Style="{StaticResource EntryStyle}"/>
+                </Frame>
+
+                <Label Text="No int" Style="{StaticResource LabelStyle}"/>
+                <Frame Style="{StaticResource FrameStyle}">
+                    <Entry Text="{Binding Cliente.No_int}" Placeholder="Número interior" Style="{StaticResource EntryStyle}"/>
+                </Frame>
+
+                <Label Text="Colonia" Style="{StaticResource LabelStyle}"/>
+                <Frame Style="{StaticResource FrameStyle}">
+                    <Entry Text="{Binding Cliente.Colonia}" Placeholder="Ingrese la colonia" Style="{StaticResource EntryStyle}"/>
+                </Frame>
+
+                <Label Text="Ciudad" Style="{StaticResource LabelStyle}"/>
+                <Frame Style="{StaticResource FrameStyle}">
+                    <Entry Text="{Binding Cliente.Ciudad}" Placeholder="Ingrese la ciudad" Style="{StaticResource EntryStyle}"/>
+                </Frame>
+
+                <Label Text="Estado" Style="{StaticResource LabelStyle}"/>
+                <Frame Style="{StaticResource FrameStyle}">
+                    <Entry Text="{Binding Cliente.Estado}" Placeholder="Ingrese el estado" Style="{StaticResource EntryStyle}"/>
+                </Frame>
+
+                <!-- Botón Guardar -->
+                <Button x:Name="GuardarButton"
+                        Text="Guardar"
+                        Command="{Binding GuardarClienteCommand}"
+                        Style="{StaticResource ButtonStyle}"
+                        Clicked="OnGuardarClicked"/>
+            </StackLayout>
+        </ScrollView>
+    </ContentPage.Content>
+</ContentPage>

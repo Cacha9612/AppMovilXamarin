@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ResourceDictionary xmlns="http://xamarin.com/schemas/2014/forms"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml">
+
+    <!-- Estilo para ListView -->
+    <Style TargetType="ListView">
+        <Setter Property="BackgroundColor" Value="#F5F5F5"/>
+        <Setter Property="SeparatorColor" Value="#CCCCCC"/>
+    </Style>
+
+    <!-- Estilo para ViewCell -->
+    <Style TargetType="ViewCell">
+        <Setter Property="BackgroundColor" Value="White"/>
+    </Style>
+
+    <!-- Estilo para Button -->
+    <Style TargetType="Button">
+        <Setter Property="BackgroundColor" Value="Red"/>
+        <Setter Property="TextColor" Value="White"/>
+        <Setter Property="CornerRadius" Value="5"/>
+        <Setter Property="Padding" Value="10"/>
+        <Setter Property="Margin" Value="10"/>
+    </Style>
+
+</ResourceDictionary>

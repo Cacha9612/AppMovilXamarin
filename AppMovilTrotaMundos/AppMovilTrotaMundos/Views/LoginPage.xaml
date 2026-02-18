@@ -1,0 +1,107 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="AppMovilTrotaMundos.Views.LoginPage"
+             BackgroundColor="{DynamicResource PageBackgroundColor}"
+             Title="Inicio de Sesión">
+
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <!-- Definición de colores -->
+            <Color x:Key="PrimaryColor">#795548</Color>
+            <Color x:Key="SecondaryColor">#4E342E</Color>
+            <Color x:Key="PageBackgroundColor">#F5F5F5</Color>
+            <Color x:Key="EntryBackgroundColor">White</Color>
+            <Color x:Key="PlaceholderColor">#9E9E9E</Color>
+            <Color x:Key="ErrorColor">#D32F2F</Color>
+
+            <!-- Estilos -->
+            <Style x:Key="LabelStyle" TargetType="Label">
+                <Setter Property="FontSize" Value="16"/>
+                <Setter Property="Margin" Value="5,2"/>
+                <Setter Property="TextColor" Value="{DynamicResource SecondaryColor}"/>
+            </Style>
+
+            <Style x:Key="EntryStyle" TargetType="Entry">
+                <Setter Property="TextColor" Value="Black"/>
+                <Setter Property="PlaceholderColor" Value="{DynamicResource PlaceholderColor}"/>
+                <Setter Property="BackgroundColor" Value="Transparent"/>
+                <Setter Property="FontSize" Value="16"/>
+            </Style>
+
+            <Style x:Key="FrameStyle" TargetType="Frame">
+                <Setter Property="BackgroundColor" Value="{DynamicResource EntryBackgroundColor}"/>
+                <Setter Property="CornerRadius" Value="12"/>
+                <Setter Property="Padding" Value="10"/>
+                <Setter Property="HasShadow" Value="False"/>
+            </Style>
+
+            <Style x:Key="ButtonStyle" TargetType="Button">
+                <Setter Property="BackgroundColor" Value="{DynamicResource PrimaryColor}"/>
+                <Setter Property="TextColor" Value="White"/>
+                <Setter Property="CornerRadius" Value="12"/>
+                <Setter Property="HeightRequest" Value="50"/>
+                <Setter Property="FontSize" Value="18"/>
+                <Setter Property="FontAttributes" Value="Bold"/>
+            </Style>
+
+        </ResourceDictionary>
+    </ContentPage.Resources>
+
+    <Grid Padding="30">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <!-- Logo -->
+        <StackLayout Grid.Row="0" VerticalOptions="CenterAndExpand" HorizontalOptions="Center">
+            <Image Source="logo_icon.jpg" WidthRequest="160" HeightRequest="160"/>
+        </StackLayout>
+
+        <!-- Formulario de login -->
+        <StackLayout Grid.Row="1" Spacing="20">
+
+            <!-- Usuario -->
+            <Label Text="Usuario" Style="{StaticResource LabelStyle}"/>
+            <Frame Style="{StaticResource FrameStyle}">
+                <Entry x:Name="UsernameEntry"
+                       Placeholder="Ingrese su usuario"
+                       Style="{StaticResource EntryStyle}"/>
+            </Frame>
+
+            <!-- Contraseña con botón para mostrar/ocultar -->
+            <Label Text="Contraseña" Style="{StaticResource LabelStyle}"/>
+            <Frame Style="{StaticResource FrameStyle}">
+                <Grid ColumnDefinitions="*,40">
+                    <Entry x:Name="ContrasenaEntry"
+                           Placeholder="Ingrese su contraseña"
+                           IsPassword="True"
+                           Style="{StaticResource EntryStyle}"
+                           Grid.Column="0"/>
+
+                    <ImageButton x:Name="PasswordToggleButton"
+                                 Source="eye_closed.png"
+                                 WidthRequest="30"
+                                 HeightRequest="30"
+                                 BackgroundColor="Transparent"
+                                 Clicked="OnTogglePasswordVisibility"
+                                 Grid.Column="1"/>
+                </Grid>
+            </Frame>
+
+            <!-- Botón de inicio de sesión -->
+            <Button x:Name="LoginButton" 
+                    Text="Iniciar sesión" 
+                    Clicked="OnLoginButtonClicked" 
+                    Style="{StaticResource ButtonStyle}"/>
+
+            <!-- Mensaje de error -->
+            <Label x:Name="ErrorMessage" 
+                   TextColor="{DynamicResource ErrorColor}" 
+                   IsVisible="False" 
+                   HorizontalOptions="Center" 
+                   FontAttributes="Bold"/>
+        </StackLayout>
+    </Grid>
+</ContentPage>

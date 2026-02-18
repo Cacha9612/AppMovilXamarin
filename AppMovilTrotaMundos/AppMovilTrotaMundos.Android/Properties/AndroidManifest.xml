@@ -1,0 +1,35 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="App.Trotamundos"
+    android:versionCode="1"
+    android:versionName="1.0"
+    android:installLocation="auto">
+
+  <uses-sdk android:minSdkVersion="21" android:targetSdkVersion="33" />
+
+  <!-- Permisos -->
+  <uses-permission android:name="android.permission.CAMERA" />
+  <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+  <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+  <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+
+  <application
+      android:label="Trotamundos"
+         android:usesCleartextTraffic="true"
+      android:icon="@drawable/logo_icon4"
+android:roundIcon="@drawable/logo_icon4">
+
+
+    <provider
+        android:name="androidx.core.content.FileProvider"
+        android:authorities="${applicationId}.fileprovider"
+        android:exported="false"
+        android:grantUriPermissions="true">
+      <meta-data
+          android:name="android.support.FILE_PROVIDER_PATHS"
+          android:resource="@xml/file_paths" />
+    </provider>
+
+    <!-- Otros elementos aquí -->
+  </application>
+</manifest>

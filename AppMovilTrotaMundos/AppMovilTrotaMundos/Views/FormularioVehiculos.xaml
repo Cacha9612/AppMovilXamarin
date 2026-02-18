@@ -1,0 +1,1143 @@
+﻿<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:local="clr-namespace:AppMovilTrotaMundos.Models"
+             x:Class="AppMovilTrotaMundos.Views.FormularioVehiculos">
+
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <local:IntToBoolConverter x:Key="IntToBoolConverter" />
+            <local:Base64ToImageSourceConverter x:Key="Base64ToImageSourceConverter" />
+            <local:EditingStatusConverter x:Key="EditingStatusConverter"/>
+            <local:InverseBoolConverter x:Key="InverseBoolConverter"/>
+        </ResourceDictionary>
+        <!-- Corrige la etiqueta de cierre -->
+    </ContentPage.Resources>
+
+    <ContentPage.Content>
+        <ScrollView>
+            <StackLayout Padding="10">
+                <Label Text="{Binding IsEditing, Converter={StaticResource EditingStatusConverter}, StringFormat=''}" />
+
+                <!-- Picker para Cliente -->
+                <Picker Title="Selecciona un Cliente"
+        ItemsSource="{Binding Clientes}"
+        ItemDisplayBinding="{Binding Nombre}"
+        SelectedItem="{Binding SelectedCliente, Mode=TwoWay}" />
+
+
+
+                <!-- Picker para Flotilla -->
+                <Picker Title="Selecciona una Flotilla"
+        ItemsSource="{Binding Flotillas}"
+        ItemDisplayBinding="{Binding NamesFlotillas}"
+        SelectedItem="{Binding SelectedFlotilla, Mode=TwoWay}" />
+                <Entry Placeholder="Número económico"
+       Text="{Binding Vehiculo.NumeroEconomico}"
+       IsVisible="{Binding MostrarNumeroEconomico}" />
+
+
+
+                <Entry Placeholder="Marca"
+                       Text="{Binding Vehiculo.Marca}" />
+                <Entry Placeholder="Modelo"
+                       Text="{Binding Vehiculo.Modelo}" />
+                <Entry Placeholder="Color"
+                       Text="{Binding Vehiculo.Color}" />
+                <Entry Placeholder="No. de Serie"
+                       Text="{Binding Vehiculo.No_serie}" />
+                <Entry Placeholder="Placa"
+                       Text="{Binding Vehiculo.Placa}" />
+                <Entry Placeholder="Tipo"
+                       Text="{Binding Vehiculo.Tipo}" />
+                <Entry Placeholder="Motor"
+                       Text="{Binding Vehiculo.Motor}" />
+                <Entry Placeholder="Kilómetros"
+                       Text="{Binding Vehiculo.Kms}" />
+
+                <StackLayout Orientation="Vertical" Spacing="10">
+
+
+                    <StackLayout Orientation="Horizontal" Spacing="15" VerticalOptions="Center" Padding="0,5">
+
+                        <Label Text="Motor del vehículo." VerticalOptions="Center" HorizontalOptions="StartAndExpand" FontSize="20" FontAttributes="Bold" />
+
+                        <Switch IsToggled="{Binding Vehiculo.MotorVehiculo, Converter={StaticResource IntToBoolConverter}}" VerticalOptions="End" />
+                        <Image Source="{Binding Vehiculo.MotorVehiculo_foto, Converter={StaticResource Base64ToImageSourceConverter}}" 
+                        HeightRequest="10" Aspect="AspectFit">
+                            <Image.GestureRecognizers>
+                                <TapGestureRecognizer 
+                            Command="{Binding ExpandImageCommand}" 
+                            CommandParameter="{Binding Vehiculo.MotorVehiculo_foto}"/>
+                            </Image.GestureRecognizers>
+                        </Image>
+
+
+                        <Label Text="&#xf030;"  
+                            FontFamily="FA"
+                           FontSize="30"
+                           TextColor="#2196F3"
+                           VerticalOptions="End">
+                            <Label.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding TomarMotorVehiculoFotoCommand}" />
+                            </Label.GestureRecognizers>
+                        </Label>
+
+
+                        <Label Text="&#xf03d;" 
+                            FontFamily="FA"
+                           FontSize="24"
+                           TextColor="#E53935"
+                           VerticalOptions="End">
+                            <Label.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding TomarMotorVehiculoVideoCommand}" CommandParameter="MotorVehiculo_video" />
+                            </Label.GestureRecognizers>
+                        </Label>
+
+                    </StackLayout>
+
+                    <StackLayout Orientation="Horizontal" Spacing="15" VerticalOptions="Center" Padding="0,5">
+
+                        <Label Text="Acumulador" VerticalOptions="Center" HorizontalOptions="StartAndExpand" FontSize="20" FontAttributes="Bold" />
+                        <Switch IsToggled="{Binding Vehiculo.Acumulador, Converter={StaticResource IntToBoolConverter}}" />
+                        <Image Source="{Binding Vehiculo.Acumulador_foto, Converter={StaticResource Base64ToImageSourceConverter}}" 
+                        HeightRequest="10" Aspect="AspectFit">
+                            <Image.GestureRecognizers>
+                                <TapGestureRecognizer 
+                        Command="{Binding ExpandImageCommand}" 
+                        CommandParameter="{Binding Vehiculo.Acumulador_foto}"/> 
+                            </Image.GestureRecognizers>
+                        </Image>
+                        <Label Text="&#xf030;"  
+                             FontFamily="FA"
+                             FontSize="24"
+                             TextColor="#2196F3"
+                             VerticalOptions="Center">
+                            <Label.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding TomarAcumuladorFotoCommand}" />
+                            </Label.GestureRecognizers>
+                        </Label>
+
+                        <Label Text="&#xf03d;" 
+                         FontFamily="FA"
+                         FontSize="24"
+                         TextColor="#E53935"
+                         VerticalOptions="Center">      
+                            <Label.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding TomarAcumuladorVideoCommand}" CommandParameter="Acumulador_video" />
+                            </Label.GestureRecognizers>
+                        </Label>
+
+
+                    </StackLayout>
+
+
+                    <StackLayout Orientation="Horizontal" Spacing="15" VerticalOptions="Center" Padding="0,5">
+                        <Label Text="Espejo retrovisor" VerticalOptions="Center" HorizontalOptions="StartAndExpand" FontSize="20" FontAttributes="Bold" />
+                        <Switch IsToggled="{Binding Vehiculo.Espejo_retrovisor, Converter={StaticResource IntToBoolConverter}}" />
+                        <Image Source="{Binding Vehiculo.Espejo_retrovisor_foto, Converter={StaticResource Base64ToImageSourceConverter}}" 
+        HeightRequest="10" Aspect="AspectFit">
+                            <Image.GestureRecognizers>
+                                <TapGestureRecognizer 
+        Command="{Binding ExpandImageCommand}" 
+        CommandParameter="{Binding Vehiculo.Espejo_retrovisor_foto}"/>
+                            </Image.GestureRecognizers>
+                        </Image>
+                        <Label Text="&#xf030;"  
+                  FontFamily="FA"
+                  FontSize="24"
+                  TextColor="#2196F3"
+                  VerticalOptions="Center">
+                            <Label.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding TomarEspejoRetrovisorFotoCommand}" />
+                            </Label.GestureRecognizers>
+                        </Label>
+
+
+                        <Label Text="&#xf03d;" 
+              FontFamily="FA"
+              FontSize="24"
+              TextColor="#E53935"
+              VerticalOptions="Center">
+                            <Label.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding TomarEspejoRetrovisorVideoCommand}" CommandParameter="Espejo_retrovisor_video" />
+                            </Label.GestureRecognizers>
+                        </Label>
+                    </StackLayout>
+
+
+
+
+                    <StackLayout Orientation="Horizontal" Spacing="15" VerticalOptions="Center" Padding="0,5">
+
+                        <Label Text="Espejo izquierdo" VerticalOptions="Center" HorizontalOptions="StartAndExpand" FontSize="20" FontAttributes="Bold" />
+                        <Switch IsToggled="{Binding Vehiculo.Espejo_izquierdo, Converter={StaticResource IntToBoolConverter}}" />
+                        <Image Source="{Binding Vehiculo.Espejo_izquierdo_foto, Converter={StaticResource Base64ToImageSourceConverter}}" 
+                        HeightRequest="10" Aspect="AspectFit">
+                            <Image.GestureRecognizers>
+                                <TapGestureRecognizer 
+                        Command="{Binding ExpandImageCommand}" 
+                        CommandParameter="{Binding Vehiculo.Espejo_izquierdo_foto}"/>
+                            </Image.GestureRecognizers>
+                        </Image>
+                        <Label Text="&#xf030;"  
+                        FontFamily="FA"
+                        FontSize="24"
+                        TextColor="#2196F3"
+                        VerticalOptions="End">
+                            <Label.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding TomarEspejoIzquierdoFotoCommand}" />
+                            </Label.GestureRecognizers>
+                        </Label>
+
+
+                        <Label Text="&#xf03d;" 
+                        FontFamily="FA"
+                        FontSize="24"
+                        TextColor="#E53935"
+                        VerticalOptions="End">
+                            <Label.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding TomarEspejoIzquierdoVideoCommand}" CommandParameter="Espejo_izquierdo_video" />
+                            </Label.GestureRecognizers>
+                        </Label>
+                    </StackLayout>
+
+
+
+                    <StackLayout Orientation="Horizontal" Spacing="15" VerticalOptions="Center" Padding="0,5">
+
+                        <Label Text="Espejo derecho" VerticalOptions="Center" HorizontalOptions="StartAndExpand" FontSize="20" FontAttributes="Bold" />
+                        <Switch IsToggled="{Binding Vehiculo.Espejo_derecho, Converter={StaticResource IntToBoolConverter}}" />
+                        
+                        
+
+                        <Image Source="{Binding Vehiculo.Espejo_derecho_foto, Converter={StaticResource Base64ToImageSourceConverter}}" 
+                        HeightRequest="10" Aspect="AspectFit">
+                            <Image.GestureRecognizers>
+                                <TapGestureRecognizer 
+                        Command="{Binding ExpandImageCommand}" 
+                        CommandParameter="{Binding Vehiculo.Espejo_derecho_foto}"/>
+                            </Image.GestureRecognizers>
+                        </Image>
+                        <Label Text="&#xf030;"  
+                         FontFamily="FA"
+                         FontSize="24"
+                         TextColor="#2196F3"
+                         VerticalOptions="End">
+                            <Label.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding TomarEspejoDerechoFotoCommand}" />
+                            </Label.GestureRecognizers>
+                        </Label>
+
+
+                        <Label Text="&#xf03d;" 
+                         FontFamily="FA"
+                         FontSize="24"
+                         TextColor="#E53935"
+                         VerticalOptions="End">
+                            <Label.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding TomarEspejoDerechoVideoCommand}" CommandParameter="Espejo_derecho_video" />
+                            </Label.GestureRecognizers>
+                        </Label>
+                    </StackLayout>
+                    <StackLayout Orientation="Horizontal" Spacing="15" VerticalOptions="Center" Padding="0,5">
+
+                        <Label Text="Antena" VerticalOptions="Center" HorizontalOptions="StartAndExpand" FontSize="20" FontAttributes="Bold" />
+                        <Switch IsToggled="{Binding Vehiculo.Antena, Converter={StaticResource IntToBoolConverter}}" />
+                        <Image Source="{Binding Vehiculo.Antena_foto, Converter={StaticResource Base64ToImageSourceConverter}}" 
+                        HeightRequest="10" Aspect="AspectFit">
+                            <Image.GestureRecognizers>
+                                <TapGestureRecognizer 
+                        Command="{Binding ExpandImageCommand}" 
+                        CommandParameter="{Binding Vehiculo.Antena_foto}"/>
+                            </Image.GestureRecognizers>
+                        </Image>
+                        <Label Text="&#xf030;"  
+                         FontFamily="FA"
+                         FontSize="24"
+                         TextColor="#2196F3"
+                         VerticalOptions="End">
+                            <Label.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding TomarAntenaFotoCommand}" />
+                            </Label.GestureRecognizers>
+                        </Label>
+
+
+                        <Label Text="&#xf03d;" 
+                         FontFamily="FA"
+                         FontSize="24"
+                         TextColor="#E53935"
+                         VerticalOptions="End">
+                            <Label.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding TomarAntenaVideoCommand}" CommandParameter="Antena_video" />
+                            </Label.GestureRecognizers>
+                        </Label>                    
+                    </StackLayout>
+
+
+                    <StackLayout Orientation="Horizontal" Spacing="15" VerticalOptions="Center" Padding="0,5">
+
+                        <Label Text="Tapones de ruedas." VerticalOptions="Center" HorizontalOptions="StartAndExpand" FontSize="20" FontAttributes="Bold" />
+                        <Switch IsToggled="{Binding Vehiculo.Tapones_ruedas, Converter={StaticResource IntToBoolConverter}}" />
+                        <Image Source="{Binding Vehiculo.Tapones_ruedas_foto, Converter={StaticResource Base64ToImageSourceConverter}}" 
+                        HeightRequest="10" Aspect="AspectFit">
+                            <Image.GestureRecognizers>
+                                <TapGestureRecognizer 
+                        Command="{Binding ExpandImageCommand}" 
+                         CommandParameter="{Binding Vehiculo.Tapones_ruedas_foto}"/>
+                            </Image.GestureRecognizers>
+                        </Image>
+                        <Label Text="&#xf030;"  
+                         FontFamily="FA"
+                         FontSize="24"
+                         TextColor="#2196F3"
+                         VerticalOptions="End">
+                            <Label.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding TomarTaponesRuedasFotoCommand}" />
+                            </Label.GestureRecognizers>
+                        </Label>
+
+
+                        <Label Text="&#xf03d;" 
+                         FontFamily="FA"
+                         FontSize="24"
+                         TextColor="#E53935"
+                         VerticalOptions="End">
+                            <Label.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding TomarTaponesRuedasVideoCommand}" CommandParameter="Tapones_ruedas_video" />
+                            </Label.GestureRecognizers>
+                        </Label>
+                       
+                    </StackLayout>
+
+                    <StackLayout Orientation="Horizontal" Spacing="15" VerticalOptions="Center" Padding="0,5">
+                        <Label Text="Radio." VerticalOptions="Center" HorizontalOptions="StartAndExpand" FontSize="20" FontAttributes="Bold" />
+                        <Switch IsToggled="{Binding Vehiculo.Radio, Converter={StaticResource IntToBoolConverter}}" />
+                        <Image Source="{Binding Vehiculo.Radio_foto, Converter={StaticResource Base64ToImageSourceConverter}}" 
+                        HeightRequest="10" Aspect="AspectFit">
+                            <Image.GestureRecognizers>
+                                <TapGestureRecognizer 
+                        Command="{Binding ExpandImageCommand}" 
+                         CommandParameter="{Binding Vehiculo.Radio_foto}"/>
+                            </Image.GestureRecognizers>
+                        </Image>
+                        <Label Text="&#xf030;"  
+                         FontFamily="FA"
+                         FontSize="24"
+                         TextColor="#2196F3"
+                         VerticalOptions="End">
+                            <Label.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding TomarRadioFotoCommand}" />
+                            </Label.GestureRecognizers>
+                        </Label>
+
+
+                        <Label Text="&#xf03d;" 
+                         FontFamily="FA"
+                         FontSize="24"
+                         TextColor="#E53935"
+                         VerticalOptions="End">
+                            <Label.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding TomarRadioVideoCommand}" CommandParameter="Radio_video" />
+                            </Label.GestureRecognizers>
+                        </Label>                    
+                    </StackLayout>
+
+                    <StackLayout Orientation="Horizontal" Spacing="15" VerticalOptions="Center" Padding="0,5">
+                        <Label Text="Encendedor." VerticalOptions="Center" HorizontalOptions="StartAndExpand" FontSize="20" FontAttributes="Bold" />
+                        <Switch IsToggled="{Binding Vehiculo.Encendedor, Converter={StaticResource IntToBoolConverter}}" />
+                        <Image Source="{Binding Vehiculo.Encendedor_foto, Converter={StaticResource Base64ToImageSourceConverter}}" 
+                        HeightRequest="10" Aspect="AspectFit">
+                            <Image.GestureRecognizers>
+                                <TapGestureRecognizer 
+                        Command="{Binding ExpandImageCommand}" 
+                        CommandParameter="{Binding Vehiculo.Encendedor_foto}"/>
+                            </Image.GestureRecognizers>
+                        </Image>
+                        <Label Text="&#xf030;"  
+                         FontFamily="FA"
+                         FontSize="24"
+                         TextColor="#2196F3"
+                         VerticalOptions="End">
+                            <Label.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding TomarEncendedorFotoCommand}" />
+                            </Label.GestureRecognizers>
+                        </Label>
+
+
+                        <Label Text="&#xf03d;" 
+                         FontFamily="FA"
+                         FontSize="24"
+                         TextColor="#E53935"
+                         VerticalOptions="End">
+                            <Label.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding TomarEncendedorVideoCommand}" CommandParameter="Encendedor_video" />
+                            </Label.GestureRecognizers>
+                        </Label>                    
+                    </StackLayout>
+
+
+                    <StackLayout Orientation="Horizontal" Spacing="15" VerticalOptions="Center" Padding="0,5">
+                        <Label Text="Gato." VerticalOptions="Center" HorizontalOptions="StartAndExpand" FontSize="20" FontAttributes="Bold" />
+                        <Switch IsToggled="{Binding Vehiculo.Gato, Converter={StaticResource IntToBoolConverter}}" />
+                        <Image Source="{Binding Vehiculo.Gato_foto, Converter={StaticResource Base64ToImageSourceConverter}}" 
+                        HeightRequest="10" Aspect="AspectFit">
+                            <Image.GestureRecognizers>
+                                <TapGestureRecognizer 
+                        Command="{Binding ExpandImageCommand}" 
+                        CommandParameter="{Binding Vehiculo.Gato_foto}"/>
+                            </Image.GestureRecognizers>
+                        </Image>
+                        <Label Text="&#xf030;"  
+                         FontFamily="FA"
+                         FontSize="24"
+                         TextColor="#2196F3"
+                         VerticalOptions="End">
+                            <Label.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding TomarGatoFotoCommand}" />
+                            </Label.GestureRecognizers>
+                        </Label>
+
+
+                        <Label Text="&#xf03d;" 
+                         FontFamily="FA"
+                         FontSize="24"
+                         TextColor="#E53935"
+                         VerticalOptions="End">
+                            <Label.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding TomarRadioVideoCommand}" CommandParameter="Radio_video" />
+                            </Label.GestureRecognizers>
+                        </Label>                    
+                    </StackLayout>
+
+                    <StackLayout Orientation="Horizontal" Spacing="15" VerticalOptions="Center" Padding="0,5">
+                        <Label Text="Herramienta." VerticalOptions="Center" HorizontalOptions="StartAndExpand" FontSize="20" FontAttributes="Bold" />
+                        <Switch IsToggled="{Binding Vehiculo.Herramienta, Converter={StaticResource IntToBoolConverter}}" />
+                        <Image Source="{Binding Vehiculo.Herramienta_foto, Converter={StaticResource Base64ToImageSourceConverter}}" 
+                        HeightRequest="10" Aspect="AspectFit">
+                            <Image.GestureRecognizers>
+                                <TapGestureRecognizer 
+                        Command="{Binding ExpandImageCommand}" 
+                        CommandParameter="{Binding Vehiculo.Herramienta_foto}"/>
+                            </Image.GestureRecognizers>
+                        </Image>
+                        <Label Text="&#xf030;"  
+                         FontFamily="FA"
+                         FontSize="24"
+                         TextColor="#2196F3"
+                         VerticalOptions="End">
+                            <Label.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding TomarHerramientaFotoCommand}" />
+                            </Label.GestureRecognizers>
+                        </Label>
+                        <Label Text="&#xf03d;" 
+                         FontFamily="FA"
+                         FontSize="24"
+                         TextColor="#E53935"
+                         VerticalOptions="End">
+                            <Label.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding TomarHerramientaVideoCommand}" CommandParameter="Herramienta_video" />
+                            </Label.GestureRecognizers>
+                        </Label>
+                    </StackLayout>
+
+                    <StackLayout Orientation="Horizontal" Spacing="15" VerticalOptions="Center" Padding="0,5">
+                        <Label Text="Llanta de Refacción." VerticalOptions="Center" HorizontalOptions="StartAndExpand" FontSize="20" FontAttributes="Bold" />
+                        <Switch IsToggled="{Binding Vehiculo.Llanta_refaccion, Converter={StaticResource IntToBoolConverter}}" />
+                        <Image Source="{Binding Vehiculo.Llanta_refaccion_foto, Converter={StaticResource Base64ToImageSourceConverter}}" 
+                        HeightRequest="10" Aspect="AspectFit">
+                            <Image.GestureRecognizers>
+                                <TapGestureRecognizer 
+                        Command="{Binding ExpandImageCommand}" 
+                        CommandParameter="{Binding Vehiculo.Llanta_refaccion_foto}"/>
+                            </Image.GestureRecognizers>
+                        </Image>
+                        <Label Text="&#xf030;"  
+                         FontFamily="FA"
+                         FontSize="24"
+                         TextColor="#2196F3"
+                         VerticalOptions="End">
+                            <Label.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding TomarLlantaRefaccionFotoCommand}" />
+                            </Label.GestureRecognizers>
+                        </Label>
+                        <Label Text="&#xf03d;" 
+                         FontFamily="FA"
+                         FontSize="24"
+                         TextColor="#E53935"
+                         VerticalOptions="End">
+                            <Label.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding TomarLlantaRefaccionVideoCommand}" CommandParameter="Llanta_refaccion_video" />
+                            </Label.GestureRecognizers>
+                        </Label>
+
+                    </StackLayout>
+
+
+
+
+                    <StackLayout Orientation="Horizontal" Spacing="15" VerticalOptions="Center" Padding="0,5">
+                        <Label Text="Limpiadores." VerticalOptions="Center" HorizontalOptions="StartAndExpand" FontSize="20" FontAttributes="Bold" />
+                        <Switch IsToggled="{Binding Vehiculo.Limpiadores, Converter={StaticResource IntToBoolConverter}}" />
+                        <Image Source="{Binding Vehiculo.Limpiadores_foto, Converter={StaticResource Base64ToImageSourceConverter}}" 
+                        HeightRequest="10" Aspect="AspectFit">
+                            <Image.GestureRecognizers>
+                                <TapGestureRecognizer 
+                        Command="{Binding ExpandImageCommand}" 
+                        CommandParameter="{Binding Vehiculo.Limpiadores_foto}"/>
+                            </Image.GestureRecognizers>
+                        </Image>
+                        <Label Text="&#xf030;"  
+                         FontFamily="FA"
+                         FontSize="24"
+                         TextColor="#2196F3"
+                         VerticalOptions="End">
+                            <Label.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding TomarLimpiadoresFotoCommand}" />
+                            </Label.GestureRecognizers>
+                        </Label>
+                        <Label Text="&#xf03d;" 
+                         FontFamily="FA"
+                         FontSize="24"
+                         TextColor="#E53935"
+                         VerticalOptions="End">
+                            <Label.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding TomarLimpiadoresVideoCommand}" CommandParameter="Limpiadores_video" />
+                            </Label.GestureRecognizers>
+                        </Label>                        
+                    </StackLayout>
+
+
+                    <StackLayout Orientation="Horizontal" Spacing="15" VerticalOptions="Center" Padding="0,5">
+                        <Label Text="Pintura Rayada." VerticalOptions="Center" HorizontalOptions="StartAndExpand" FontSize="20" FontAttributes="Bold" />
+                        <Switch IsToggled="{Binding Vehiculo.Pintura_rayada, Converter={StaticResource IntToBoolConverter}}" />
+                        <Image Source="{Binding Vehiculo.Pintura_rayada_foto, Converter={StaticResource Base64ToImageSourceConverter}}" 
+                        HeightRequest="10" Aspect="AspectFit">
+                            <Image.GestureRecognizers>
+                                <TapGestureRecognizer 
+                        Command="{Binding ExpandImageCommand}" 
+                        CommandParameter="{Binding Vehiculo.Pintura_rayada_foto}"/>
+                            </Image.GestureRecognizers>
+                        </Image>
+                        <Label Text="&#xf030;"  
+                         FontFamily="FA"
+                         FontSize="24"
+                         TextColor="#2196F3"
+                         VerticalOptions="End">
+                            <Label.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding TomarPinturaRayadaFotoCommand}" />
+                            </Label.GestureRecognizers>
+                        </Label>
+                        <Label Text="&#xf03d;" 
+                         FontFamily="FA"
+                         FontSize="24"
+                         TextColor="#E53935"
+                         VerticalOptions="End">
+                            <Label.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding TomarPinturaRayadaVideoCommand}" CommandParameter="Pintura_rayada_video" />
+                            </Label.GestureRecognizers>
+                        </Label>
+                    </StackLayout>
+
+
+                    <StackLayout Orientation="Horizontal" Spacing="15" VerticalOptions="Center" Padding="0,5">
+                        <Label Text="Cristales Rotos." VerticalOptions="Center" HorizontalOptions="StartAndExpand" FontSize="20" FontAttributes="Bold" />
+                        <Switch IsToggled="{Binding Vehiculo.Cristales_rotos, Converter={StaticResource IntToBoolConverter}}" />
+                        <Image Source="{Binding Vehiculo.Cristales_rotos_foto, Converter={StaticResource Base64ToImageSourceConverter}}" 
+                        HeightRequest="10" Aspect="AspectFit">
+                            <Image.GestureRecognizers>
+                                <TapGestureRecognizer 
+                        Command="{Binding ExpandImageCommand}" 
+                        CommandParameter="{Binding Vehiculo.Cristales_rotos_foto}"/>
+                            </Image.GestureRecognizers>
+                        </Image>
+                        <Label Text="&#xf030;"  
+                         FontFamily="FA"
+                         FontSize="24"
+                         TextColor="#2196F3"
+                         VerticalOptions="End">
+                            <Label.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding TomarCristalesRotosFotoCommand}" />
+                            </Label.GestureRecognizers>
+                        </Label>
+                        <Label Text="&#xf03d;" 
+                         FontFamily="FA"
+                         FontSize="24"
+                         TextColor="#E53935"
+                         VerticalOptions="End">
+                            <Label.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding TomarCristalesRotosVideoCommand}" CommandParameter="Cristales_rotos_video" />
+                            </Label.GestureRecognizers>
+                        </Label>                        
+                    </StackLayout>
+
+
+
+                    <StackLayout Orientation="Horizontal" Spacing="15" VerticalOptions="Center" Padding="0,5">
+                        <Label Text="Golpes." VerticalOptions="Center" HorizontalOptions="StartAndExpand" FontSize="20" FontAttributes="Bold" />
+                        <Switch IsToggled="{Binding Vehiculo.Golpes, Converter={StaticResource IntToBoolConverter}}" />
+                        <Image Source="{Binding Vehiculo.Golpes_foto, Converter={StaticResource Base64ToImageSourceConverter}}" 
+                        HeightRequest="10" Aspect="AspectFit">
+                            <Image.GestureRecognizers>
+                                <TapGestureRecognizer 
+                        Command="{Binding ExpandImageCommand}" 
+                        CommandParameter="{Binding Vehiculo.Golpes_foto}"/>
+                            </Image.GestureRecognizers>
+                        </Image>
+                        <Label Text="&#xf030;"  
+                         FontFamily="FA"
+                         FontSize="24"
+                         TextColor="#2196F3"
+                         VerticalOptions="End">
+                            <Label.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding TomarGolpesFotoCommand}" />
+                            </Label.GestureRecognizers>
+                        </Label>
+                        <Label Text="&#xf03d;" 
+                         FontFamily="FA"
+                         FontSize="24"
+                         TextColor="#E53935"
+                         VerticalOptions="End">
+                            <Label.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding TomarGolpesVideoCommand}" CommandParameter="Golpes_video" />
+                            </Label.GestureRecognizers>
+                        </Label>
+                    </StackLayout>
+
+
+                    <StackLayout Orientation="Horizontal" Spacing="15" VerticalOptions="Center" Padding="0,5">
+                        <Label Text="Tapetes." VerticalOptions="Center" HorizontalOptions="StartAndExpand" FontSize="20" FontAttributes="Bold" />
+                        <Switch IsToggled="{Binding Vehiculo.Tapetes, Converter={StaticResource IntToBoolConverter}}" />
+                        <Image Source="{Binding Vehiculo.Tapetes_foto, Converter={StaticResource Base64ToImageSourceConverter}}" 
+                        HeightRequest="10" Aspect="AspectFit">
+                            <Image.GestureRecognizers>
+                                <TapGestureRecognizer 
+                        Command="{Binding ExpandImageCommand}" 
+                        CommandParameter="{Binding Vehiculo.Tapetes_foto}"/>
+                            </Image.GestureRecognizers>
+                        </Image>
+                        <Label Text="&#xf030;"  
+                         FontFamily="FA"
+                         FontSize="24"
+                         TextColor="#2196F3"
+                         VerticalOptions="End">
+                            <Label.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding TomarTapetesFotoCommand}" />
+                            </Label.GestureRecognizers>
+                        </Label>
+                        <Label Text="&#xf03d;" 
+                         FontFamily="FA"
+                         FontSize="24"
+                         TextColor="#E53935"
+                         VerticalOptions="End">
+                            <Label.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding TomarTapetesVideoCommand}" CommandParameter="Tapetes_video" />
+                            </Label.GestureRecognizers>
+                        </Label>                    
+                    </StackLayout>
+
+                    <StackLayout Orientation="Horizontal" Spacing="15" VerticalOptions="Center" Padding="0,5">
+                        <Label Text="Extintor." VerticalOptions="Center" HorizontalOptions="StartAndExpand" FontSize="20" FontAttributes="Bold" />
+                        <Switch IsToggled="{Binding Vehiculo.Extintor, Converter={StaticResource IntToBoolConverter}}" />
+                        <Image Source="{Binding Vehiculo.Extintor_foto, Converter={StaticResource Base64ToImageSourceConverter}}" 
+                        HeightRequest="10" Aspect="AspectFit">
+                            <Image.GestureRecognizers>
+                                <TapGestureRecognizer 
+                        Command="{Binding ExpandImageCommand}" 
+                        CommandParameter="{Binding Vehiculo.Extintor_foto}"/>
+                            </Image.GestureRecognizers>
+                        </Image>
+                        <Label Text="&#xf030;"  
+                         FontFamily="FA"
+                         FontSize="24"
+                         TextColor="#2196F3"
+                         VerticalOptions="End">
+                            <Label.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding TomarExtintorFotoCommand}" />
+                            </Label.GestureRecognizers>
+                        </Label>
+                        <Label Text="&#xf03d;" 
+                         FontFamily="FA"
+                         FontSize="24"
+                         TextColor="#E53935"
+                         VerticalOptions="End">
+                            <Label.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding TomarExtintorVideoCommand}" CommandParameter="Extintor_video" />
+                            </Label.GestureRecognizers>
+                        </Label>                    
+                    </StackLayout>
+
+
+                    <StackLayout Orientation="Horizontal" Spacing="15" VerticalOptions="Center" Padding="0,5">
+                        <Label Text="Tapón de Gasolina." VerticalOptions="Center" HorizontalOptions="StartAndExpand" FontSize="20" FontAttributes="Bold" />
+                        <Switch IsToggled="{Binding Vehiculo.Tapones_gasolina, Converter={StaticResource IntToBoolConverter}}" />
+                        <Image Source="{Binding Vehiculo.Tapones_gasolina_foto, Converter={StaticResource Base64ToImageSourceConverter}}" 
+                        HeightRequest="10" Aspect="AspectFit">
+                            <Image.GestureRecognizers>
+                                <TapGestureRecognizer 
+                        Command="{Binding ExpandImageCommand}" 
+                        CommandParameter="{Binding Vehiculo.Tapones_gasolina_foto}"/>
+                            </Image.GestureRecognizers>
+                        </Image>
+                        <Label Text="&#xf030;"  
+                         FontFamily="FA"
+                         FontSize="24"
+                         TextColor="#2196F3"
+                         VerticalOptions="End">
+                            <Label.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding TomarTaponesGasolinaFotoCommand}" />
+                            </Label.GestureRecognizers>
+                        </Label>
+                        <Label Text="&#xf03d;" 
+                         FontFamily="FA"
+                         FontSize="24"
+                         TextColor="#E53935"
+                         VerticalOptions="End">
+                            <Label.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding TomarTaponesGasolinaVideoCommand}" CommandParameter="Tapones_gasolina_video" />
+                            </Label.GestureRecognizers>
+                        </Label>
+
+                    </StackLayout>
+
+                    <StackLayout Orientation="Horizontal" Spacing="15" VerticalOptions="Center" Padding="0,5">
+                        <Label Text="Calaveras Rotas." VerticalOptions="Center" HorizontalOptions="StartAndExpand" FontSize="20" FontAttributes="Bold" />
+                        <Switch IsToggled="{Binding Vehiculo.Calaveras_rotas, Converter={StaticResource IntToBoolConverter}}" />
+                        <Image Source="{Binding Vehiculo.Calaveras_rotas_foto, Converter={StaticResource Base64ToImageSourceConverter}}" 
+                        HeightRequest="10" Aspect="AspectFit">
+                            <Image.GestureRecognizers>
+                                <TapGestureRecognizer 
+                        Command="{Binding ExpandImageCommand}" 
+                        CommandParameter="{Binding Vehiculo.Calaveras_rotas_foto}"/>
+                            </Image.GestureRecognizers>
+                        </Image>
+                        <Label Text="&#xf030;"  
+                         FontFamily="FA"
+                         FontSize="24"
+                         TextColor="#2196F3"
+                         VerticalOptions="End">
+                            <Label.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding TomarCalaverasRotasFotoCommand}" />
+                            </Label.GestureRecognizers>
+                        </Label>
+                        <Label Text="&#xf03d;" 
+                         FontFamily="FA"
+                         FontSize="24"
+                         TextColor="#E53935"
+                         VerticalOptions="End">
+                            <Label.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding TomarCalaverasRotasVideoCommand}" CommandParameter="Calaveras_rotas_video" />
+                            </Label.GestureRecognizers>
+                        </Label>                    
+                    </StackLayout>
+
+                    <StackLayout Orientation="Horizontal" Spacing="15" VerticalOptions="Center" Padding="0,5">
+                        <Label Text="Molduras completas." VerticalOptions="Center" HorizontalOptions="StartAndExpand" FontSize="20" FontAttributes="Bold" />
+                        <Switch IsToggled="{Binding Vehiculo.Molduras_completas, Converter={StaticResource IntToBoolConverter}}" />
+                        <Image Source="{Binding Vehiculo.Molduras_completas_foto, Converter={StaticResource Base64ToImageSourceConverter}}" 
+                        HeightRequest="10" Aspect="AspectFit">
+                            <Image.GestureRecognizers>
+                                <TapGestureRecognizer 
+                        Command="{Binding ExpandImageCommand}" 
+                        CommandParameter="{Binding Vehiculo.Molduras_completas_foto}"/>
+                            </Image.GestureRecognizers>
+                        </Image>
+                        <Label Text="&#xf030;"  
+                        FontFamily="FA"
+                        FontSize="24"
+                        TextColor="#2196F3"
+                        VerticalOptions="End">
+                            <Label.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding TomarMoldurasCompletasFotoCommand}" />
+                            </Label.GestureRecognizers>
+                        </Label>
+                        <Label Text="&#xf03d;" 
+                        FontFamily="FA"
+                        FontSize="24"
+                        TextColor="#E53935"
+                        VerticalOptions="End">
+                            <Label.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding TomarMoldurasCompletasVideoCommand}" CommandParameter="Modultas_completas_video" />
+                            </Label.GestureRecognizers>
+                        </Label>
+
+                    </StackLayout>
+
+
+
+                    <StackLayout Orientation="Horizontal" Spacing="15" VerticalOptions="Center" Padding="0,5">
+                        <Label Text="Panel de instrumentos." VerticalOptions="Center" HorizontalOptions="StartAndExpand" FontSize="20" FontAttributes="Bold" />
+                        <Switch IsToggled="{Binding Vehiculo.Panel_instrumentos, Converter={StaticResource IntToBoolConverter}}" />
+                        <Image Source="{Binding Vehiculo.Panel_instrumentos_foto, Converter={StaticResource Base64ToImageSourceConverter}}" 
+        HeightRequest="10" Aspect="AspectFit">
+                            <Image.GestureRecognizers>
+                                <TapGestureRecognizer 
+        Command="{Binding ExpandImageCommand}" 
+        CommandParameter="{Binding Vehiculo.Panel_instrumentos_foto}"/>
+                            </Image.GestureRecognizers>
+                        </Image>
+                        <Label Text="&#xf030;"  
+                        FontFamily="FA"
+                        FontSize="24"
+                        TextColor="#2196F3"
+                        VerticalOptions="End">
+                            <Label.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding TomarPanelInstrumentosFotoCommand}" />
+                            </Label.GestureRecognizers>
+                        </Label>
+                        <Label Text="&#xf03d;" 
+                        FontFamily="FA"
+                        FontSize="24"
+                        TextColor="#E53935"
+                        VerticalOptions="End">
+                            <Label.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding TomarPanelInstrumentosVideoCommand}" CommandParameter="Panel_instrumentos_video" />
+                            </Label.GestureRecognizers>
+                        </Label>                        
+                    </StackLayout>
+
+
+                    <StackLayout Orientation="Horizontal" Spacing="15" VerticalOptions="Center" Padding="0,5">
+                        <Label Text="Lado Izquierdo." VerticalOptions="Center" HorizontalOptions="StartAndExpand" FontSize="20" FontAttributes="Bold" />
+                        <Switch IsToggled="{Binding Vehiculo.Lado_izquierdo, Converter={StaticResource IntToBoolConverter}}" />
+                        <Image Source="{Binding Vehiculo.Lado_izquierdo_foto, Converter={StaticResource Base64ToImageSourceConverter}}" 
+        HeightRequest="10" Aspect="AspectFit">
+                            <Image.GestureRecognizers>
+                                <TapGestureRecognizer 
+        Command="{Binding ExpandImageCommand}" 
+        CommandParameter="{Binding Vehiculo.Lado_izquierdo_foto}"/>
+                            </Image.GestureRecognizers>
+                        </Image>
+                        <Label Text="&#xf030;"  
+                        FontFamily="FA"
+                        FontSize="24"
+                        TextColor="#2196F3"
+                        VerticalOptions="End">
+                            <Label.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding TomarLadoIzquierdoFotoCommand}" />
+                            </Label.GestureRecognizers>
+                        </Label>
+                        <Label Text="&#xf03d;" 
+                        FontFamily="FA"
+                        FontSize="24"
+                        TextColor="#E53935"
+                        VerticalOptions="End">
+                            <Label.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding TomarLadoIzquierdoVideoCommand}" CommandParameter="Lado_izquierdo_video" />
+                            </Label.GestureRecognizers>
+                        </Label>
+                    </StackLayout>
+
+
+                    <StackLayout Orientation="Horizontal" Spacing="15" VerticalOptions="Center" Padding="0,5">
+                        <Label Text="Lado Izquierdo Inferior." VerticalOptions="Center" HorizontalOptions="StartAndExpand" FontSize="20" FontAttributes="Bold" />
+                        <Switch IsToggled="{Binding Vehiculo.Lado_izquierdo_inf, Converter={StaticResource IntToBoolConverter}}" />
+                        <Image Source="{Binding Vehiculo.Lado_izquierdo_inf_foto, Converter={StaticResource Base64ToImageSourceConverter}}" 
+        HeightRequest="10" Aspect="AspectFit">
+                            <Image.GestureRecognizers>
+                                <TapGestureRecognizer 
+        Command="{Binding ExpandImageCommand}" 
+        CommandParameter="{Binding Vehiculo.Lado_izquierdo_inf_foto}"/>
+                            </Image.GestureRecognizers>
+                        </Image>
+                        <Label Text="&#xf030;"  
+                        FontFamily="FA"
+                        FontSize="24"
+                        TextColor="#2196F3"
+                        VerticalOptions="End">
+                            <Label.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding TomarLadoIzquierdoInfFotoCommand}" />
+                            </Label.GestureRecognizers>
+                        </Label>
+                        <Label Text="&#xf03d;" 
+                        FontFamily="FA"
+                        FontSize="24"
+                        TextColor="#E53935"
+                        VerticalOptions="End">
+                            <Label.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding TomarLadoIzquierdoInfVideoCommand}" CommandParameter="Lado_izquierdo_inf_video" />
+                            </Label.GestureRecognizers>
+                        </Label>                        
+
+                    </StackLayout>
+
+
+                    <StackLayout Orientation="Horizontal" Spacing="15" VerticalOptions="Center" Padding="0,5">
+                        <Label Text="Lado Derecho." VerticalOptions="Center" HorizontalOptions="StartAndExpand" FontSize="20" FontAttributes="Bold" />
+                        <Switch IsToggled="{Binding Vehiculo.Lado_derecho, Converter={StaticResource IntToBoolConverter}}" />
+                        <Image Source="{Binding Vehiculo.Lado_derecho_foto, Converter={StaticResource Base64ToImageSourceConverter}}" 
+        HeightRequest="10" Aspect="AspectFit">
+                            <Image.GestureRecognizers>
+                                <TapGestureRecognizer 
+        Command="{Binding ExpandImageCommand}" 
+        CommandParameter="{Binding Vehiculo.Lado_derecho_foto}"/>
+                            </Image.GestureRecognizers>
+                        </Image>
+                        <Label Text="&#xf030;"  
+                        FontFamily="FA"
+                        FontSize="24"
+                        TextColor="#2196F3"
+                        VerticalOptions="End">
+                            <Label.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding TomarLadoDerechoFotoCommand}" />
+                            </Label.GestureRecognizers>
+                        </Label>
+                        <Label Text="&#xf03d;" 
+                        FontFamily="FA"
+                        FontSize="24"
+                        TextColor="#E53935"
+                        VerticalOptions="End">
+                            <Label.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding TomarLadoDerchoVideoCommand}" CommandParameter="Lado_derecho_video" />
+                            </Label.GestureRecognizers>
+                        </Label>
+
+                    </StackLayout>
+
+
+                    <StackLayout Orientation="Horizontal" Spacing="15" VerticalOptions="Center" Padding="0,5">
+                        <Label Text="Lado Derecho Inferior." VerticalOptions="Center" HorizontalOptions="StartAndExpand" FontSize="20" FontAttributes="Bold" />
+                        <Switch IsToggled="{Binding Vehiculo.Lado_derecho_inf, Converter={StaticResource IntToBoolConverter}}" />
+                        <Image Source="{Binding Vehiculo.Lado_derecho_inf_foto, Converter={StaticResource Base64ToImageSourceConverter}}" 
+        HeightRequest="10" Aspect="AspectFit">
+                            <Image.GestureRecognizers>
+                                <TapGestureRecognizer 
+        Command="{Binding ExpandImageCommand}" 
+        CommandParameter="{Binding Vehiculo.Lado_derecho_inf_foto}"/>
+                            </Image.GestureRecognizers>
+                        </Image>
+                        <Label Text="&#xf030;"  
+                        FontFamily="FA"
+                        FontSize="24"
+                        TextColor="#2196F3"
+                        VerticalOptions="End">
+                            <Label.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding TomarLadoDerechoInfFotoCommand}" />
+                            </Label.GestureRecognizers>
+                        </Label>
+                        <Label Text="&#xf03d;" 
+                        FontFamily="FA"
+                        FontSize="24"
+                        TextColor="#E53935"
+                        VerticalOptions="End">
+                            <Label.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding TomarLadoDerchoInfVideoCommand}" CommandParameter="Lado_derecho_inf_video" />
+                            </Label.GestureRecognizers>
+                        </Label>
+                    </StackLayout>
+
+
+                    <StackLayout Orientation="Horizontal" Spacing="15" VerticalOptions="Center" Padding="0,5">
+                        <Label Text="Tablero." VerticalOptions="Center" HorizontalOptions="StartAndExpand" FontSize="20" FontAttributes="Bold" />
+                        <Switch IsToggled="{Binding Vehiculo.Tablero, Converter={StaticResource IntToBoolConverter}}" />
+                        <Image Source="{Binding Vehiculo.Tablero_foto, Converter={StaticResource Base64ToImageSourceConverter}}" 
+        HeightRequest="10" Aspect="AspectFit">
+                            <Image.GestureRecognizers>
+                                <TapGestureRecognizer 
+        Command="{Binding ExpandImageCommand}" 
+        CommandParameter="{Binding Vehiculo.Tablero_foto}"/>
+                            </Image.GestureRecognizers>
+                        </Image>
+                        <Label Text="&#xf030;"  
+                        FontFamily="FA"
+                        FontSize="24"
+                        TextColor="#2196F3"
+                        VerticalOptions="End">
+                            <Label.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding TomarTableroFotoCommand}" />
+                            </Label.GestureRecognizers>
+                        </Label>
+                        <Label Text="&#xf03d;" 
+                        FontFamily="FA"
+                        FontSize="24"
+                        TextColor="#E53935"
+                        VerticalOptions="End">
+                            <Label.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding TomarTableroVideoCommand}" CommandParameter="Tablero_video" />
+                            </Label.GestureRecognizers>
+                        </Label>                        
+                    </StackLayout>
+
+
+
+                    <StackLayout Orientation="Horizontal" Spacing="15" VerticalOptions="Center" Padding="0,5">
+                        <Label Text="Guantera." VerticalOptions="Center" HorizontalOptions="StartAndExpand" FontSize="20" FontAttributes="Bold" />
+                        <Switch IsToggled="{Binding Vehiculo.Guantera, Converter={StaticResource IntToBoolConverter}}" />
+                        <Image Source="{Binding Vehiculo.Guantera_foto, Converter={StaticResource Base64ToImageSourceConverter}}" 
+        HeightRequest="10" Aspect="AspectFit">
+                            <Image.GestureRecognizers>
+                                <TapGestureRecognizer 
+        Command="{Binding ExpandImageCommand}" 
+        CommandParameter="{Binding Vehiculo.Guantera_foto}"/>
+                            </Image.GestureRecognizers>
+                        </Image>
+                        <Label Text="&#xf030;"  
+                        FontFamily="FA"
+                        FontSize="24"
+                        TextColor="#2196F3"
+                        VerticalOptions="End">
+                            <Label.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding TomarGuanteraFotoCommand}" />
+                            </Label.GestureRecognizers>
+                        </Label>
+                        <Label Text="&#xf03d;" 
+                        FontFamily="FA"
+                        FontSize="24"
+                        TextColor="#E53935"
+                        VerticalOptions="End">
+                            <Label.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding TomarGuanteraVideoCommand}" CommandParameter="Guantera_video" />
+                            </Label.GestureRecognizers>
+                        </Label>
+
+                    </StackLayout>
+
+
+
+                    <StackLayout Orientation="Horizontal" Spacing="15" VerticalOptions="Center" Padding="0,5">
+                        <Label Text="Consola." VerticalOptions="Center" HorizontalOptions="StartAndExpand" FontSize="20" FontAttributes="Bold" />
+                        <Switch IsToggled="{Binding Vehiculo.Consola, Converter={StaticResource IntToBoolConverter}}" />
+                        <Image Source="{Binding Vehiculo.Consola_foto, Converter={StaticResource Base64ToImageSourceConverter}}" 
+        HeightRequest="10" Aspect="AspectFit">
+                            <Image.GestureRecognizers>
+                                <TapGestureRecognizer 
+        Command="{Binding ExpandImageCommand}" 
+        CommandParameter="{Binding Vehiculo.Consola_foto}"/>
+                            </Image.GestureRecognizers>
+                        </Image>
+                        <Label Text="&#xf030;"  
+                        FontFamily="FA"
+                        FontSize="24"
+                        TextColor="#2196F3"
+                        VerticalOptions="End">
+                            <Label.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding TomarConsolaFotoCommand}" />
+                            </Label.GestureRecognizers>
+                        </Label>
+                        <Label Text="&#xf03d;" 
+                        FontFamily="FA"
+                        FontSize="24"
+                        TextColor="#E53935"
+                        VerticalOptions="End">
+                            <Label.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding TomarConsolaVideoCommand}" CommandParameter="Consola_video" />
+                            </Label.GestureRecognizers>
+                        </Label>                        
+
+                    </StackLayout>
+
+
+                    <StackLayout Orientation="Horizontal" Spacing="15" VerticalOptions="Center" Padding="0,5">
+                        <Label Text="Lado Frontal." VerticalOptions="Center" HorizontalOptions="StartAndExpand" FontSize="20" FontAttributes="Bold" />
+                        <Switch IsToggled="{Binding Vehiculo.LadoFrontal, Converter={StaticResource IntToBoolConverter}}" />
+                        <Image Source="{Binding Vehiculo.LadoFrontal_foto, Converter={StaticResource Base64ToImageSourceConverter}}" 
+        HeightRequest="10" Aspect="AspectFit">
+                            <Image.GestureRecognizers>
+                                <TapGestureRecognizer 
+        Command="{Binding ExpandImageCommand}" 
+        CommandParameter="{Binding Vehiculo.LadoFrontal_foto}"/>
+                            </Image.GestureRecognizers>
+                        </Image>
+                        <Label Text="&#xf030;"  
+                        FontFamily="FA"
+                        FontSize="24"
+                        TextColor="#2196F3"
+                        VerticalOptions="End">
+                            <Label.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding TomarLadoFrontalFotoCommand}" />
+                            </Label.GestureRecognizers>
+                        </Label>
+                        <Label Text="&#xf03d;" 
+                        FontFamily="FA"
+                        FontSize="24"
+                        TextColor="#E53935"
+                        VerticalOptions="End">
+                            <Label.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding TomarLadoFrontalVideoCommand}" CommandParameter="LadoFrontal_video" />
+                            </Label.GestureRecognizers>
+                        </Label>
+
+                    </StackLayout>
+
+                    <StackLayout Orientation="Horizontal" Spacing="15" VerticalOptions="Center" Padding="0,5">
+                        <Label Text="Lado Trasero." VerticalOptions="Center" HorizontalOptions="StartAndExpand" FontSize="20" FontAttributes="Bold" />
+                        <Switch IsToggled="{Binding Vehiculo.LadoTrasero, Converter={StaticResource IntToBoolConverter}}" />
+                        <Image Source="{Binding Vehiculo.LadoTrasero_foto, Converter={StaticResource Base64ToImageSourceConverter}}" 
+        HeightRequest="10" Aspect="AspectFit">
+                            <Image.GestureRecognizers>
+                                <TapGestureRecognizer 
+        Command="{Binding ExpandImageCommand}" 
+        CommandParameter="{Binding Vehiculo.LadoTrasero_foto}"/>
+                            </Image.GestureRecognizers>
+                        </Image>
+                        <Label Text="&#xf030;"  
+                        FontFamily="FA"
+                        FontSize="24"
+                        TextColor="#2196F3"
+                        VerticalOptions="End">
+                            <Label.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding TomarLadoTraseroFotoCommand}" />
+                            </Label.GestureRecognizers>
+                        </Label>
+                        <Label Text="&#xf03d;" 
+                        FontFamily="FA"
+                        FontSize="24"
+                        TextColor="#E53935"
+                        VerticalOptions="End">
+                            <Label.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding TomarLadoTraseroVideoCommand}" CommandParameter="LadoTrasero_video" />
+                            </Label.GestureRecognizers>
+                        </Label>
+
+                    </StackLayout>
+
+
+                  
+
+
+                    <StackLayout Orientation="Horizontal" Spacing="15" VerticalOptions="Center" Padding="0,5">
+                        <Label Text="Cajuela." VerticalOptions="Center" HorizontalOptions="StartAndExpand" FontSize="20" FontAttributes="Bold" />
+                        <Switch IsToggled="{Binding Vehiculo.Cajuela, Converter={StaticResource IntToBoolConverter}}" />
+                        <Image Source="{Binding Vehiculo.Cajuela_foto, Converter={StaticResource Base64ToImageSourceConverter}}" 
+HeightRequest="10" Aspect="AspectFit">
+                            <Image.GestureRecognizers>
+                                <TapGestureRecognizer 
+Command="{Binding ExpandImageCommand}" 
+CommandParameter="{Binding Vehiculo.Consola_foto}"/>
+                            </Image.GestureRecognizers>
+                        </Image>
+                        <Label Text="&#xf030;"  
+                FontFamily="FA"
+                FontSize="24"
+                TextColor="#2196F3"
+                VerticalOptions="End">
+                            <Label.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding TomarCajuelaFotoCommand}" />
+                            </Label.GestureRecognizers>
+                        </Label>
+                        <Label Text="&#xf03d;" 
+                FontFamily="FA"
+                FontSize="24"
+                TextColor="#E53935"
+                VerticalOptions="End">
+                            <Label.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding TomarCajuelaVideoCommand}" CommandParameter="Cajuela_video" />
+                            </Label.GestureRecognizers>
+                        </Label>
+
+                    </StackLayout>
+
+
+                </StackLayout>
+
+
+                <Button Text="{Binding IsEditing, StringFormat='Modificar Vehículo'}"
+                Command="{Binding ModificarVehiculoCommand}" 
+                IsVisible="{Binding IsEditing}" />
+
+                <Button Text="Guardar Vehículo"
+                Command="{Binding GuardarVehiculoCommand}" 
+                IsVisible="{Binding IsEditing, Converter={StaticResource InverseBoolConverter}}" />
+            </StackLayout>
+        </ScrollView>
+    </ContentPage.Content>
+</ContentPage>

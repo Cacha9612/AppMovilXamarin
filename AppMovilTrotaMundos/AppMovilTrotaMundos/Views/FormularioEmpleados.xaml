@@ -1,0 +1,82 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="AppMovilTrotaMundos.Views.FormularioEmpleados"
+             Title="📝 Formulario de Empleado"
+             BackgroundColor="#F4F6F8">
+
+    <ContentPage.Content>
+        <ScrollView>
+            <StackLayout Padding="20" Spacing="15">
+
+                <!-- Título -->
+                <Label Text="Registro de Empleado"
+                       FontSize="24"
+                       FontAttributes="Bold"
+                       TextColor="#0078D4"
+                       HorizontalOptions="Center" />
+
+                <!-- Nombre -->
+                <Label Text="👤 Nombre"
+                       FontSize="16"
+                       TextColor="#333" />
+                <Frame Padding="0" HasShadow="False" CornerRadius="8" BackgroundColor="White">
+                    <Entry Text="{Binding Empleado.Nombre}"
+                           Placeholder="Nombre completo"
+                           FontSize="16"
+                           TextColor="Black"
+                           BackgroundColor="Transparent"
+                           Margin="10,0"/>
+                </Frame>
+
+                <!-- Contraseña -->
+                <Label Text="🔒 Contraseña"
+                       FontSize="16"
+                       TextColor="#333" />
+                <Frame Padding="0" HasShadow="False" CornerRadius="8" BackgroundColor="White">
+                    <Entry Text="{Binding Empleado.Password}"
+                           IsPassword="True"
+                           Placeholder="Escribe una contraseña"
+                           FontSize="16"
+                           TextColor="Black"
+                           BackgroundColor="Transparent"
+                           Margin="10,0"/>
+                </Frame>
+
+                <!-- Rol -->
+                <Label Text="📌 Rol"
+                       FontSize="16"
+                       TextColor="#333" />
+                <Frame Padding="0" HasShadow="False" CornerRadius="8" BackgroundColor="White">
+                    <Picker Title="Selecciona un Rol"
+                            ItemsSource="{Binding Rol}"
+                            ItemDisplayBinding="{Binding Descripcion}"
+                            SelectedItem="{Binding SelectedRol}"
+                            Margin="10,0"/>
+                </Frame>
+
+                <!-- Estatus -->
+                <Label Text="⚙️ Estatus"
+                       FontSize="16"
+                       TextColor="#333" />
+                <Frame Padding="0" HasShadow="False" CornerRadius="8" BackgroundColor="White">
+                    <Picker Title="Selecciona un Estatus"
+                            ItemsSource="{Binding Status}"
+                            ItemDisplayBinding="{Binding Descripcion}"
+                            SelectedItem="{Binding SelectedStatus}"
+                            Margin="10,0"/>
+                </Frame>
+
+                <!-- Botón Guardar -->
+                <Button Text="💾 Guardar"
+                        Command="{Binding GuardarEmpleadoCommand}"
+                        BackgroundColor="#0078D4"
+                        TextColor="White"
+                        FontSize="16"
+                        CornerRadius="12"
+                        HeightRequest="50"
+                        Margin="0,20,0,0"/>
+            </StackLayout>
+        </ScrollView>
+    </ContentPage.Content>
+</ContentPage>

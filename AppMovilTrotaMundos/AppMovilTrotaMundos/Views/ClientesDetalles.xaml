@@ -1,0 +1,61 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:local="clr-namespace:AppMovilTrotaMundos.Models"
+             x:Class="AppMovilTrotaMundos.Views.ClientesDetalles"
+             Title="Detalles del Cliente">
+
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <local:Base64ToImageSourceConverter x:Key="Base64ToImageSourceConverter" />
+        </ResourceDictionary>
+    </ContentPage.Resources>
+
+    <ContentPage.Content>
+        <ScrollView>
+            <StackLayout Padding="10">
+                <Frame Padding="10" CornerRadius="5" BorderColor="#E0E0E0">
+                    <StackLayout Spacing="5">
+                        <Label Text="Nombre:" FontSize="18" FontAttributes="Bold" TextColor="#333" />
+                        <Label Text="{Binding Cliente.Nombre}" FontSize="16" TextColor="#666" />
+
+                        <Label Text="Calle:" FontSize="18" FontAttributes="Bold" TextColor="#333" />
+                        <Label Text="{Binding Cliente.Calle}" FontSize="16" TextColor="#666" />
+
+                        <Label Text="Colonia:" FontSize="18" FontAttributes="Bold" TextColor="#333" />
+                        <Label Text="{Binding Cliente.Colonia}" FontSize="16" TextColor="#666" />
+                        
+                        <Label Text="Ciudad:" FontSize="18" FontAttributes="Bold" TextColor="#333" />
+                        <Label Text="{Binding Cliente.Ciudad}" FontSize="16" TextColor="#666" />
+                        
+                        <Label Text="Estado:" FontSize="18" FontAttributes="Bold" TextColor="#333" />
+                        <Label Text="{Binding Cliente.Estado}" FontSize="16" TextColor="#666" />
+                        
+                        <Label Text="Teléfono:" FontSize="18" FontAttributes="Bold" TextColor="#333" />
+                        <Label Text="{Binding Cliente.Tel}" FontSize="16" TextColor="#666" />
+                        
+                        <Label Text="Celular:" FontSize="18" FontAttributes="Bold" TextColor="#333" />
+                        <Label Text="{Binding Cliente.Cel}" FontSize="16" TextColor="#666" />
+
+                        <Label Text="Email:" FontSize="18" FontAttributes="Bold" TextColor="#333" />
+                        <Label Text="{Binding Cliente.Email}" FontSize="16" TextColor="#666" />
+
+                        <Label Text="RFC:" FontSize="18" FontAttributes="Bold" TextColor="#333" />
+                        <Label Text="{Binding Cliente.RFC}" FontSize="16" TextColor="#666" />
+
+                     
+                        <Label Text="No int:" FontSize="18" FontAttributes="Bold" TextColor="#333" />
+                        <Label Text="{Binding Cliente.No_int}" FontSize="16" TextColor="#666" />
+
+                        <Label Text="Facturar a:" FontSize="18" FontAttributes="Bold" TextColor="#333" />
+                        <Label Text="{Binding Cliente.Facturar_a}" FontSize="16" TextColor="#666" />
+
+                      
+                        
+                    </StackLayout>
+                </Frame>
+
+            </StackLayout>
+        </ScrollView>
+    </ContentPage.Content>
+</ContentPage>

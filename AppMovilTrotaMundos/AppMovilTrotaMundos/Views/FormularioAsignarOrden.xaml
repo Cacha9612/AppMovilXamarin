@@ -1,0 +1,69 @@
+﻿<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+     
+             x:Class="AppMovilTrotaMundos.Views.FormularioAsignarOrden"
+             BackgroundColor="#ECEFF1">
+
+    <ScrollView>
+        <Frame Padding="25" Margin="20"
+               HasShadow="True"
+               BorderColor="#0078D4"
+               BackgroundColor="White"
+               CornerRadius="15">
+            <StackLayout Spacing="25">
+
+                <!-- Título -->
+                <Label Text="Asignar Técnico a Orden de Servicio"
+                       FontSize="24"
+                       FontAttributes="Bold"
+                       TextColor="#0078D4"
+                       HorizontalOptions="Center"
+                       HorizontalTextAlignment="Center" />
+
+                <!-- Vehículo -->
+                <StackLayout Spacing="5">
+                    <Label Text="🚗 Vehículo"
+           FontSize="16"
+           TextColor="#333" />
+                    <Picker ItemsSource="{Binding Vehiculos}"
+            SelectedItem="{Binding VehiculoSeleccionado}"
+            Title="Selecciona un Vehículo"
+            Margin="0"
+            BackgroundColor="#F0F0F0"
+            HeightRequest="45">
+                        <Picker.ItemDisplayBinding>
+                            <Binding Path="DescripcionCompleta" />
+                        </Picker.ItemDisplayBinding>
+                    </Picker>
+                </StackLayout>
+
+                <!-- Técnico -->
+                <StackLayout Spacing="5">
+                    <Label Text="👨‍🔧 Técnico"
+                           FontSize="16"
+                           TextColor="#333" />
+                    <Picker ItemsSource="{Binding Tecnicos}"
+                            SelectedItem="{Binding TecnicoSeleccionado}"
+                            Title="Selecciona un Técnico"
+                            Margin="0"
+                            BackgroundColor="#F0F0F0"
+                            HeightRequest="45">
+                        <Picker.ItemDisplayBinding>
+                            <Binding Path="Nombre" />
+                        </Picker.ItemDisplayBinding>
+                    </Picker>
+                </StackLayout>
+
+                <!-- Botón de acción -->
+                <Button Text=" Asignar Técnico"
+                        FontFamily="FontAwesomeSolid"
+                        Command="{Binding AsignarTecnicoCommand}"
+                        BackgroundColor="#0078D4"
+                        TextColor="White"
+                        CornerRadius="10"
+                        FontSize="18"
+                        HeightRequest="50" />
+            </StackLayout>
+        </Frame>
+    </ScrollView>
+</ContentPage>

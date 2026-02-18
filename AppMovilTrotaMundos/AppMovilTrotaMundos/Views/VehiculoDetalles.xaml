@@ -1,0 +1,70 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:local="clr-namespace:AppMovilTrotaMundos.Models"
+             x:Class="AppMovilTrotaMundos.Views.VehiculoDetalles"
+             Title="Detalles del Vehículo">
+
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <local:Base64ToImageSourceConverter x:Key="Base64ToImageSourceConverter" />
+        </ResourceDictionary>
+    </ContentPage.Resources>
+
+    <ContentPage.Content>
+        <ScrollView>
+            <StackLayout Padding="10">
+                <!-- Información del vehículo -->
+                <Frame Padding="10" CornerRadius="5" BorderColor="#E0E0E0">
+                    <StackLayout Spacing="5">
+                        <Label Text="Marca:" FontSize="18" FontAttributes="Bold" TextColor="#333" />
+                        <Label Text="{Binding Vehiculo.Marca}" FontSize="16" TextColor="#666" />
+
+                        <Label Text="Modelo:" FontSize="18" FontAttributes="Bold" TextColor="#333" />
+                        <Label Text="{Binding Vehiculo.Modelo}" FontSize="16" TextColor="#666" />
+
+                        <Label Text="Placa:" FontSize="18" FontAttributes="Bold" TextColor="#333" />
+                        <Label Text="{Binding Vehiculo.Placa}" FontSize="16" TextColor="#666" />
+                    </StackLayout>
+                </Frame>
+
+                <!-- Lista de imágenes -->
+                <StackLayout Spacing="10">
+                    <!-- Imagen retrovisor -->
+                    <CollectionView ItemsSource="{Binding Vehiculo.Espejo_retrovisor_foto}"  >
+                        <CollectionView.ItemTemplate>
+                            <DataTemplate>
+                                <Image Source="{Binding ., Converter={StaticResource Base64ToImageSourceConverter}}"
+                                       Aspect="AspectFit" HeightRequest="150"/>
+                            </DataTemplate>
+                        </CollectionView.ItemTemplate>
+                    </CollectionView>
+
+                    <!-- Imagen espejo izquierdo -->
+                    <CollectionView ItemsSource="{Binding Vehiculo.Espejo_izquierdo_foto}"  >
+                        <CollectionView.ItemTemplate>
+                            <DataTemplate>
+                                <Image Source="{Binding ., Converter={StaticResource Base64ToImageSourceConverter}}"
+                                       Aspect="AspectFit" HeightRequest="150"/>
+                            </DataTemplate>
+                        </CollectionView.ItemTemplate>
+                    </CollectionView>
+
+                    <!-- Imagen antena -->
+                    <CollectionView ItemsSource="{Binding Vehiculo.Antena_foto}"  >
+                        <CollectionView.ItemTemplate>
+                            <DataTemplate>
+                                <Image Source="{Binding ., Converter={StaticResource Base64ToImageSourceConverter}}"
+                                       Aspect="AspectFit" HeightRequest="150"/>
+                            </DataTemplate>
+                        </CollectionView.ItemTemplate>
+                    </CollectionView>
+
+                    <!-- Más imágenes... -->
+                    <!-- Puedes repetir el patrón para el resto de las imágenes -->
+
+                </StackLayout>
+            </StackLayout>
+        </ScrollView>
+    </ContentPage.Content>
+</ContentPage>

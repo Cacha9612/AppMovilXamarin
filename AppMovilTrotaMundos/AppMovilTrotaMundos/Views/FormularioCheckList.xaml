@@ -1,0 +1,1620 @@
+﻿<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:local="clr-namespace:AppMovilTrotaMundos.Models" 
+             xmlns:viewmodels="clr-namespace:AppMovilTrotaMundos.ViewModels" 
+             x:DataType="viewmodels:FormularioChecklistViewModel"
+             x:Class="AppMovilTrotaMundos.Views.FormularioCheckList">
+
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <local:IntToBoolConverter x:Key="IntToBoolConverter" />
+            <local:Base64ToImageSourceConverter x:Key="Base64ToImageSourceConverter" />
+            <local:EditingStatusConverter x:Key="EditingStatusConverter"/>
+            <local:InverseBoolConverter x:Key="InverseBoolConverter"/>
+            <local:SemaforoColorConverter x:Key="SemaforoColorConverter"/>
+        </ResourceDictionary>
+        <!-- Corrige la etiqueta de cierre -->
+    </ContentPage.Resources>
+
+
+    <ContentPage.Content>
+        <ScrollView>
+            <StackLayout Padding="10">
+                <Grid ColumnSpacing="15" RowSpacing="10">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+
+                    <!-- Título -->
+                    <Label Text="Check List General"
+           FontAttributes="Bold"
+           FontSize="Large"
+           HorizontalOptions="Center"
+           Grid.Row="0"
+           Grid.ColumnSpan="2" />
+
+                    <!-- Número de Orden -->
+                    <Label Text="{Binding IsEditing, Converter={StaticResource EditingStatusConverter}, StringFormat=''}" />
+
+                    <Label Text="{Binding TiempoTranscurrido}"
+       FontSize="Large"
+       HorizontalOptions="Center"
+       VerticalOptions="CenterAndExpand" />
+
+                    <Label Text="No. de Orden:"
+           VerticalOptions="Center"
+           Grid.Row="1"
+           Grid.Column="0" />
+                    <Entry Text="{Binding CheckList.Id_ordendeservicio, Mode=TwoWay}"
+           Placeholder="Número de Orden"
+           Grid.Row="1"
+           Grid.Column="1" />
+
+                    <!-- Picker para seleccionar el No. de Serie -->
+                    <Label Text="No. de Serie:" 
+       VerticalOptions="Center" 
+       Grid.Row="2" 
+       Grid.Column="0" />
+                    <Entry Text="{Binding NumeroSerie, Mode=OneWay}" 
+       IsReadOnly="True"
+       Grid.Row="2" 
+       Grid.Column="1" />
+
+
+                    <Label Text="Fecha:"
+           VerticalOptions="Center"
+           Grid.Row="3"
+           Grid.Column="0" />
+                    <DatePicker Date="{Binding CheckList.Fecha}"
+                Grid.Row="3"
+                Grid.Column="1" />
+
+  
+                </Grid>
+
+
+                <StackLayout Padding="10,5" Spacing="5" BackgroundColor="White">
+
+                    <!-- Título del checklist con semáforo -->
+                    <StackLayout Orientation="Horizontal" VerticalOptions="CenterAndExpand" Spacing="10">
+                        <Label Text="Lectura de códigos de falla (N° de averías) en sus sistemas."
+               VerticalOptions="Center"
+               HorizontalOptions="StartAndExpand"
+               FontSize="18"
+               FontAttributes="Bold" />
+
+
+                        <Label 
+    Text="{Binding CheckList.lectura_codigos_SemaforoIcon}" 
+    FontFamily="FA" 
+    FontSize="30"
+    TextColor="{Binding CheckList.lectura_codigos, Converter={StaticResource SemaforoColorConverter}}" />
+
+
+
+
+
+                    </StackLayout>
+
+                    <!-- Controles interactivos -->
+                    <StackLayout Orientation="Horizontal" Spacing="12" VerticalOptions="CenterAndExpand">
+
+                        <!-- Switch -->
+                        <Switch IsToggled="{Binding CheckList.lectura_codigos, Converter={StaticResource IntToBoolConverter}}" 
+                VerticalOptions="Center" />
+
+                        <!-- Imagen miniatura -->
+                        <Image Source="{Binding CheckList.lectura_codigos_foto, Converter={StaticResource Base64ToImageSourceConverter}}"
+               HeightRequest="30" WidthRequest="30"
+               Aspect="AspectFill">
+                            <Image.GestureRecognizers>
+                                <TapGestureRecognizer 
+                    Command="{Binding ExpandImageCommand}" 
+                    CommandParameter="{Binding CheckList.lectura_codigos_foto}" />
+                            </Image.GestureRecognizers>
+                        </Image>
+
+                        <!-- Ícono cámara (FontAwesome) -->
+                        <Label Text="&#xf030;"  
+               FontFamily="FA"
+               FontSize="26"
+               TextColor="#2196F3"
+               VerticalOptions="Center">
+                            <Label.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding TomarLecturaCodigosFotoCommand}" />
+                            </Label.GestureRecognizers>
+                        </Label>
+
+                        <!-- Ícono video (FontAwesome) -->
+                        <Label Text="&#xf03d;"  
+               FontFamily="FA"
+               FontSize="24"
+               TextColor="#E53935"
+               VerticalOptions="Center">
+                            <Label.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding TomarLecturaCodigosVideoCommand}" 
+                                      CommandParameter="lectura_codigos_video" />
+                            </Label.GestureRecognizers>
+                        </Label>
+                    </StackLayout>
+
+                    <!-- Observaciones -->
+                    <Entry Text="{Binding CheckList.lectura_codigos_observacion}"
+           Placeholder="Observaciones"
+           FontSize="16"
+           BackgroundColor="#F5F5F5"
+           Margin="0,5"
+           TextColor="Black" />
+                </StackLayout>
+
+
+                <StackLayout Padding="10,5" Spacing="5" BackgroundColor="White">
+                    <StackLayout Orientation="Horizontal" VerticalOptions="CenterAndExpand" Spacing="10">
+                        <Label Text="Funcionamiento del servofreno"
+               VerticalOptions="Center"
+               HorizontalOptions="StartAndExpand"
+               FontSize="18"
+               FontAttributes="Bold" />
+                        <Image Source="{Binding CheckList.servofreno_SemaforoIcon}"
+               HeightRequest="24" WidthRequest="24"
+               VerticalOptions="Center"
+               HorizontalOptions="End"/>
+                    </StackLayout>
+
+                    <StackLayout Orientation="Horizontal" Spacing="12" VerticalOptions="CenterAndExpand">
+                        <Switch IsToggled="{Binding CheckList.servofreno, Converter={StaticResource IntToBoolConverter}}" VerticalOptions="Center" />
+                        <Image Source="{Binding CheckList.servofreno_foto, Converter={StaticResource Base64ToImageSourceConverter}}"
+               HeightRequest="30" WidthRequest="30" Aspect="AspectFill">
+                            <Image.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding ExpandImageCommand}" CommandParameter="{Binding CheckList.servofreno_foto}" />
+                            </Image.GestureRecognizers>
+                        </Image>
+                        <Label Text="&#xf030;" FontFamily="FA" FontSize="26" TextColor="#2196F3" VerticalOptions="Center">
+                            <Label.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding TomarServoFrenoFotoCommand}" />
+                            </Label.GestureRecognizers>
+                        </Label>
+                        <Label Text="&#xf03d;" FontFamily="FA" FontSize="24" TextColor="#E53935" VerticalOptions="Center">
+                            <Label.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding TomarServoFrenoVideoCommand}" CommandParameter="servofreno_video" />
+                            </Label.GestureRecognizers>
+                        </Label>
+                    </StackLayout>
+
+                    <Entry Text="{Binding CheckList.servofreno_observacion}" Placeholder="Observaciones" FontSize="16" BackgroundColor="#F5F5F5" Margin="0,5" TextColor="Black" />
+                </StackLayout>
+
+
+
+                <StackLayout Padding="10,5" Spacing="5" BackgroundColor="White">
+                    <StackLayout Orientation="Horizontal" VerticalOptions="CenterAndExpand" Spacing="10">
+                        <Label Text="Funcionamiento del pedal de freno"
+               VerticalOptions="Center"
+               HorizontalOptions="StartAndExpand"
+               FontSize="18"
+               FontAttributes="Bold" />
+                        <Image Source="{Binding CheckList.pedal_freno_SemaforoIcon}"
+               HeightRequest="24" WidthRequest="24"
+               VerticalOptions="Center"
+               HorizontalOptions="End"/>
+                    </StackLayout>
+
+                    <StackLayout Orientation="Horizontal" Spacing="12" VerticalOptions="CenterAndExpand">
+                        <Switch IsToggled="{Binding CheckList.pedal_freno, Converter={StaticResource IntToBoolConverter}}" VerticalOptions="Center" />
+                        <Image Source="{Binding CheckList.pedal_freno_foto, Converter={StaticResource Base64ToImageSourceConverter}}"
+               HeightRequest="30" WidthRequest="30" Aspect="AspectFill">
+                            <Image.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding ExpandImageCommand}" CommandParameter="{Binding CheckList.pedal_freno_foto}" />
+                            </Image.GestureRecognizers>
+                        </Image>
+                        <Label Text="&#xf030;" FontFamily="FA" FontSize="26" TextColor="#2196F3" VerticalOptions="Center">
+                            <Label.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding TomarPedalFrenoFotoCommand}" />
+                            </Label.GestureRecognizers>
+                        </Label>
+                        <Label Text="&#xf03d;" FontFamily="FA" FontSize="24" TextColor="#E53935" VerticalOptions="Center">
+                            <Label.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding TomarPedalFrenoVideoCommand}" CommandParameter="pedal_freno_video" />
+                            </Label.GestureRecognizers>
+                        </Label>
+                    </StackLayout>
+
+                    <Entry Text="{Binding CheckList.pedal_freno_observacion}" Placeholder="Observaciones" FontSize="16" BackgroundColor="#F5F5F5" Margin="0,5" TextColor="Black" />
+                </StackLayout>
+
+
+                <StackLayout Padding="10,5" Spacing="5" BackgroundColor="White">
+                    <StackLayout Orientation="Horizontal" VerticalOptions="CenterAndExpand" Spacing="10">
+                        <Label Text="Pedal de estacionamiento"
+               VerticalOptions="Center"
+               HorizontalOptions="StartAndExpand"
+               FontSize="18"
+               FontAttributes="Bold" />
+                        <Image Source="{Binding CheckList.pedal_estacionamiento_SemaforoIcon}"
+               HeightRequest="24" WidthRequest="24"
+               VerticalOptions="Center"
+               HorizontalOptions="End"/>
+                    </StackLayout>
+
+                    <StackLayout Orientation="Horizontal" Spacing="12" VerticalOptions="CenterAndExpand">
+                        <Switch IsToggled="{Binding CheckList.pedal_estacionamiento, Converter={StaticResource IntToBoolConverter}}" VerticalOptions="Center" />
+                        <Image Source="{Binding CheckList.pedal_estacionamiento_foto, Converter={StaticResource Base64ToImageSourceConverter}}"
+               HeightRequest="30" WidthRequest="30" Aspect="AspectFill">
+                            <Image.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding ExpandImageCommand}" CommandParameter="{Binding CheckList.pedal_estacionamiento_foto}" />
+                            </Image.GestureRecognizers>
+                        </Image>
+                        <Label Text="&#xf030;" FontFamily="FA" FontSize="26" TextColor="#2196F3" VerticalOptions="Center">
+                            <Label.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding TomarPedalEstacionamientoFotoCommand}" />
+                            </Label.GestureRecognizers>
+                        </Label>
+                        <Label Text="&#xf03d;" FontFamily="FA" FontSize="24" TextColor="#E53935" VerticalOptions="Center">
+                            <Label.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding TomarPedalEstacionamientoVideoCommand}" CommandParameter="pedal_estacionamiento_video" />
+                            </Label.GestureRecognizers>
+                        </Label>
+                    </StackLayout>
+
+                    <Entry Text="{Binding CheckList.pedal_estacionamiento_observacion}" Placeholder="Observaciones" FontSize="16" BackgroundColor="#F5F5F5" Margin="0,5" TextColor="Black" />
+                </StackLayout>
+
+
+
+                <StackLayout Padding="10,5" Spacing="5" BackgroundColor="White">
+
+                    <!-- Título + Semáforo -->
+                    <StackLayout Orientation="Horizontal" VerticalOptions="CenterAndExpand" Spacing="10">
+                        <Label Text="Cinturones de seguridad (funcionamiento y fijaciones)."
+               VerticalOptions="Center"
+               HorizontalOptions="StartAndExpand"
+               FontSize="18"
+               FontAttributes="Bold" />
+
+                        <Image Source="{Binding CheckList.cinturon_seguridad_SemaforoIcon}"
+               HeightRequest="24" WidthRequest="24"
+               VerticalOptions="Center"
+               HorizontalOptions="End"/>
+                    </StackLayout>
+
+                    <!-- Controles -->
+                    <StackLayout Orientation="Horizontal" Spacing="12" VerticalOptions="CenterAndExpand">
+                        <!-- Switch -->
+                        <Switch IsToggled="{Binding CheckList.cinturon_seguridad, Converter={StaticResource IntToBoolConverter}}"
+                VerticalOptions="Center" />
+
+                        <!-- Imagen -->
+                        <Image Source="{Binding CheckList.cinturon_seguridad_foto, Converter={StaticResource Base64ToImageSourceConverter}}"
+               HeightRequest="30" WidthRequest="30" Aspect="AspectFill">
+                            <Image.GestureRecognizers>
+                                <TapGestureRecognizer 
+                    Command="{Binding ExpandImageCommand}" 
+                    CommandParameter="{Binding CheckList.cinturon_seguridad_foto}" />
+                            </Image.GestureRecognizers>
+                        </Image>
+
+                        <!-- Cámara -->
+                        <Label Text="&#xf030;"  
+               FontFamily="FA"
+               FontSize="26"
+               TextColor="#2196F3"
+               VerticalOptions="Center">
+                            <Label.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding TomarCinturonSeguridadFotoCommand}" />
+                            </Label.GestureRecognizers>
+                        </Label>
+
+                        <!-- Video -->
+                        <Label Text="&#xf03d;"  
+               FontFamily="FA"
+               FontSize="24"
+               TextColor="#E53935"
+               VerticalOptions="Center">
+                            <Label.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding TomarCinturonSeguridadVideoCommand}" 
+                                      CommandParameter="cinturon_seguridad_video" />
+                            </Label.GestureRecognizers>
+                        </Label>
+                    </StackLayout>
+
+                    <!-- Observaciones -->
+                    <Entry Text="{Binding CheckList.cinturon_seguridad_observacion}"
+           Placeholder="Observaciones"
+           FontSize="16"
+           BackgroundColor="#F5F5F5"
+           Margin="0,5"
+           TextColor="Black" />
+                </StackLayout>
+
+                <StackLayout Padding="10,5" Spacing="5" BackgroundColor="White">
+                    <StackLayout Orientation="Horizontal" VerticalOptions="CenterAndExpand" Spacing="10">
+                        <Label Text="Cuadro de instrumentos (funcionamiento, iluminación, testigos)." 
+               VerticalOptions="Center"
+               HorizontalOptions="StartAndExpand"
+               FontSize="18"
+               FontAttributes="Bold" />
+                        <Image Source="{Binding CheckList.cuadro_instrumentos_SemaforoIcon}" 
+               HeightRequest="24" WidthRequest="24"
+               VerticalOptions="Center"
+               HorizontalOptions="End"/>
+                    </StackLayout>
+
+                    <StackLayout Orientation="Horizontal" Spacing="12" VerticalOptions="CenterAndExpand">
+                        <Switch IsToggled="{Binding CheckList.cuadro_instrumentos, Converter={StaticResource IntToBoolConverter}}" />
+                        <Image Source="{Binding CheckList.cuadro_instrumentos_foto, Converter={StaticResource Base64ToImageSourceConverter}}"
+               HeightRequest="30" WidthRequest="30" Aspect="AspectFill">
+                            <Image.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding ExpandImageCommand}" CommandParameter="{Binding CheckList.cuadro_instrumentos_foto}" />
+                            </Image.GestureRecognizers>
+                        </Image>
+                        <Label Text="&#xf030;" FontFamily="FA" FontSize="26" TextColor="#2196F3">
+                            <Label.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding TomarCuadroInstrumentosFotoCommand}" />
+                            </Label.GestureRecognizers>
+                        </Label>
+                        <Label Text="&#xf03d;" FontFamily="FA" FontSize="24" TextColor="#E53935">
+                            <Label.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding TomarCuadroInstrumentosVideoCommand}" CommandParameter="cuadro_instrumentos_video" />
+                            </Label.GestureRecognizers>
+                        </Label>
+                    </StackLayout>
+
+                    <Entry Text="{Binding CheckList.cuadro_instrumentos_observacion}" Placeholder="Observaciones" FontSize="16" BackgroundColor="#F5F5F5" />
+                </StackLayout>
+
+                <StackLayout Padding="10,5" Spacing="5" BackgroundColor="White">
+                    <StackLayout Orientation="Horizontal" VerticalOptions="CenterAndExpand" Spacing="10">
+                        <Label Text="Funcionamiento Aire Acondicionado/Calefacción." 
+               VerticalOptions="Center"
+               HorizontalOptions="StartAndExpand"
+               FontSize="18"
+               FontAttributes="Bold" />
+                        <Image Source="{Binding CheckList.aire_acondicionado_SemaforoIcon}" 
+               HeightRequest="24" WidthRequest="24"
+               VerticalOptions="Center"
+               HorizontalOptions="End"/>
+                    </StackLayout>
+
+                    <StackLayout Orientation="Horizontal" Spacing="12" VerticalOptions="CenterAndExpand">
+                        <Switch IsToggled="{Binding CheckList.aire_acondicionado, Converter={StaticResource IntToBoolConverter}}" />
+                        <Image Source="{Binding CheckList.aire_acondicionado_foto, Converter={StaticResource Base64ToImageSourceConverter}}"
+               HeightRequest="30" WidthRequest="30" Aspect="AspectFill">
+                            <Image.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding ExpandImageCommand}" CommandParameter="{Binding CheckList.aire_acondicionado_foto}" />
+                            </Image.GestureRecognizers>
+                        </Image>
+                        <Label Text="&#xf030;" FontFamily="FA" FontSize="26" TextColor="#2196F3">
+                            <Label.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding TomarAireAcondicionadoFotoCommand}" />
+                            </Label.GestureRecognizers>
+                        </Label>
+                        <Label Text="&#xf03d;" FontFamily="FA" FontSize="24" TextColor="#E53935">
+                            <Label.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding TomarAireAcondicionadoVideoCommand}" CommandParameter="aire_acondicionado_video" />
+                            </Label.GestureRecognizers>
+                        </Label>
+                    </StackLayout>
+
+                    <Entry Text="{Binding CheckList.aire_acondicionado_observacion}" Placeholder="Observaciones" FontSize="16" BackgroundColor="#F5F5F5" />
+                </StackLayout>
+
+
+                <StackLayout Padding="10,5" Spacing="5" BackgroundColor="White">
+                    <StackLayout Orientation="Horizontal" VerticalOptions="CenterAndExpand" Spacing="10">
+                        <Label Text="Bocina de claxón." 
+               VerticalOptions="Center"
+               HorizontalOptions="StartAndExpand"
+               FontSize="18"
+               FontAttributes="Bold" />
+                        <Image Source="{Binding CheckList.bocina_claxon_SemaforoIcon}" 
+               HeightRequest="24" WidthRequest="24"
+               VerticalOptions="Center"
+               HorizontalOptions="End"/>
+                    </StackLayout>
+
+                    <StackLayout Orientation="Horizontal" Spacing="12" VerticalOptions="CenterAndExpand">
+                        <Switch IsToggled="{Binding CheckList.bocina_claxon, Converter={StaticResource IntToBoolConverter}}" />
+                        <Image Source="{Binding CheckList.bocina_claxon_foto, Converter={StaticResource Base64ToImageSourceConverter}}"
+               HeightRequest="30" WidthRequest="30" Aspect="AspectFill">
+                            <Image.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding ExpandImageCommand}" CommandParameter="{Binding CheckList.bocina_claxon_foto}" />
+                            </Image.GestureRecognizers>
+                        </Image>
+                        <Label Text="&#xf030;" FontFamily="FA" FontSize="26" TextColor="#2196F3">
+                            <Label.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding TomarBocinaClaxonFotoCommand}" />
+                            </Label.GestureRecognizers>
+                        </Label>
+                        <Label Text="&#xf03d;" FontFamily="FA" FontSize="24" TextColor="#E53935">
+                            <Label.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding TomarBocinaClaxonVideoCommand}" CommandParameter="bocina_claxon_video" />
+                            </Label.GestureRecognizers>
+                        </Label>
+                    </StackLayout>
+
+                    <Entry Text="{Binding CheckList.bocina_claxon_observacion}" Placeholder="Observaciones" FontSize="16" BackgroundColor="#F5F5F5" />
+                </StackLayout>
+
+
+                <StackLayout Padding="10,5" Spacing="5" BackgroundColor="White">
+                    <StackLayout Orientation="Horizontal" VerticalOptions="CenterAndExpand" Spacing="10">
+                        <Label Text="Iluminación interior completa (cortesía, vanidad, guantera, etc.)" 
+               VerticalOptions="Center"
+               HorizontalOptions="StartAndExpand"
+               FontSize="18"
+               FontAttributes="Bold" />
+                        <Image Source="{Binding CheckList.iluminacion_interior_SemaforoIcon}" 
+               HeightRequest="24" WidthRequest="24"
+               VerticalOptions="Center"
+               HorizontalOptions="End"/>
+                    </StackLayout>
+
+                    <StackLayout Orientation="Horizontal" Spacing="12" VerticalOptions="CenterAndExpand">
+                        <Switch IsToggled="{Binding CheckList.iluminacion_interior, Converter={StaticResource IntToBoolConverter}}" />
+                        <Image Source="{Binding CheckList.iluminacion_interior_foto, Converter={StaticResource Base64ToImageSourceConverter}}"
+               HeightRequest="30" WidthRequest="30" Aspect="AspectFill">
+                            <Image.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding ExpandImageCommand}" CommandParameter="{Binding CheckList.iluminacion_interior_foto}" />
+                            </Image.GestureRecognizers>
+                        </Image>
+                        <Label Text="&#xf030;" FontFamily="FA" FontSize="26" TextColor="#2196F3">
+                            <Label.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding TomarIluminacionInteriorFotoCommand}" />
+                            </Label.GestureRecognizers>
+                        </Label>
+                        <Label Text="&#xf03d;" FontFamily="FA" FontSize="24" TextColor="#E53935">
+                            <Label.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding TomarIluminacionInteriorVideoCommand}" CommandParameter="iluminacion_interior_video" />
+                            </Label.GestureRecognizers>
+                        </Label>
+                    </StackLayout>
+
+                    <Entry Text="{Binding CheckList.iluminacion_interior_observacion}" Placeholder="Observaciones" FontSize="16" BackgroundColor="#F5F5F5" />
+                </StackLayout>
+
+
+                <StackLayout Padding="10,5" Spacing="5" BackgroundColor="White">
+                    <StackLayout Orientation="Horizontal" Spacing="10">
+                        <Label Text="Iluminación externa (cuartos, bajas, altas, reversa, niebla, nivel)." 
+               FontSize="18" FontAttributes="Bold"
+               VerticalOptions="CenterAndExpand" HorizontalOptions="StartAndExpand"/>
+                        <Image Source="{Binding CheckList.iluminacion_externa_SemaforoIcon}" 
+               HeightRequest="24" WidthRequest="24"
+               VerticalOptions="Center" HorizontalOptions="End"/>
+                    </StackLayout>
+
+                    <StackLayout Orientation="Horizontal" Spacing="12">
+                        <Switch IsToggled="{Binding CheckList.iluminacion_externa, Converter={StaticResource IntToBoolConverter}}" />
+                        <Image Source="{Binding CheckList.iluminacion_externa_foto, Converter={StaticResource Base64ToImageSourceConverter}}"
+               HeightRequest="30" WidthRequest="30" Aspect="AspectFill">
+                            <Image.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding ExpandImageCommand}" 
+                                      CommandParameter="{Binding CheckList.iluminacion_externa_foto}" />
+                            </Image.GestureRecognizers>
+                        </Image>
+                        <Label Text="&#xf030;" FontFamily="FA" FontSize="26" TextColor="#2196F3">
+                            <Label.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding TomarIluminacionExternaFotoCommand}" />
+                            </Label.GestureRecognizers>
+                        </Label>
+                        <Label Text="&#xf03d;" FontFamily="FA" FontSize="24" TextColor="#E53935">
+                            <Label.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding TomarIluminacionExternaVideoCommand}" 
+                                      CommandParameter="iluminacion_externa_video" />
+                            </Label.GestureRecognizers>
+                        </Label>
+                    </StackLayout>
+
+                    <Entry Text="{Binding CheckList.iluminacion_externa_observacion}" 
+           Placeholder="Observaciones" FontSize="16" BackgroundColor="#F5F5F5" />
+                </StackLayout>
+
+                <StackLayout Padding="10,5" Spacing="5" BackgroundColor="White">
+                    <StackLayout Orientation="Horizontal" Spacing="10">
+                        <Label Text="Sistema limpiaparabrisas completo, chorritos, plumas." 
+               FontSize="18" FontAttributes="Bold"
+               VerticalOptions="CenterAndExpand" HorizontalOptions="StartAndExpand"/>
+                        <Image Source="{Binding CheckList.limpiaparabrisas_SemaforoIcon}" 
+               HeightRequest="24" WidthRequest="24"
+               VerticalOptions="Center" HorizontalOptions="End"/>
+                    </StackLayout>
+
+                    <StackLayout Orientation="Horizontal" Spacing="12">
+                        <Switch IsToggled="{Binding CheckList.limpiaparabrisas, Converter={StaticResource IntToBoolConverter}}" />
+                        <Image Source="{Binding CheckList.limpiaparabrisas_foto, Converter={StaticResource Base64ToImageSourceConverter}}"
+               HeightRequest="30" WidthRequest="30" Aspect="AspectFill">
+                            <Image.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding ExpandImageCommand}" 
+                                      CommandParameter="{Binding CheckList.limpiaparabrisas_foto}" />
+                            </Image.GestureRecognizers>
+                        </Image>
+                        <Label Text="&#xf030;" FontFamily="FA" FontSize="26" TextColor="#2196F3">
+                            <Label.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding TomarLimpiaparabrisasFotoCommand}" />
+                            </Label.GestureRecognizers>
+                        </Label>
+                        <Label Text="&#xf03d;" FontFamily="FA" FontSize="24" TextColor="#E53935">
+                            <Label.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding TomarLimpiaparabrisasVideoCommand}" 
+                                      CommandParameter="limpiaparabrisas_video" />
+                            </Label.GestureRecognizers>
+                        </Label>
+                    </StackLayout>
+
+                    <Entry Text="{Binding CheckList.limpiaparabrisas_observacion}" 
+           Placeholder="Observaciones" FontSize="16" BackgroundColor="#F5F5F5" />
+                </StackLayout>
+
+
+                <StackLayout Padding="10,5" Spacing="5" BackgroundColor="White">
+                    <StackLayout Orientation="Horizontal" Spacing="10">
+                        <Label Text="Sistema limpia medallón completo, chorritos, plumas." 
+               FontSize="18" FontAttributes="Bold"
+               VerticalOptions="CenterAndExpand" HorizontalOptions="StartAndExpand"/>
+                        <Image Source="{Binding CheckList.limpia_medallon_SemaforoIcon}" 
+               HeightRequest="24" WidthRequest="24"
+               VerticalOptions="Center" HorizontalOptions="End"/>
+                    </StackLayout>
+
+                    <StackLayout Orientation="Horizontal" Spacing="12">
+                        <Switch IsToggled="{Binding CheckList.limpia_medallon, Converter={StaticResource IntToBoolConverter}}" />
+                        <Image Source="{Binding CheckList.limpia_medallon_foto, Converter={StaticResource Base64ToImageSourceConverter}}"
+               HeightRequest="30" WidthRequest="30" Aspect="AspectFill">
+                            <Image.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding ExpandImageCommand}" 
+                                      CommandParameter="{Binding CheckList.limpia_medallon_foto}" />
+                            </Image.GestureRecognizers>
+                        </Image>
+                        <Label Text="&#xf030;" FontFamily="FA" FontSize="26" TextColor="#2196F3">
+                            <Label.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding TomarLimpiaMedallonFotoCommand}" />
+                            </Label.GestureRecognizers>
+                        </Label>
+                        <Label Text="&#xf03d;" FontFamily="FA" FontSize="24" TextColor="#E53935">
+                            <Label.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding TomarLimpiaMedallonVideoCommand}" 
+                                      CommandParameter="limpia_medallon_video" />
+                            </Label.GestureRecognizers>
+                        </Label>
+                    </StackLayout>
+
+                    <Entry Text="{Binding CheckList.limpia_medallon_observacion}" 
+           Placeholder="Observaciones" FontSize="16" BackgroundColor="#F5F5F5" />
+                </StackLayout>
+
+
+                <StackLayout Padding="10,5" Spacing="5" BackgroundColor="White">
+                    <StackLayout Orientation="Horizontal" Spacing="10">
+                        <Label Text="Control de neumáticos de fricción (desgaste y presión)." 
+               FontSize="18" FontAttributes="Bold"
+               VerticalOptions="CenterAndExpand" HorizontalOptions="StartAndExpand"/>
+                        <Image Source="{Binding CheckList.neumaticos_friccion_SemaforoIcon}" 
+               HeightRequest="24" WidthRequest="24"
+               VerticalOptions="Center" HorizontalOptions="End"/>
+                    </StackLayout>
+
+                    <StackLayout Orientation="Horizontal" Spacing="12">
+                        <Switch IsToggled="{Binding CheckList.neumaticos_friccion, Converter={StaticResource IntToBoolConverter}}" />
+                        <Image Source="{Binding CheckList.neumaticos_friccion_foto, Converter={StaticResource Base64ToImageSourceConverter}}"
+               HeightRequest="30" WidthRequest="30" Aspect="AspectFill">
+                            <Image.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding ExpandImageCommand}" 
+                                      CommandParameter="{Binding CheckList.neumaticos_friccion_foto}" />
+                            </Image.GestureRecognizers>
+                        </Image>
+                        <Label Text="&#xf030;" FontFamily="FA" FontSize="26" TextColor="#2196F3">
+                            <Label.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding TomarNeumaticosFriccionFotoCommand}" />
+                            </Label.GestureRecognizers>
+                        </Label>
+                        <Label Text="&#xf03d;" FontFamily="FA" FontSize="24" TextColor="#E53935">
+                            <Label.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding TomarNeumaticosFriccionVideoCommand}" 
+                                      CommandParameter="neumaticos_friccion_video" />
+                            </Label.GestureRecognizers>
+                        </Label>
+                    </StackLayout>
+
+                    <Entry Text="{Binding CheckList.neumaticos_friccion_observacion}" 
+           Placeholder="Observaciones" FontSize="16" BackgroundColor="#F5F5F5" />
+                </StackLayout>
+
+
+                <StackLayout Padding="10,5" Spacing="5" BackgroundColor="White">
+                    <StackLayout Orientation="Horizontal" Spacing="10">
+                        <Label Text="Otros:" 
+               FontSize="18" FontAttributes="Bold"
+               VerticalOptions="CenterAndExpand" HorizontalOptions="StartAndExpand"/>
+                        <Image Source="{Binding CheckList.otros_habitaculo_motor_SemaforoIcon}" 
+               HeightRequest="24" WidthRequest="24"
+               VerticalOptions="Center" HorizontalOptions="End"/>
+                    </StackLayout>
+
+                    <StackLayout Orientation="Horizontal" Spacing="12">
+                        <Switch IsToggled="{Binding CheckList.otros_habitaculo_motor, Converter={StaticResource IntToBoolConverter}}" />
+                        <Image Source="{Binding CheckList.otros_habitaculo_motor_foto, Converter={StaticResource Base64ToImageSourceConverter}}"
+               HeightRequest="30" WidthRequest="30" Aspect="AspectFill">
+                            <Image.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding ExpandImageCommand}" 
+                                      CommandParameter="{Binding CheckList.otros_habitaculo_motor_foto}" />
+                            </Image.GestureRecognizers>
+                        </Image>
+                        <Label Text="&#xf030;" FontFamily="FA" FontSize="26" TextColor="#2196F3">
+                            <Label.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding TomarOtrosHabitaculoMotorFotoCommand}" />
+                            </Label.GestureRecognizers>
+                        </Label>
+                        <Label Text="&#xf03d;" FontFamily="FA" FontSize="24" TextColor="#E53935">
+                            <Label.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding TomarOtrosHabitaculoMotorVideoCommand}" 
+                                      CommandParameter="otros_habitaculo_motor_video" />
+                            </Label.GestureRecognizers>
+                        </Label>
+                    </StackLayout>
+
+                    <Entry Text="{Binding CheckList.otros_habitaculo_motor_observacion}" 
+           Placeholder="Observaciones" FontSize="16" BackgroundColor="#F5F5F5" />
+                </StackLayout>
+
+
+                <StackLayout Padding="10,5" Spacing="5" BackgroundColor="White">
+                    <StackLayout Orientation="Horizontal" Spacing="10">
+                        <Label Text="Estado de fugas de aceite de motor y transmisión" 
+               FontSize="18" FontAttributes="Bold" 
+               VerticalOptions="CenterAndExpand" HorizontalOptions="StartAndExpand"/>
+                        <Image Source="{Binding CheckList.estado_fugas_aceite_SemaforoIcon}" 
+               HeightRequest="24" WidthRequest="24" 
+               VerticalOptions="Center" HorizontalOptions="End"/>
+                    </StackLayout>
+
+                    <StackLayout Orientation="Horizontal" Spacing="12">
+                        <Switch IsToggled="{Binding CheckList.estado_fugas_aceite, Converter={StaticResource IntToBoolConverter}}" />
+                        <Image Source="{Binding CheckList.estado_fugas_aceite_foto, Converter={StaticResource Base64ToImageSourceConverter}}" 
+               HeightRequest="30" WidthRequest="30" Aspect="AspectFill">
+                            <Image.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding ExpandImageCommand}" 
+                                      CommandParameter="{Binding CheckList.estado_fugas_aceite_foto}" />
+                            </Image.GestureRecognizers>
+                        </Image>
+                        <Label Text="&#xf030;" FontFamily="FA" FontSize="26" TextColor="#2196F3">
+                            <Label.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding TomarEstadoFugasAceiteFotoCommand}" />
+                            </Label.GestureRecognizers>
+                        </Label>
+                        <Label Text="&#xf03d;" FontFamily="FA" FontSize="24" TextColor="#E53935">
+                            <Label.GestureRecognizers>
+                                <TapGestureRecognizer CommandParameter="estado_fugas_aceite_video"
+                                      Command="{Binding TomarEstadoFugasAceiteVideoCommand}" />
+                            </Label.GestureRecognizers>
+                        </Label>
+                    </StackLayout>
+
+                    <Entry Text="{Binding CheckList.estado_fugas_aceite_observacion}" 
+           Placeholder="Observaciones" FontSize="16" BackgroundColor="#F5F5F5"/>
+                </StackLayout>
+
+
+                <StackLayout Padding="10,5" Spacing="5" BackgroundColor="White">
+                    <StackLayout Orientation="Horizontal" Spacing="10">
+                        <Label Text="Estado de nivel y calidad de lubricantes en transmisión." 
+               FontSize="18" FontAttributes="Bold"
+               VerticalOptions="CenterAndExpand" HorizontalOptions="StartAndExpand"/>
+                        <Image Source="{Binding CheckList.estado_nivel_calidad_lubricante_transmision_SemaforoIcon}" 
+               HeightRequest="24" WidthRequest="24" 
+               VerticalOptions="Center" HorizontalOptions="End"/>
+                    </StackLayout>
+
+                    <StackLayout Orientation="Horizontal" Spacing="12">
+                        <Switch IsToggled="{Binding CheckList.estado_nivel_calidad_lubricante_transmision, Converter={StaticResource IntToBoolConverter}}" />
+                        <Image Source="{Binding CheckList.estado_nivel_calidad_lubricante_transmision_foto, Converter={StaticResource Base64ToImageSourceConverter}}" 
+               HeightRequest="30" WidthRequest="30" Aspect="AspectFill">
+                            <Image.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding ExpandImageCommand}" 
+                                      CommandParameter="{Binding CheckList.estado_nivel_calidad_lubricante_transmision_foto}" />
+                            </Image.GestureRecognizers>
+                        </Image>
+                        <Label Text="&#xf030;" FontFamily="FA" FontSize="26" TextColor="#2196F3">
+                            <Label.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding TomarEstadoNivelCalidaTransmisionFotoCommand}" />
+                            </Label.GestureRecognizers>
+                        </Label>
+                        <Label Text="&#xf03d;" FontFamily="FA" FontSize="24" TextColor="#E53935">
+                            <Label.GestureRecognizers>
+                                <TapGestureRecognizer CommandParameter="estado_nivel_calidad_lubricante_transmision_video"
+                                      Command="{Binding TomarEstadoNivelCalidaTransmisionVideoCommand}" />
+                            </Label.GestureRecognizers>
+                        </Label>
+                    </StackLayout>
+
+                    <Entry Text="{Binding CheckList.estado_nivel_calidad_lubricante_transmision_observacion}" 
+           Placeholder="Observaciones" FontSize="16" BackgroundColor="#F5F5F5"/>
+                </StackLayout>
+
+
+                <StackLayout Padding="10,5" Spacing="5" BackgroundColor="White">
+                    <StackLayout Orientation="Horizontal" Spacing="10">
+                        <Label Text="Estado de nivel y calidad de lubricantes en diferencial" 
+               FontSize="18" FontAttributes="Bold"
+               VerticalOptions="CenterAndExpand" HorizontalOptions="StartAndExpand"/>
+                        <Image Source="{Binding CheckList.estado_nivel_calidad_lubricante_diferencial_SemaforoIcon}" 
+               HeightRequest="24" WidthRequest="24"
+               VerticalOptions="Center" HorizontalOptions="End"/>
+                    </StackLayout>
+
+                    <StackLayout Orientation="Horizontal" Spacing="12">
+                        <Switch IsToggled="{Binding CheckList.estado_nivel_calidad_lubricante_diferencial, Converter={StaticResource IntToBoolConverter}}" />
+                        <Image Source="{Binding CheckList.estado_nivel_calidad_lubricante_diferencial_foto, Converter={StaticResource Base64ToImageSourceConverter}}" 
+               HeightRequest="30" WidthRequest="30" Aspect="AspectFill">
+                            <Image.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding ExpandImageCommand}" 
+                                      CommandParameter="{Binding CheckList.estado_nivel_calidad_lubricante_diferencial_foto}" />
+                            </Image.GestureRecognizers>
+                        </Image>
+                        <Label Text="&#xf030;" FontFamily="FA" FontSize="26" TextColor="#2196F3">
+                            <Label.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding TomarNivelCalidadDiferencialFotoCommand}" />
+                            </Label.GestureRecognizers>
+                        </Label>
+                        <Label Text="&#xf03d;" FontFamily="FA" FontSize="24" TextColor="#E53935">
+                            <Label.GestureRecognizers>
+                                <TapGestureRecognizer CommandParameter="estado_nivel_calidad_lubricante_diferencial_video"
+                                      Command="{Binding TomarNivelCalidadDiferencialVideoCommand}" />
+                            </Label.GestureRecognizers>
+                        </Label>
+                    </StackLayout>
+
+                    <Entry Text="{Binding CheckList.estado_nivel_calidad_lubricante_diferencial_observacion}" 
+           Placeholder="Observaciones" FontSize="16" BackgroundColor="#F5F5F5"/>
+                </StackLayout>
+
+
+                <StackLayout Padding="10,5" Spacing="5" BackgroundColor="White">
+                    <StackLayout Orientation="Horizontal" Spacing="10">
+                        <Label Text="Estado de cubrepolvos de flechas homocinéticas" 
+               FontSize="18" FontAttributes="Bold" 
+               VerticalOptions="CenterAndExpand" HorizontalOptions="StartAndExpand"/>
+                        <Image Source="{Binding CheckList.cubrepolvos_flechas_SemaforoIcon}" 
+               HeightRequest="24" WidthRequest="24" 
+               VerticalOptions="Center" HorizontalOptions="End"/>
+                    </StackLayout>
+
+                    <StackLayout Orientation="Horizontal" Spacing="12">
+                        <Switch IsToggled="{Binding CheckList.cubrepolvos_flechas, Converter={StaticResource IntToBoolConverter}}" />
+                        <Image Source="{Binding CheckList.cubrepolvos_flechas_foto, Converter={StaticResource Base64ToImageSourceConverter}}" 
+               HeightRequest="30" WidthRequest="30" Aspect="AspectFill">
+                            <Image.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding ExpandImageCommand}" 
+                                      CommandParameter="{Binding CheckList.cubrepolvos_flechas_foto}" />
+                            </Image.GestureRecognizers>
+                        </Image>
+                        <Label Text="&#xf030;" FontFamily="FA" FontSize="26" TextColor="#2196F3">
+                            <Label.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding TomarCubrepolvosFlechasFotoCommand}" />
+                            </Label.GestureRecognizers>
+                        </Label>
+                        <Label Text="&#xf03d;" FontFamily="FA" FontSize="24" TextColor="#E53935">
+                            <Label.GestureRecognizers>
+                                <TapGestureRecognizer CommandParameter="cubrepolvos_flechas_video"
+                                      Command="{Binding TomarCubrepolvosFlechasVideoCommand}" />
+                            </Label.GestureRecognizers>
+                        </Label>
+                    </StackLayout>
+
+                    <Entry Text="{Binding CheckList.cubrepolvos_flechas_observacion}" 
+           Placeholder="Observaciones" FontSize="16" BackgroundColor="#F5F5F5"/>
+                </StackLayout>
+
+
+                <!-- El mismo patrón -->
+                <StackLayout Padding="10,5" Spacing="5" BackgroundColor="White">
+                    <StackLayout Orientation="Horizontal" Spacing="10">
+                        <Label Text="Estado de componentes de dirección." FontSize="18" FontAttributes="Bold"/>
+                        <Image Source="{Binding CheckList.componentes_direccion_SemaforoIcon}" HeightRequest="24" WidthRequest="24"/>
+                    </StackLayout>
+                    <StackLayout Orientation="Horizontal" Spacing="12">
+                        <Switch IsToggled="{Binding CheckList.componentes_direccion, Converter={StaticResource IntToBoolConverter}}" />
+                        <Image Source="{Binding CheckList.componentes_direccion_foto, Converter={StaticResource Base64ToImageSourceConverter}}" HeightRequest="30" WidthRequest="30"/>
+                        <Label Text="&#xf030;" FontFamily="FA" FontSize="26" TextColor="#2196F3">
+                            <Label.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding TomarComponentesDireccionFotoCommand}" />
+                            </Label.GestureRecognizers>
+                        </Label>
+                        <Label Text="&#xf03d;" FontFamily="FA" FontSize="24" TextColor="#E53935">
+                            <Label.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding TomarComponentesDireccionVideoCommand}" CommandParameter="componentes_direccion_video" />
+                            </Label.GestureRecognizers>
+                        </Label>
+                    </StackLayout>
+                    <Entry Text="{Binding CheckList.componentes_direccion_observacion}" Placeholder="Observaciones" FontSize="16" BackgroundColor="#F5F5F5"/>
+                </StackLayout>
+
+
+                <!-- El mismo patrón -->
+                <StackLayout Padding="10,5" Spacing="5" BackgroundColor="White">
+                    <StackLayout Orientation="Horizontal" Spacing="10">
+                        <Label Text="Estado de componentes de suspensión." FontSize="18" FontAttributes="Bold"/>
+                        <Image Source="{Binding CheckList.componentes_suspesion_SemaforoIcon}" HeightRequest="24" WidthRequest="24"/>
+                    </StackLayout>
+                    <StackLayout Orientation="Horizontal" Spacing="12">
+                        <Switch IsToggled="{Binding CheckList.componentes_suspesion, Converter={StaticResource IntToBoolConverter}}" />
+                        <Image Source="{Binding CheckList.componentes_suspesion_foto, Converter={StaticResource Base64ToImageSourceConverter}}" HeightRequest="30" WidthRequest="30"/>
+                        <Label Text="&#xf030;" FontFamily="FA" FontSize="26" TextColor="#2196F3">
+                            <Label.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding TomarComponentesSuspensionFotoCommand}" />
+                            </Label.GestureRecognizers>
+                        </Label>
+                        <Label Text="&#xf03d;" FontFamily="FA" FontSize="24" TextColor="#E53935">
+                            <Label.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding TomarComponentesSuspensionVideoCommand}" CommandParameter="componentes_suspesion_video" />
+                            </Label.GestureRecognizers>
+                        </Label>
+                    </StackLayout>
+                    <Entry Text="{Binding CheckList.componentes_suspesion_observacion}" Placeholder="Observaciones" FontSize="16" BackgroundColor="#F5F5F5"/>
+                </StackLayout>
+
+
+                <!-- Igual estructura -->
+                <StackLayout Padding="10,5" Spacing="5" BackgroundColor="White">
+                    <StackLayout Orientation="Horizontal" Spacing="10">
+                        <Label Text="Estado del sistema de escape completo." FontSize="18" FontAttributes="Bold"/>
+                        <Image Source="{Binding CheckList.sistema_escape_completo_SemaforoIcon}" HeightRequest="24" WidthRequest="24"/>
+                    </StackLayout>
+                    <StackLayout Orientation="Horizontal" Spacing="12">
+                        <Switch IsToggled="{Binding CheckList.sistema_escape_completo, Converter={StaticResource IntToBoolConverter}}" />
+                        <Image Source="{Binding CheckList.sistema_escape_completo_foto, Converter={StaticResource Base64ToImageSourceConverter}}" HeightRequest="30" WidthRequest="30"/>
+                        <Label Text="&#xf030;" FontFamily="FA" FontSize="26" TextColor="#2196F3">
+                            <Label.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding TomarSistemaEscapeCompletoFotoCommand}" />
+                            </Label.GestureRecognizers>
+                        </Label>
+                        <Label Text="&#xf03d;" FontFamily="FA" FontSize="24" TextColor="#E53935">
+                            <Label.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding TomarSistemaEscapeCompletoVideoCommand}" CommandParameter="sistema_escape_completo_video" />
+                            </Label.GestureRecognizers>
+                        </Label>
+                    </StackLayout>
+                    <Entry Text="{Binding CheckList.sistema_escape_completo_observacion}" Placeholder="Observaciones" FontSize="16" BackgroundColor="#F5F5F5"/>
+                </StackLayout>
+
+
+                <!-- SISTEMA DE ALIMENTACIÓN DE COMBUSTIBLE -->
+                <StackLayout Padding="10,5" Spacing="5" BackgroundColor="White">
+                    <StackLayout Orientation="Horizontal" Spacing="10">
+                        <Label Text="Estado del sistema de alimentación de combustible (fugas)." FontSize="18" FontAttributes="Bold"/>
+                        <Image Source="{Binding CheckList.sistema_alimentacion_combustible_SemaforoIcon}" HeightRequest="24" WidthRequest="24"/>
+                    </StackLayout>
+                    <StackLayout Orientation="Horizontal" Spacing="12">
+                        <Switch IsToggled="{Binding CheckList.sistema_alimentacion_combustible, Converter={StaticResource IntToBoolConverter}}" />
+                        <Image Source="{Binding CheckList.sistema_alimentacion_combustible_foto, Converter={StaticResource Base64ToImageSourceConverter}}" HeightRequest="30" WidthRequest="30"/>
+                        <Label Text="&#xf030;" FontFamily="FA" FontSize="26" TextColor="#2196F3">
+                            <Label.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding TomarSistemaAlimentacionCombustibleFotoCommand}" />
+                            </Label.GestureRecognizers>
+                        </Label>
+                    </StackLayout>
+                    <Entry Text="{Binding CheckList.sistema_alimentacion_combustible_observacion}" Placeholder="Observaciones" FontSize="16" BackgroundColor="#F5F5F5"/>
+                </StackLayout>
+
+                <!-- FILTRO DE COMBUSTIBLE -->
+                <StackLayout Padding="10,5" Spacing="5" BackgroundColor="White">
+                    <StackLayout Orientation="Horizontal" Spacing="10">
+                        <Label Text="Filtro de combustible." FontSize="18" FontAttributes="Bold"/>
+                        <Image Source="{Binding CheckList.filtro_combustible_SemaforoIcon}" HeightRequest="24" WidthRequest="24"/>
+                    </StackLayout>
+                    <StackLayout Orientation="Horizontal" Spacing="12">
+                        <Switch IsToggled="{Binding CheckList.filtro_combustible, Converter={StaticResource IntToBoolConverter}}" />
+                        <Image Source="{Binding CheckList.filtro_combustible_foto, Converter={StaticResource Base64ToImageSourceConverter}}" HeightRequest="30" WidthRequest="30"/>
+                        <Label Text="&#xf030;" FontFamily="FA" FontSize="26" TextColor="#2196F3">
+                            <Label.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding TomarFiltroCombustibleFotoCommand}" />
+                            </Label.GestureRecognizers>
+                        </Label>
+                    </StackLayout>
+                    <Entry Text="{Binding CheckList.filtro_combustible_observacion}" Placeholder="Observaciones" FontSize="16" BackgroundColor="#F5F5F5"/>
+                </StackLayout>
+
+                <!-- FUGAS DE DIRECCIÓN HIDRÁULICA -->
+                <StackLayout Padding="10,5" Spacing="5" BackgroundColor="White">
+                    <StackLayout Orientation="Horizontal" Spacing="10">
+                        <Label Text="Control de fugas de dirección hidráulica." FontSize="18" FontAttributes="Bold"/>
+                        <Image Source="{Binding CheckList.control_fugas_direccion_hidraulica_SemaforoIcon}" HeightRequest="24" WidthRequest="24"/>
+                    </StackLayout>
+                    <StackLayout Orientation="Horizontal" Spacing="12">
+                        <Switch IsToggled="{Binding CheckList.control_fugas_direccion_hidraulica, Converter={StaticResource IntToBoolConverter}}" />
+                        <Image Source="{Binding CheckList.control_fugas_direccion_hidraulica_foto, Converter={StaticResource Base64ToImageSourceConverter}}" HeightRequest="30" WidthRequest="30"/>
+                        <Label Text="&#xf030;" FontFamily="FA" FontSize="26" TextColor="#2196F3">
+                            <Label.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding TomarControlFugasHidraulicaFotoCommand}" />
+                            </Label.GestureRecognizers>
+                        </Label>
+                    </StackLayout>
+                    <Entry Text="{Binding CheckList.control_fugas_direccion_hidraulica_observacion}" Placeholder="Observaciones" FontSize="16" BackgroundColor="#F5F5F5"/>
+                </StackLayout>
+
+                <!-- OTROS VEHÍCULO EN PISO -->
+                <StackLayout Padding="10,5" Spacing="5" BackgroundColor="White">
+                    <StackLayout Orientation="Horizontal" Spacing="10">
+                        <Label Text="Otros:" FontSize="18" FontAttributes="Bold"/>
+                        <Image Source="{Binding CheckList.otros_vehiculo_en_piso_SemaforoIcon}" HeightRequest="24" WidthRequest="24"/>
+                    </StackLayout>
+                    <StackLayout Orientation="Horizontal" Spacing="12">
+                        <Switch IsToggled="{Binding CheckList.otros_vehiculo_en_piso, Converter={StaticResource IntToBoolConverter}}" />
+                        <Image Source="{Binding CheckList.otros_vehiculo_en_piso_foto, Converter={StaticResource Base64ToImageSourceConverter}}" HeightRequest="30" WidthRequest="30"/>
+                        <Label Text="&#xf030;" FontFamily="FA" FontSize="26" TextColor="#2196F3">
+                            <Label.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding TomarOtrosVehiculoPisoFotoCommand}" />
+                            </Label.GestureRecognizers>
+                        </Label>
+                    </StackLayout>
+                    <Entry Text="{Binding CheckList.otros_vehiculo_en_piso_observacion}" Placeholder="Observaciones" FontSize="16" BackgroundColor="#F5F5F5"/>
+                </StackLayout>
+
+                <!-- CONTROL DE RODAMIENTO Y MAZAS -->
+                <StackLayout Padding="10,5" Spacing="5" BackgroundColor="White">
+                    <StackLayout Orientation="Horizontal" Spacing="10">
+                        <Label Text="Control de rodamiento y mazas de rueda" FontSize="18" FontAttributes="Bold"/>
+                        <Image Source="{Binding CheckList.rodamiento_mazas_rueda_SemaforoIcon}" HeightRequest="24" WidthRequest="24"/>
+                    </StackLayout>
+                    <StackLayout Orientation="Horizontal" Spacing="12">
+                        <Switch IsToggled="{Binding CheckList.rodamiento_mazas_rueda, Converter={StaticResource IntToBoolConverter}}" />
+                        <Image Source="{Binding CheckList.rodamiento_mazas_rueda_foto, Converter={StaticResource Base64ToImageSourceConverter}}" HeightRequest="30" WidthRequest="30"/>
+                        <Label Text="&#xf030;" FontFamily="FA" FontSize="26" TextColor="#2196F3">
+                            <Label.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding TomarRodamientoMazasRuedasFotoCommand}" />
+                            </Label.GestureRecognizers>
+                        </Label>
+                    </StackLayout>
+                    <Entry Text="{Binding CheckList.rodamiento_mazas_rueda_observacion}" Placeholder="Observaciones" FontSize="16" BackgroundColor="#F5F5F5"/>
+                </StackLayout>
+
+                <!-- HOLGURA EN PARTES DE SUSPENSIÓN Y DIRECCIÓN -->
+                <StackLayout Padding="10,5" Spacing="5" BackgroundColor="White">
+                    <StackLayout Orientation="Horizontal" Spacing="10">
+                        <Label Text="Holgura/juego en partes de suspensión y dirección." FontSize="18" FontAttributes="Bold"/>
+                        <Image Source="{Binding CheckList.holgura_partes_suspension_rueda_SemaforoIcon}" HeightRequest="24" WidthRequest="24"/>
+                    </StackLayout>
+                    <StackLayout Orientation="Horizontal" Spacing="12">
+                        <Switch IsToggled="{Binding CheckList.holgura_partes_suspension_rueda, Converter={StaticResource IntToBoolConverter}}" />
+                        <Image Source="{Binding CheckList.holgura_partes_suspension_rueda_foto, Converter={StaticResource Base64ToImageSourceConverter}}" HeightRequest="30" WidthRequest="30"/>
+                        <Label Text="&#xf030;" FontFamily="FA" FontSize="26" TextColor="#2196F3">
+                            <Label.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding TomarHolguraPartesSuspensionFotoCommand}" />
+                            </Label.GestureRecognizers>
+                        </Label>
+                    </StackLayout>
+                    <Entry Text="{Binding CheckList.holgura_partes_suspension_rueda_observacion}" Placeholder="Observaciones" FontSize="16" BackgroundColor="#F5F5F5"/>
+                </StackLayout>
+
+                <!-- CONTROL DE NEUMÁTICOS (DESGASTE Y PRESIÓN) -->
+                <StackLayout Padding="10,5" Spacing="5" BackgroundColor="White">
+                    <StackLayout Orientation="Horizontal" Spacing="10">
+                        <Label Text="Control de neumáticos (desgaste y presión)." FontSize="18" FontAttributes="Bold"/>
+                        <Image Source="{Binding CheckList.control_neumaticos_desgaste_presion_SemaforoIcon}" HeightRequest="24" WidthRequest="24"/>
+                    </StackLayout>
+                    <StackLayout Orientation="Horizontal" Spacing="12">
+                        <Switch IsToggled="{Binding CheckList.control_neumaticos_desgaste_presion, Converter={StaticResource IntToBoolConverter}}" />
+                        <Image Source="{Binding CheckList.control_neumaticos_desgaste_presion_foto, Converter={StaticResource Base64ToImageSourceConverter}}" HeightRequest="30" WidthRequest="30"/>
+                        <Label Text="&#xf030;" FontFamily="FA" FontSize="26" TextColor="#2196F3">
+                            <Label.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding TomarControlNeumaticosDesgasteFotoCommand}" />
+                            </Label.GestureRecognizers>
+                        </Label>
+                    </StackLayout>
+                    <Entry Text="{Binding CheckList.control_neumaticos_desgaste_presion_observacion}" Placeholder="Observaciones" FontSize="16" BackgroundColor="#F5F5F5"/>
+                </StackLayout>
+
+                <!-- PROFUNDIDAD -->
+                <StackLayout Padding="10,5" Spacing="5" BackgroundColor="White">
+                    <StackLayout Orientation="Horizontal" Spacing="10">
+                        <Label Text="Profundidad." FontSize="18" FontAttributes="Bold" />
+                        <Image Source="{Binding CheckList.profundidad_SemaforoIcon}" HeightRequest="24" WidthRequest="24" />
+                    </StackLayout>
+                    <StackLayout Orientation="Horizontal" Spacing="12">
+                        <Switch IsToggled="{Binding CheckList.profundidad, Converter={StaticResource IntToBoolConverter}}" />
+                        <Image Source="{Binding CheckList.profundidad_foto, Converter={StaticResource Base64ToImageSourceConverter}}" HeightRequest="30" WidthRequest="30" />
+                        <Label Text="&#xf030;" FontFamily="FA" FontSize="26" TextColor="#2196F3">
+                            <Label.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding TomarProfundidadFotoCommand}" />
+                            </Label.GestureRecognizers>
+                        </Label>
+                        <Label Text="&#xf03d;" FontFamily="FA" FontSize="24" TextColor="#E53935">
+                            <Label.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding TomarProfundidadVideoCommand}" CommandParameter="profundidad_video" />
+                            </Label.GestureRecognizers>
+                        </Label>
+                    </StackLayout>
+                    <Entry Text="{Binding CheckList.profundidad_observacion}" Placeholder="Observaciones" FontSize="16" BackgroundColor="#F5F5F5" />
+                </StackLayout>
+
+                <!-- PRESIÓN -->
+                <StackLayout Padding="10,5" Spacing="5" BackgroundColor="White">
+                    <StackLayout Orientation="Horizontal" Spacing="10">
+                        <Label Text="Presión." FontSize="18" FontAttributes="Bold" />
+                        <Image Source="{Binding CheckList.presion_SemaforoIcon}" HeightRequest="24" WidthRequest="24" />
+                    </StackLayout>
+                    <StackLayout Orientation="Horizontal" Spacing="12">
+                        <Switch IsToggled="{Binding CheckList.presion, Converter={StaticResource IntToBoolConverter}}" />
+                        <Image Source="{Binding CheckList.presion_foto, Converter={StaticResource Base64ToImageSourceConverter}}" HeightRequest="30" WidthRequest="30" />
+                        <Label Text="&#xf030;" FontFamily="FA" FontSize="26" TextColor="#2196F3">
+                            <Label.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding TomarPresionFotoCommand}" />
+                            </Label.GestureRecognizers>
+                        </Label>
+                        <Label Text="&#xf03d;" FontFamily="FA" FontSize="24" TextColor="#E53935">
+                            <Label.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding TomarPresionVideoCommand}" CommandParameter="presion_video" />
+                            </Label.GestureRecognizers>
+                        </Label>
+                    </StackLayout>
+                    <Entry Text="{Binding CheckList.presion_observacion}" Placeholder="Observaciones" FontSize="16" BackgroundColor="#F5F5F5" />
+                </StackLayout>
+
+                <!-- OTROS ALTURA MEDIA -->
+                <StackLayout Padding="10,5" Spacing="5" BackgroundColor="White">
+                    <StackLayout Orientation="Horizontal" Spacing="10">
+                        <Label Text="Otros:" FontSize="18" FontAttributes="Bold" />
+                        <Image Source="{Binding CheckList.otros_altura_media_SemaforoIcon}" HeightRequest="24" WidthRequest="24" />
+                    </StackLayout>
+                    <StackLayout Orientation="Horizontal" Spacing="12">
+                        <Switch IsToggled="{Binding CheckList.otros_altura_media, Converter={StaticResource IntToBoolConverter}}" />
+                        <Image Source="{Binding CheckList.otros_altura_media_foto, Converter={StaticResource Base64ToImageSourceConverter}}" HeightRequest="30" WidthRequest="30" />
+                        <Label Text="&#xf030;" FontFamily="FA" FontSize="26" TextColor="#2196F3">
+                            <Label.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding TomarOtrosAlturaMediaFotoCommand}" />
+                            </Label.GestureRecognizers>
+                        </Label>
+                        <Label Text="&#xf03d;" FontFamily="FA" FontSize="24" TextColor="#E53935">
+                            <Label.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding TomarOtrosAlturaMediaVideoCommand}" CommandParameter="otros_altura_media_video" />
+                            </Label.GestureRecognizers>
+                        </Label>
+                    </StackLayout>
+                    <Entry Text="{Binding CheckList.otros_altura_media_observacion}" Placeholder="Observaciones" FontSize="16" BackgroundColor="#F5F5F5" />
+                </StackLayout>
+
+                <!-- ACEITE DE MOTOR -->
+                <StackLayout Padding="10,5" Spacing="5" BackgroundColor="White">
+                    <StackLayout Orientation="Horizontal" Spacing="10">
+                        <Label Text="Nivel y calidad de aceite de motor." FontSize="18" FontAttributes="Bold" />
+                        <Image Source="{Binding CheckList.nivel_calidad_aceite_motor_SemaforoIcon}" HeightRequest="24" WidthRequest="24" />
+                    </StackLayout>
+                    <StackLayout Orientation="Horizontal" Spacing="12">
+                        <Switch IsToggled="{Binding CheckList.nivel_calidad_aceite_motor, Converter={StaticResource IntToBoolConverter}}" />
+                        <Image Source="{Binding CheckList.nivel_calidad_aceite_motor_foto, Converter={StaticResource Base64ToImageSourceConverter}}" HeightRequest="30" WidthRequest="30" />
+                        <Label Text="&#xf030;" FontFamily="FA" FontSize="26" TextColor="#2196F3">
+                            <Label.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding TomarNivelCalidadAceiteMotorFotoCommand}" />
+                            </Label.GestureRecognizers>
+                        </Label>
+                        <Label Text="&#xf03d;" FontFamily="FA" FontSize="24" TextColor="#E53935">
+                            <Label.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding TomarNivelCalidadAceiteMotorVideoCommand}" CommandParameter="nivel_calidad_aceite_motor_video" />
+                            </Label.GestureRecognizers>
+                        </Label>
+                    </StackLayout>
+                    <Entry Text="{Binding CheckList.nivel_calidad_aceite_motor_observacion}" Placeholder="Observaciones" FontSize="16" BackgroundColor="#F5F5F5" />
+                </StackLayout>
+
+                <!-- FILTRO AIRE -->
+                <StackLayout Padding="10,5" Spacing="5" BackgroundColor="White">
+                    <StackLayout Orientation="Horizontal" Spacing="10">
+                        <Label Text="Filtro de aire" FontSize="18" FontAttributes="Bold" />
+                        <Image Source="{Binding CheckList.filtro_aire_SemaforoIcon}" HeightRequest="24" WidthRequest="24" />
+                    </StackLayout>
+                    <StackLayout Orientation="Horizontal" Spacing="12">
+                        <Switch IsToggled="{Binding CheckList.filtro_aire, Converter={StaticResource IntToBoolConverter}}" />
+                        <Image Source="{Binding CheckList.filtro_aire_foto, Converter={StaticResource Base64ToImageSourceConverter}}" HeightRequest="30" WidthRequest="30" />
+                        <Label Text="&#xf030;" FontFamily="FA" FontSize="26" TextColor="#2196F3">
+                            <Label.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding TomarFiltroAireFotoCommand}" />
+                            </Label.GestureRecognizers>
+                        </Label>
+                        <Label Text="&#xf03d;" FontFamily="FA" FontSize="24" TextColor="#E53935">
+                            <Label.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding TomarFiltroAireVideoCommand}" CommandParameter="filtro_aire_video" />
+                            </Label.GestureRecognizers>
+                        </Label>
+                    </StackLayout>
+                    <Entry Text="{Binding CheckList.filtro_aire_observacion}" Placeholder="Observaciones" FontSize="16" BackgroundColor="#F5F5F5" />
+                </StackLayout>
+
+                <!-- FILTRO POLEN -->
+                <StackLayout Padding="10,5" Spacing="5" BackgroundColor="White">
+                    <StackLayout Orientation="Horizontal" Spacing="10">
+                        <Label Text="Filtro de Polen" FontSize="18" FontAttributes="Bold" />
+                        <Image Source="{Binding CheckList.filtro_polen_SemaforoIcon}" HeightRequest="24" WidthRequest="24" />
+                    </StackLayout>
+                    <StackLayout Orientation="Horizontal" Spacing="12">
+                        <Switch IsToggled="{Binding CheckList.filtro_polen, Converter={StaticResource IntToBoolConverter}}" />
+                        <Image Source="{Binding CheckList.filtro_polen_foto, Converter={StaticResource Base64ToImageSourceConverter}}" HeightRequest="30" WidthRequest="30" />
+                        <Label Text="&#xf030;" FontFamily="FA" FontSize="26" TextColor="#2196F3">
+                            <Label.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding TomarFiltroPolenFotoCommand}" />
+                            </Label.GestureRecognizers>
+                        </Label>
+                        <Label Text="&#xf03d;" FontFamily="FA" FontSize="24" TextColor="#E53935">
+                            <Label.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding TomarFiltroPolenVideoCommand}" CommandParameter="filtro_polen_video" />
+                            </Label.GestureRecognizers>
+                        </Label>
+                    </StackLayout>
+                    <Entry Text="{Binding CheckList.filtro_polen_observacion}" Placeholder="Observaciones" FontSize="16" BackgroundColor="#F5F5F5" />
+                </StackLayout>
+
+
+                <!-- Filtro PCV -->
+                <StackLayout Padding="10,5" Spacing="5" BackgroundColor="White">
+                    <StackLayout Orientation="Horizontal" Spacing="10">
+                        <Label Text="Filtro PCV." FontSize="18" FontAttributes="Bold" />
+                        <Image Source="{Binding CheckList.filtro_pcv_SemaforoIcon}" HeightRequest="24" WidthRequest="24" />
+                    </StackLayout>
+                    <StackLayout Orientation="Horizontal" Spacing="12">
+                        <Switch IsToggled="{Binding CheckList.filtro_pcv, Converter={StaticResource IntToBoolConverter}}" />
+                        <Image Source="{Binding CheckList.filtro_pcv_foto, Converter={StaticResource Base64ToImageSourceConverter}}" HeightRequest="30" WidthRequest="30" />
+                        <Label Text="&#xf030;" FontFamily="FA" FontSize="26" TextColor="#2196F3">
+                            <Label.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding TomarFiltroPCVFotoCommand}" />
+                            </Label.GestureRecognizers>
+                        </Label>
+                        <Label Text="&#xf03d;" FontFamily="FA" FontSize="24" TextColor="#E53935">
+                            <Label.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding TomarFiltroPCVVideoCommand}" CommandParameter="filtro_pcv_video" />
+                            </Label.GestureRecognizers>
+                        </Label>
+                    </StackLayout>
+                    <Entry Text="{Binding CheckList.filtro_pcv_observacion}" Placeholder="Observaciones" FontSize="16" BackgroundColor="#F5F5F5" />
+                </StackLayout>
+
+                <!-- Válvula PCV -->
+                <StackLayout Padding="10,5" Spacing="5" BackgroundColor="White">
+                    <StackLayout Orientation="Horizontal" Spacing="10">
+                        <Label Text="Valvula PCV." FontSize="18" FontAttributes="Bold" />
+                        <Image Source="{Binding CheckList.valvula_pcv_SemaforoIcon}" HeightRequest="24" WidthRequest="24" />
+                    </StackLayout>
+                    <StackLayout Orientation="Horizontal" Spacing="12">
+                        <Switch IsToggled="{Binding CheckList.valvula_pcv, Converter={StaticResource IntToBoolConverter}}" />
+                        <Image Source="{Binding CheckList.valvula_pcv_foto, Converter={StaticResource Base64ToImageSourceConverter}}" HeightRequest="30" WidthRequest="30" />
+                        <Label Text="&#xf030;" FontFamily="FA" FontSize="26" TextColor="#2196F3">
+                            <Label.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding TomarValvulaPCVFotoCommand}" />
+                            </Label.GestureRecognizers>
+                        </Label>
+                        <Label Text="&#xf03d;" FontFamily="FA" FontSize="24" TextColor="#E53935">
+                            <Label.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding TomarValvulaPCVVideoCommand}" CommandParameter="valvula_pcv_video" />
+                            </Label.GestureRecognizers>
+                        </Label>
+                    </StackLayout>
+                    <Entry Text="{Binding CheckList.valvula_pcv_observacion}" Placeholder="Observaciones" FontSize="16" BackgroundColor="#F5F5F5" />
+                </StackLayout>
+
+                <!-- Bujías de encendido -->
+                <StackLayout Padding="10,5" Spacing="5" BackgroundColor="White">
+                    <StackLayout Orientation="Horizontal" Spacing="10">
+                        <Label Text="Bujías de encendido." FontSize="18" FontAttributes="Bold" />
+                        <Image Source="{Binding CheckList.bujias_encendido_SemaforoIcon}" HeightRequest="24" WidthRequest="24" />
+                    </StackLayout>
+                    <StackLayout Orientation="Horizontal" Spacing="12">
+                        <Switch IsToggled="{Binding CheckList.bujias_encendido, Converter={StaticResource IntToBoolConverter}}" />
+                        <Image Source="{Binding CheckList.bujias_encendido_foto, Converter={StaticResource Base64ToImageSourceConverter}}" HeightRequest="30" WidthRequest="30" />
+                        <Label Text="&#xf030;" FontFamily="FA" FontSize="26" TextColor="#2196F3">
+                            <Label.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding TomarBujiasEncendidoFotoCommand}" />
+                            </Label.GestureRecognizers>
+                        </Label>
+                        <Label Text="&#xf03d;" FontFamily="FA" FontSize="24" TextColor="#E53935">
+                            <Label.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding TomarBujiasEncendidoVideoCommand}" CommandParameter="bujias_encendido_video" />
+                            </Label.GestureRecognizers>
+                        </Label>
+                    </StackLayout>
+                    <Entry Text="{Binding CheckList.bujias_encendido_observacion}" Placeholder="Observaciones" FontSize="16" BackgroundColor="#F5F5F5" />
+                </StackLayout>
+
+                <!-- Cables de bujías y bobinas de ignición -->
+                <StackLayout Padding="10,5" Spacing="5" BackgroundColor="White">
+                    <StackLayout Orientation="Horizontal" Spacing="10">
+                        <Label Text="Cables de bujías y/o bobinas de ignición." FontSize="18" FontAttributes="Bold" />
+                        <Image Source="{Binding CheckList.cables_bujias_bobinas_ignicion_SemaforoIcon}" HeightRequest="24" WidthRequest="24" />
+                    </StackLayout>
+                    <StackLayout Orientation="Horizontal" Spacing="12">
+                        <Switch IsToggled="{Binding CheckList.cables_bujias_bobinas_ignicion, Converter={StaticResource IntToBoolConverter}}" />
+                        <Image Source="{Binding CheckList.cables_bujias_bobinas_ignicion_foto, Converter={StaticResource Base64ToImageSourceConverter}}" HeightRequest="30" WidthRequest="30" />
+                        <Label Text="&#xf030;" FontFamily="FA" FontSize="26" TextColor="#2196F3">
+                            <Label.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding TomarCablesBujiasBobinasFotoCommand}" />
+                            </Label.GestureRecognizers>
+                        </Label>
+                        <Label Text="&#xf03d;" FontFamily="FA" FontSize="24" TextColor="#E53935">
+                            <Label.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding TomarCablesBujiasBobinasVideoCommand}" CommandParameter="cables_bujias_bobinas_ignicion_video" />
+                            </Label.GestureRecognizers>
+                        </Label>
+                    </StackLayout>
+                    <Entry Text="{Binding CheckList.cables_bujias_bobinas_ignicion_observacion}" Placeholder="Observaciones" FontSize="16" BackgroundColor="#F5F5F5" />
+                </StackLayout>
+
+                <!-- Nivel y calidad de anticongelante -->
+                <StackLayout Padding="10,5" Spacing="5" BackgroundColor="White">
+                    <StackLayout Orientation="Horizontal" Spacing="10">
+                        <Label Text="Nivel y calidad de anticongelante/antiebullente." FontSize="18" FontAttributes="Bold" />
+                        <Image Source="{Binding CheckList.nivel_anticongenlante_SemaforoIcon}" HeightRequest="24" WidthRequest="24" />
+                    </StackLayout>
+                    <StackLayout Orientation="Horizontal" Spacing="12">
+                        <Switch IsToggled="{Binding CheckList.nivel_anticongenlante, Converter={StaticResource IntToBoolConverter}}" />
+                        <Image Source="{Binding CheckList.nivel_anticongenlante_foto, Converter={StaticResource Base64ToImageSourceConverter}}" HeightRequest="30" WidthRequest="30" />
+                        <Label Text="&#xf030;" FontFamily="FA" FontSize="26" TextColor="#2196F3">
+                            <Label.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding TomarNivelAnticongelanteFotoCommand}" />
+                            </Label.GestureRecognizers>
+                        </Label>
+                        <Label Text="&#xf03d;" FontFamily="FA" FontSize="24" TextColor="#E53935">
+                            <Label.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding TomarNivelAnticongelanteVideoCommand}" CommandParameter="nivel_anticongenlante_video" />
+                            </Label.GestureRecognizers>
+                        </Label>
+                    </StackLayout>
+                    <Entry Text="{Binding CheckList.nivel_anticongenlante_observacion}" Placeholder="Observaciones" FontSize="16" BackgroundColor="#F5F5F5" />
+                </StackLayout>
+
+                <!-- Tapón de radiador -->
+                <StackLayout Padding="10,5" Spacing="5" BackgroundColor="White">
+                    <StackLayout Orientation="Horizontal" Spacing="10">
+                        <Label Text="Tapón de radiador o depósito recuperador." FontSize="18" FontAttributes="Bold" />
+                        <Image Source="{Binding CheckList.tapon_radiador_SemaforoIcon}" HeightRequest="24" WidthRequest="24" />
+                    </StackLayout>
+                    <StackLayout Orientation="Horizontal" Spacing="12">
+                        <Switch IsToggled="{Binding CheckList.tapon_radiador, Converter={StaticResource IntToBoolConverter}}" />
+                        <Image Source="{Binding CheckList.tapon_radiador_foto, Converter={StaticResource Base64ToImageSourceConverter}}" HeightRequest="30" WidthRequest="30" />
+                        <Label Text="&#xf030;" FontFamily="FA" FontSize="26" TextColor="#2196F3">
+                            <Label.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding TomarTaponRadiadorFotoCommand}" />
+                            </Label.GestureRecognizers>
+                        </Label>
+                        <Label Text="&#xf03d;" FontFamily="FA" FontSize="24" TextColor="#E53935">
+                            <Label.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding TomarTaponRadiadorVideoCommand}" CommandParameter="tapon_radiador_video" />
+                            </Label.GestureRecognizers>
+                        </Label>
+                    </StackLayout>
+                    <Entry Text="{Binding CheckList.tapon_radiador_observacion}" Placeholder="Observaciones" FontSize="16" BackgroundColor="#F5F5F5" />
+                </StackLayout>
+
+                <!-- Mangueras del sistema -->
+                <StackLayout Padding="10,5" Spacing="5" BackgroundColor="White">
+                    <StackLayout Orientation="Horizontal" Spacing="10">
+                        <Label Text="Mangueras de sistema (radiador y calefacción)." FontSize="18" FontAttributes="Bold" />
+                        <Image Source="{Binding CheckList.mangueras_sistema_SemaforoIcon}" HeightRequest="24" WidthRequest="24" />
+                    </StackLayout>
+                    <StackLayout Orientation="Horizontal" Spacing="12">
+                        <Switch IsToggled="{Binding CheckList.mangueras_sistema, Converter={StaticResource IntToBoolConverter}}" />
+                        <Image Source="{Binding CheckList.mangueras_sistema_foto, Converter={StaticResource Base64ToImageSourceConverter}}" HeightRequest="30" WidthRequest="30" />
+                        <Label Text="&#xf030;" FontFamily="FA" FontSize="26" TextColor="#2196F3">
+                            <Label.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding TomarManguerasSistemaFotoCommand}" />
+                            </Label.GestureRecognizers>
+                        </Label>
+                        <Label Text="&#xf03d;" FontFamily="FA" FontSize="24" TextColor="#E53935">
+                            <Label.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding TomarManguerasSistemaVideoCommand}" CommandParameter="mangueras_sistema_video" />
+                            </Label.GestureRecognizers>
+                        </Label>
+                    </StackLayout>
+                    <Entry Text="{Binding CheckList.mangueras_sistema_observacion}" Placeholder="Observaciones" FontSize="16" BackgroundColor="#F5F5F5" />
+                </StackLayout>
+
+                <!-- Desempeño de ventilador -->
+                <StackLayout Padding="10,5" Spacing="5" BackgroundColor="White">
+                    <StackLayout Orientation="Horizontal" Spacing="10">
+                        <Label Text="Desempeño de ventilador ya sea eléctrico o térmico." FontSize="18" FontAttributes="Bold" />
+                        <Image Source="{Binding CheckList.desempeño_ventilador_SemaforoIcon}" HeightRequest="24" WidthRequest="24" />
+                    </StackLayout>
+                    <StackLayout Orientation="Horizontal" Spacing="12">
+                        <Switch IsToggled="{Binding CheckList.desempeño_ventilador, Converter={StaticResource IntToBoolConverter}}" />
+                        <Image Source="{Binding CheckList.desempeño_ventilador_foto, Converter={StaticResource Base64ToImageSourceConverter}}" HeightRequest="30" WidthRequest="30" />
+                        <Label Text="&#xf030;" FontFamily="FA" FontSize="26" TextColor="#2196F3">
+                            <Label.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding TomarDesempeñoVentiladorFotoCommand}" />
+                            </Label.GestureRecognizers>
+                        </Label>
+                        <Label Text="&#xf03d;" FontFamily="FA" FontSize="24" TextColor="#E53935">
+                            <Label.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding TomarDesempeñoVentiladorVideoCommand}" CommandParameter="desempeño_ventilador_video" />
+                            </Label.GestureRecognizers>
+                        </Label>
+                    </StackLayout>
+                    <Entry Text="{Binding CheckList.desempeño_ventilador_observacion}" Placeholder="Observaciones" FontSize="16" BackgroundColor="#F5F5F5" />
+                </StackLayout>
+
+
+                <!-- Nivel y calidad de líquido limpiaparabrisas -->
+                <StackLayout Padding="10,5" Spacing="5" BackgroundColor="White">
+                    <StackLayout Orientation="Horizontal" Spacing="10">
+                        <Label Text="Nivel y calidad de líquido limpiaparabrisas." FontSize="18" FontAttributes="Bold" />
+                        <Image Source="{Binding CheckList.calidad_liquido_limpiaparabrisas_SemaforoIcon}" HeightRequest="24" WidthRequest="24" />
+                    </StackLayout>
+                    <StackLayout Orientation="Horizontal" Spacing="12">
+                        <Switch IsToggled="{Binding CheckList.calidad_liquido_limpiaparabrisas, Converter={StaticResource IntToBoolConverter}}" />
+                        <Image Source="{Binding CheckList.calidad_liquido_limpiaparabrisas_foto, Converter={StaticResource Base64ToImageSourceConverter}}" HeightRequest="30" WidthRequest="30" />
+                        <Label Text="&#xf030;" FontFamily="FA" FontSize="26" TextColor="#2196F3">
+                            <Label.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding TomarCalidadLiquidoParabrisasFotoCommand}" />
+                            </Label.GestureRecognizers>
+                        </Label>
+                        <Label Text="&#xf03d;" FontFamily="FA" FontSize="24" TextColor="#E53935">
+                            <Label.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding TomarCalidadLiquidoParabrisasVideoCommand}" CommandParameter="calidad_liquido_limpiaparabrisas_video" />
+                            </Label.GestureRecognizers>
+                        </Label>
+                    </StackLayout>
+                    <Entry Text="{Binding CheckList.calidad_liquido_limpiaparabrisas_observacion}" Placeholder="Observaciones" FontSize="16" BackgroundColor="#F5F5F5" />
+                </StackLayout>
+
+                <!-- Nivel y calidad de aceite de la dirección hidráulica -->
+                <StackLayout Padding="10,5" Spacing="5" BackgroundColor="White">
+                    <StackLayout Orientation="Horizontal" Spacing="10">
+                        <Label Text="Nivel y calidad de aceite de la dirección hidráulica." FontSize="18" FontAttributes="Bold" />
+                        <Image Source="{Binding CheckList.calidad_aceite_direccion_hidraulica_SemaforoIcon}" HeightRequest="24" WidthRequest="24" />
+                    </StackLayout>
+                    <StackLayout Orientation="Horizontal" Spacing="12">
+                        <Switch IsToggled="{Binding CheckList.calidad_aceite_direccion_hidraulica, Converter={StaticResource IntToBoolConverter}}" />
+                        <Image Source="{Binding CheckList.calidad_aceite_direccion_hidraulica_foto, Converter={StaticResource Base64ToImageSourceConverter}}" HeightRequest="30" WidthRequest="30" />
+                        <Label Text="&#xf030;" FontFamily="FA" FontSize="26" TextColor="#2196F3">
+                            <Label.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding TomarCaldiadAceiteHidraulicaFotoCommand}" />
+                            </Label.GestureRecognizers>
+                        </Label>
+                        <Label Text="&#xf03d;" FontFamily="FA" FontSize="24" TextColor="#E53935">
+                            <Label.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding TomarCaldiadAceiteHidraulicaVideoCommand}" CommandParameter="calidad_aceite_direccion_hidraulica_video" />
+                            </Label.GestureRecognizers>
+                        </Label>
+                    </StackLayout>
+                    <Entry Text="{Binding CheckList.calidad_aceite_direccion_hidraulica_observacion}" Placeholder="Observaciones" FontSize="16" BackgroundColor="#F5F5F5" />
+                </StackLayout>
+
+                <!-- Nivel y calidad de aceite de la transmisión con bayoneta -->
+                <StackLayout Padding="10,5" Spacing="5" BackgroundColor="White">
+                    <StackLayout Orientation="Horizontal" Spacing="10">
+                        <Label Text="Nivel y calidad de aceite de la transmisión con bayoneta." FontSize="18" FontAttributes="Bold" />
+                        <Image Source="{Binding CheckList.calidad_aceite_transmision_bayoneta_SemaforoIcon}" HeightRequest="24" WidthRequest="24" />
+                    </StackLayout>
+                    <StackLayout Orientation="Horizontal" Spacing="12">
+                        <Switch IsToggled="{Binding CheckList.calidad_aceite_transmision_bayoneta, Converter={StaticResource IntToBoolConverter}}" />
+                        <Image Source="{Binding CheckList.calidad_aceite_transmision_bayoneta_foto, Converter={StaticResource Base64ToImageSourceConverter}}" HeightRequest="30" WidthRequest="30" />
+                        <Label Text="&#xf030;" FontFamily="FA" FontSize="26" TextColor="#2196F3">
+                            <Label.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding TomarCalidadAceiteTransmisionFotoCommand}" />
+                            </Label.GestureRecognizers>
+                        </Label>
+                        <Label Text="&#xf03d;" FontFamily="FA" FontSize="24" TextColor="#E53935">
+                            <Label.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding TomarCalidadAceiteTransmisionVideoCommand}" CommandParameter="calidad_aceite_transmision_bayoneta_video" />
+                            </Label.GestureRecognizers>
+                        </Label>
+                    </StackLayout>
+                    <Entry Text="{Binding CheckList.calidad_aceite_transmision_bayoneta_observacion}" Placeholder="Observaciones" FontSize="16" BackgroundColor="#F5F5F5" />
+                </StackLayout>
+
+                <!-- Nivel líquido de la batería y condiciones de la misma -->
+                <StackLayout Padding="10,5" Spacing="5" BackgroundColor="White">
+                    <StackLayout Orientation="Horizontal" Spacing="10">
+                        <Label Text="Nivel líquido de la batería y condiciones de la misma." FontSize="18" FontAttributes="Bold" />
+                        <Image Source="{Binding CheckList.liquido_bateria_condiciones_SemaforoIcon}" HeightRequest="24" WidthRequest="24" />
+                    </StackLayout>
+                    <StackLayout Orientation="Horizontal" Spacing="12">
+                        <Switch IsToggled="{Binding CheckList.liquido_bateria_condiciones, Converter={StaticResource IntToBoolConverter}}" />
+                        <Image Source="{Binding CheckList.liquido_bateria_condiciones_foto, Converter={StaticResource Base64ToImageSourceConverter}}" HeightRequest="30" WidthRequest="30" />
+                        <Label Text="&#xf030;" FontFamily="FA" FontSize="26" TextColor="#2196F3">
+                            <Label.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding TomarLiquidoBateriaConcidionesFotoCommand}" />
+                            </Label.GestureRecognizers>
+                        </Label>
+                        <Label Text="&#xf03d;" FontFamily="FA" FontSize="24" TextColor="#E53935">
+                            <Label.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding TomarLiquidoBateriaConcidionesVideoCommand}" CommandParameter="liquido_bateria_condiciones_video" />
+                            </Label.GestureRecognizers>
+                        </Label>
+                    </StackLayout>
+                    <Entry Text="{Binding CheckList.liquido_bateria_condiciones_observacion}" Placeholder="Observaciones" FontSize="16" BackgroundColor="#F5F5F5" />
+                </StackLayout>
+
+
+
+                <StackLayout Padding="10,5" Spacing="5" BackgroundColor="White">
+                    <StackLayout Orientation="Horizontal" Spacing="10">
+                        <Label Text="Bandas Poly V." FontSize="18" FontAttributes="Bold" />
+                        <Image Source="{Binding CheckList.bandas_poly_v_SemaforoIcon}" HeightRequest="24" WidthRequest="24" />
+                    </StackLayout>
+                    <StackLayout Orientation="Horizontal" Spacing="12">
+                        <Switch IsToggled="{Binding CheckList.bandas_poly_v, Converter={StaticResource IntToBoolConverter}}" />
+                        <Image Source="{Binding CheckList.bandas_poly_v_foto, Converter={StaticResource Base64ToImageSourceConverter}}" HeightRequest="30" WidthRequest="30" />
+                        <Label Text="&#xf030;" FontFamily="FA" FontSize="26" TextColor="#2196F3">
+                            <Label.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding TomarBandasPolyVFotoCommand}" />
+                            </Label.GestureRecognizers>
+                        </Label>
+                    </StackLayout>
+                    <Entry Text="{Binding CheckList.bandas_poly_v_observacion}" Placeholder="Observaciones" FontSize="16" BackgroundColor="#F5F5F5" />
+                </StackLayout>
+
+                <!-- Poleas de banda -->
+                <StackLayout Padding="10,5" Spacing="5" BackgroundColor="White">
+                    <StackLayout Orientation="Horizontal" Spacing="10">
+                        <Label Text="Poleas de banda." FontSize="18" FontAttributes="Bold" />
+                        <Image Source="{Binding CheckList.poleas_banda_SemaforoIcon}" HeightRequest="24" WidthRequest="24" />
+                    </StackLayout>
+                    <StackLayout Orientation="Horizontal" Spacing="12">
+                        <Switch IsToggled="{Binding CheckList.poleas_banda, Converter={StaticResource IntToBoolConverter}}" />
+                        <Image Source="{Binding CheckList.poleas_banda_foto, Converter={StaticResource Base64ToImageSourceConverter}}" HeightRequest="30" WidthRequest="30" />
+                        <Label Text="&#xf030;" FontFamily="FA" FontSize="26" TextColor="#2196F3">
+                            <Label.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding TomarPoleasBandaFotoCommand}" />
+                            </Label.GestureRecognizers>
+                        </Label>
+                    </StackLayout>
+                    <Entry Text="{Binding CheckList.poleas_banda_observacion}" Placeholder="Observaciones" FontSize="16" BackgroundColor="#F5F5F5" />
+                </StackLayout>
+
+                <!-- Banda de tiempo -->
+                <StackLayout Padding="10,5" Spacing="5" BackgroundColor="White">
+                    <StackLayout Orientation="Horizontal" Spacing="10">
+                        <Label Text="Banda de tiempo:" FontSize="18" FontAttributes="Bold" />
+                        <Image Source="{Binding CheckList.banda_tiempo_SemaforoIcon}" HeightRequest="24" WidthRequest="24" />
+                    </StackLayout>
+                    <StackLayout Orientation="Horizontal" Spacing="12">
+                        <Switch IsToggled="{Binding CheckList.banda_tiempo, Converter={StaticResource IntToBoolConverter}}" />
+                        <Image Source="{Binding CheckList.banda_tiempo_foto, Converter={StaticResource Base64ToImageSourceConverter}}" HeightRequest="30" WidthRequest="30" />
+                        <Label Text="&#xf030;" FontFamily="FA" FontSize="26" TextColor="#2196F3">
+                            <Label.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding TomarBandaTiempoFotoCommand}" />
+                            </Label.GestureRecognizers>
+                        </Label>
+                        <Label Text="&#xf03d;" FontFamily="FA" FontSize="24" TextColor="#E53935">
+                            <Label.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding TomarBandaTiempoVideoCommand}" CommandParameter="banda_tiempo_video" />
+                            </Label.GestureRecognizers>
+                        </Label>
+                    </StackLayout>
+                    <Entry Text="{Binding CheckList.banda_tiempo_observacion}" Placeholder="Observaciones" FontSize="16" BackgroundColor="#F5F5F5" />
+                </StackLayout>
+
+                <!-- Otros -->
+                <StackLayout Padding="10,5" Spacing="5" BackgroundColor="White">
+                    <StackLayout Orientation="Horizontal" Spacing="10">
+                        <Label Text="Otros:" FontSize="18" FontAttributes="Bold" />
+                        <Image Source="{Binding CheckList.otros_altura_total_SemaforoIcon}" HeightRequest="24" WidthRequest="24" />
+                    </StackLayout>
+                    <StackLayout Orientation="Horizontal" Spacing="12">
+                        <Switch IsToggled="{Binding CheckList.otros_altura_total, Converter={StaticResource IntToBoolConverter}}" />
+                        <Image Source="{Binding CheckList.otros_altura_total_foto, Converter={StaticResource Base64ToImageSourceConverter}}" HeightRequest="30" WidthRequest="30" />
+                        <Label Text="&#xf030;" FontFamily="FA" FontSize="26" TextColor="#2196F3">
+                            <Label.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding TomarOtrosAlturaTotalFotoCommand}" />
+                            </Label.GestureRecognizers>
+                        </Label>
+                        <Label Text="&#xf03d;" FontFamily="FA" FontSize="24" TextColor="#E53935">
+                            <Label.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding TomarOtrosAlturaTotalVideoCommand}" CommandParameter="otros_altura_total_video" />
+                            </Label.GestureRecognizers>
+                        </Label>
+                    </StackLayout>
+                    <Entry Text="{Binding CheckList.otros_altura_total_observacion}" Placeholder="Observaciones" FontSize="16" BackgroundColor="#F5F5F5" />
+                </StackLayout>
+
+                <!-- Reset de intervalo de servicio -->
+                <StackLayout Padding="10,5" Spacing="5" BackgroundColor="White">
+                    <StackLayout Orientation="Horizontal" Spacing="10">
+                        <Label Text="Reset de intervalo de servicio." FontSize="18" FontAttributes="Bold" />
+                        <Image Source="{Binding CheckList.reset_intervalo_servicio_SemaforoIcon}" HeightRequest="24" WidthRequest="24" />
+                    </StackLayout>
+                    <StackLayout Orientation="Horizontal" Spacing="12">
+                        <Switch IsToggled="{Binding CheckList.reset_intervalo_servicio, Converter={StaticResource IntToBoolConverter}}" />
+                        <Image Source="{Binding CheckList.reset_intervalo_servicio_foto, Converter={StaticResource Base64ToImageSourceConverter}}" HeightRequest="30" WidthRequest="30" />
+                        <Label Text="&#xf030;" FontFamily="FA" FontSize="26" TextColor="#2196F3">
+                            <Label.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding TomarResetIntervaloServicioFotoCommand}" />
+                            </Label.GestureRecognizers>
+                        </Label>
+                        <Label Text="&#xf03d;" FontFamily="FA" FontSize="24" TextColor="#E53935">
+                            <Label.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding TomarResetIntervaloServicioVideoCommand}" CommandParameter="reset_intervalo_servicio_video" />
+                            </Label.GestureRecognizers>
+                        </Label>
+                    </StackLayout>
+                    <Entry Text="{Binding CheckList.reset_intervalo_servicio_observacion}" Placeholder="Observaciones" FontSize="16" BackgroundColor="#F5F5F5" />
+                </StackLayout>
+
+
+                <!-- Ajuste de tornillos de neumáticos con torquímetro -->
+                <StackLayout Padding="10,5" Spacing="5" BackgroundColor="White">
+                    <StackLayout Orientation="Horizontal" Spacing="10">
+                        <Label Text="Ajuste de tornillos de neumáticos con torquímetro." FontSize="18" FontAttributes="Bold" />
+                        <Image Source="{Binding CheckList.ajuste_tornillos_neumaticos_torquimetro_SemaforoIcon}" HeightRequest="24" WidthRequest="24" />
+                    </StackLayout>
+                    <StackLayout Orientation="Horizontal" Spacing="12">
+                        <Switch IsToggled="{Binding CheckList.ajuste_tornillos_neumaticos_torquimetro, Converter={StaticResource IntToBoolConverter}}" />
+                        <Image Source="{Binding CheckList.ajuste_tornillos_neumaticos_torquimetro_foto, Converter={StaticResource Base64ToImageSourceConverter}}" HeightRequest="30" WidthRequest="30" />
+                        <Label Text="&#xf030;" FontFamily="FA" FontSize="26" TextColor="#2196F3">
+                            <Label.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding TomarAjusteTornillosNeumaticosFotoCommand}" />
+                            </Label.GestureRecognizers>
+                        </Label>
+                        <Label Text="&#xf03d;" FontFamily="FA" FontSize="24" TextColor="#E53935">
+                            <Label.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding TomarAjusteTornillosNeumaticosVideoCommand}" CommandParameter="ajuste_tornillos_neumaticos_torquimetro_video" />
+                            </Label.GestureRecognizers>
+                        </Label>
+                    </StackLayout>
+                    <Entry Text="{Binding CheckList.ajuste_tornillos_neumaticos_torquimetro_observacion}" Placeholder="Observaciones" FontSize="16" BackgroundColor="#F5F5F5" />
+                </StackLayout>
+
+                <!-- Limpiar y lubricar puertas y cerraduras -->
+                <StackLayout Padding="10,5" Spacing="5" BackgroundColor="White">
+                    <StackLayout Orientation="Horizontal" Spacing="10" VerticalOptions="Center">
+                        <Label Text="Limpiar y lubricar puertas y cerraduras." FontSize="18" FontAttributes="Bold" VerticalOptions="Center" />
+                        <Image Source="{Binding CheckList.limpiar_libricar_puertas_cerraduras_SemaforoIcon}" HeightRequest="24" WidthRequest="24" />
+                    </StackLayout>
+                    <StackLayout Orientation="Horizontal" Spacing="12">
+                        <Switch IsToggled="{Binding CheckList.limpiar_libricar_puertas_cerraduras, Converter={StaticResource IntToBoolConverter}}" />
+                        <Image Source="{Binding CheckList.limpiar_libricar_puertas_cerraduras_foto, Converter={StaticResource Base64ToImageSourceConverter}}" HeightRequest="30" WidthRequest="30" />
+                        <Label Text="&#xf030;" FontFamily="FA" FontSize="26" TextColor="#2196F3">
+                            <Label.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding TomarLimpiarLubricarPuertasFotoCommand}" />
+                            </Label.GestureRecognizers>
+                        </Label>
+                        <Label Text="&#xf03d;" FontFamily="FA" FontSize="24" TextColor="#E53935">
+                            <Label.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding TomarLimpiarLubricarPuertasVideoCommand}" CommandParameter="limpiar_libricar_puertas_cerraduras_video" />
+                            </Label.GestureRecognizers>
+                        </Label>
+                    </StackLayout>
+                    <Entry Text="{Binding CheckList.limpiar_libricar_puertas_cerraduras_observacion}" Placeholder="Observaciones" FontSize="16" BackgroundColor="#F5F5F5" />
+                </StackLayout>
+
+                <!-- Completar plan de mantenimiento -->
+                <StackLayout Padding="10,5" Spacing="5" BackgroundColor="White">
+                    <StackLayout Orientation="Horizontal" Spacing="10">
+                        <Label Text="Completar plan de mantenimiento." FontSize="18" FontAttributes="Bold" />
+                        <Image Source="{Binding CheckList.completar_plan_mantenimiento_SemaforoIcon}" HeightRequest="24" WidthRequest="24" />
+                    </StackLayout>
+                    <StackLayout Orientation="Horizontal" Spacing="12">
+                        <Switch IsToggled="{Binding CheckList.completar_plan_mantenimiento, Converter={StaticResource IntToBoolConverter}}" />
+                        <Image Source="{Binding CheckList.completar_plan_mantenimiento_foto, Converter={StaticResource Base64ToImageSourceConverter}}" HeightRequest="30" WidthRequest="30" />
+                        <Label Text="&#xf030;" FontFamily="FA" FontSize="26" TextColor="#2196F3">
+                            <Label.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding TomarCompletarPlanMantenimientoFotoCommand}" />
+                            </Label.GestureRecognizers>
+                        </Label>
+                        <Label Text="&#xf03d;" FontFamily="FA" FontSize="24" TextColor="#E53935">
+                            <Label.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding TomarCompletarPlanMantenimientoVideoCommand}" CommandParameter="completar_plan_mantenimiento_video" />
+                            </Label.GestureRecognizers>
+                        </Label>
+                    </StackLayout>
+                    <Entry Text="{Binding CheckList.completar_plan_mantenimiento_observacion}" Placeholder="Observaciones" FontSize="16" BackgroundColor="#F5F5F5" />
+                </StackLayout>
+
+
+
+
+                <Button Text="{Binding IsEditing, StringFormat='Guardar CheckList (Modificación)'}"
+                Command="{Binding ModificarCheckCommand}" 
+                IsVisible="{Binding IsEditing}" />
+
+                <Button Text="Guardar Checklist"
+                Command="{Binding GuardarCommand}" 
+                IsVisible="{Binding IsEditing, Converter={StaticResource InverseBoolConverter}}" />
+
+            </StackLayout>
+            
+        </ScrollView>
+    </ContentPage.Content>
+</ContentPage>

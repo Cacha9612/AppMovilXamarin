@@ -1,0 +1,20 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="AppMovilTrotaMundos.Views.FormularioFlotillas"
+             Title="Formulario de la Flotilla">
+    <ContentPage.Content>
+        <ScrollView>
+            <StackLayout Padding="10">
+
+                <Label Text="Nombre de la flotilla" />
+                <Entry Text="{Binding Flotilla.NamesFlotillas}" />
+                
+                <Label Text="Nombre del encargado" />
+                <Entry Text="{Binding Flotilla.Encargado}" />
+
+                <Button Text="Guardar" Command="{Binding GuardarFlotillaCommand}" />
+            </StackLayout>
+        </ScrollView>
+    </ContentPage.Content>
+</ContentPage>

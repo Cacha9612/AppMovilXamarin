@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Shell xmlns="http://xamarin.com/schemas/2014/forms"
+       xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+       xmlns:local="clr-namespace:AppMovilTrotaMundos.Views"
+       x:Class="AppMovilTrotaMundos.AppShell"
+       Shell.BackgroundColor="{StaticResource PrimaryColor}"
+       Shell.ForegroundColor="White"
+       Shell.TitleColor="White"
+       Shell.FlyoutBackgroundColor="{StaticResource PrimaryColor}"
+       Shell.TabBarBackgroundColor="{StaticResource PrimaryColor}"
+       Shell.TabBarTitleColor="White"
+       Shell.TabBarUnselectedColor="LightGray">
+
+    <!-- Define las vistas y el diseño del menú aquí -->
+    <FlyoutItem Title="Clientes" Icon="icon_clients.png">
+        <ShellContent Route="Clientes" ContentTemplate="{DataTemplate local:Clientes}" />
+    </FlyoutItem>
+
+    <TabBar>
+        <ShellContent Route="LoginPage" ContentTemplate="{DataTemplate local:LoginPage}" />
+    </TabBar>
+
+    <!-- Puedes definir encabezados y plantillas adicionales aquí si es necesario -->
+</Shell>

@@ -1,0 +1,36 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:local="clr-namespace:AppMovilTrotaMundos.Models"
+             x:Class="AppMovilTrotaMundos.Views.EmpeladosDetalles"
+             Title="Detalles del Empleado">
+
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <local:Base64ToImageSourceConverter x:Key="Base64ToImageSourceConverter" />
+        </ResourceDictionary>
+    </ContentPage.Resources>
+
+    <ContentPage.Content>
+        <ScrollView>
+            <StackLayout Padding="10">
+                <Frame Padding="10" CornerRadius="5" BorderColor="#E0E0E0">
+                    <StackLayout Spacing="10">
+                        <!-- Nombre -->
+                        <Label Text="Nombre:" FontSize="18" FontAttributes="Bold" TextColor="#333" />
+                        <Label Text="{Binding Empleado.Nombre}" FontSize="16" TextColor="#666" />
+
+                        <!-- Estatus -->
+                        <Label Text="Estatus:" FontSize="18" FontAttributes="Bold" TextColor="#333" />
+                        <Label Text="{Binding Empleado.EstatusTexto}" FontSize="16" TextColor="#666" />
+
+                        <!-- Rol -->
+                        <Label Text="Rol:" FontSize="18" FontAttributes="Bold" TextColor="#333" />
+                        <Label Text="{Binding Empleado.RolTexto}" FontSize="16" TextColor="#666" />
+                    </StackLayout>
+                </Frame>
+
+            </StackLayout>
+        </ScrollView>
+    </ContentPage.Content>
+</ContentPage>

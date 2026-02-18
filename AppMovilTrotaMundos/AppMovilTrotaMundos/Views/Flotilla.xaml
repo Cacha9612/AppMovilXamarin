@@ -1,0 +1,46 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:local="clr-namespace:AppMovilTrotaMundos.Views"
+             xmlns:vm="clr-namespace:AppMovilTrotaMundos.ViewModels"
+             x:Class="AppMovilTrotaMundos.Views.Flotilla"
+             x:Name="FlotillasPage" 
+    Title="Flotillas">
+
+    <ContentPage.Content>
+        <StackLayout Padding="10">
+            <!-- Buscador y botón para agregar la flotilla -->
+            <Grid ColumnDefinitions="*,Auto">
+                <Entry x:Name="SearchEntry"
+                       Placeholder="Buscar Flotilla..."
+                       Text="{Binding SearchText}"
+                       Grid.Column="0"/>
+                <Button Text="Agregar Flotilla"
+                        Grid.Column="1"
+                        Command="{Binding AgregarFlotillaCommand}"
+                        BackgroundColor="LightGreen"/>
+            </Grid>
+
+            <!-- Lista de clientes -->
+            <CollectionView ItemsSource="{Binding FiltradosFlotillas}"
+                            SelectionMode="Single"
+                            SelectionChanged="OnSelectionChanged">
+
+                <CollectionView.ItemTemplate>
+                    <DataTemplate>
+                        <Frame Padding="10" Margin="5" HasShadow="True">
+                            <StackLayout>
+                                <Label Text="{Binding NamesFlotillas}" FontSize="24" />
+                                <Label Text="{Binding Encargado}" FontSize="18" />
+                                
+                                <Button Text="Descargar PDF"
+                                        Command="{Binding Source={x:Reference FlotillasPage}, Path=BindingContext.DescargarPdfCommand}"
+                                        CommandParameter="{Binding IdFlotilla}" />
+                            </StackLayout>
+                        </Frame>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>

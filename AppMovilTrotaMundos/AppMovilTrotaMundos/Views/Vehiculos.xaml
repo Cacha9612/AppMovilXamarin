@@ -1,0 +1,47 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:local="clr-namespace:AppMovilTrotaMundos.Views"
+             xmlns:vm="clr-namespace:AppMovilTrotaMundos.ViewModels"
+             x:Class="AppMovilTrotaMundos.Views.Vehiculos"
+             Title="Vehiculos">
+
+    <ContentPage.Content>
+        <StackLayout Padding="10">
+            <!-- Buscador y botón para agregar vehículo -->
+            <Grid ColumnDefinitions="*,Auto">
+                <Entry x:Name="SearchEntry"
+                       Placeholder="Buscar vehículos..."
+                       Text="{Binding SearchText}"
+                       Grid.Column="0"/>
+                <Button Text="Agregar Vehículo"
+                        Grid.Column="1"
+                        Command="{Binding AgregarVehiculoCommand}"
+                        BackgroundColor="LightGreen"/>
+            </Grid>
+
+            <!-- Lista de vehículos -->
+            <CollectionView ItemsSource="{Binding FiltradosVehiculos}"
+                            SelectionMode="Single"
+                            SelectionChanged="OnSelectionChanged">
+                <CollectionView.ItemTemplate>
+                    <DataTemplate>
+                        <Frame Padding="10" Margin="5" HasShadow="True">
+                            <StackLayout>
+                                <Label Text="{Binding Marca}" FontSize="24" />
+                                <Label Text="{Binding Modelo}" FontSize="18" />
+                                <Label Text="{Binding Placa}" FontSize="18" />
+
+                                <!-- Botón para modificar vehículo -->
+                                <Button Text="Modificar Vehículo"
+                                        Command="{Binding Source={RelativeSource AncestorType={x:Type vm:VehiculosViewModel}}, Path=ModificarVehiculoCommand}"
+                                        CommandParameter="{Binding .}"
+                                        BackgroundColor="LightGreen"/>
+                            </StackLayout>
+                        </Frame>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>

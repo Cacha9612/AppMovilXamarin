@@ -1,0 +1,22 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:local="clr-namespace:AppMovilTrotaMundos.Models" 
+             xmlns:viewmodels="clr-namespace:AppMovilTrotaMundos.ViewModels" 
+             x:Class="AppMovilTrotaMundos.Views.ImageDetailPage">
+
+
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <local:IntToBoolConverter x:Key="IntToBoolConverter" />
+            <local:Base64ToImageSourceConverter x:Key="Base64ToImageSourceConverter" />
+        </ResourceDictionary>
+        <!-- Corrige la etiqueta de cierre -->
+    </ContentPage.Resources>
+    
+    
+    <ContentPage.Content>
+        
+        <Image Source="{Binding ImageSource,  Converter={StaticResource Base64ToImageSourceConverter}}" Aspect="AspectFit" />
+    </ContentPage.Content>
+</ContentPage>

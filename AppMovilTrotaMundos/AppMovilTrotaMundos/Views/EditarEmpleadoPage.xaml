@@ -1,0 +1,13 @@
+﻿<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="AppMovilTrotaMundos.Views.EditarEmpleadoPage"
+             Title="Editar Empleado">
+    <ContentPage.Content>
+        <StackLayout Padding="10">
+            <Entry Text="{Binding Empleado.Nombre}" Placeholder="Nombre" />
+            <Picker Title="Rol" ItemsSource="{Binding Roles}" SelectedItem="{Binding Empleado.Rol}" />
+            <Picker Title="Estatus" ItemsSource="{Binding Estatus}" SelectedItem="{Binding Empleado.Estatus}" />
+            <Button Text="Guardar" Command="{Binding GuardarCommand}" BackgroundColor="Green" TextColor="White" />
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>

@@ -1,0 +1,1201 @@
+﻿<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:local="clr-namespace:AppMovilTrotaMundos.Models" 
+             xmlns:viewmodels="clr-namespace:AppMovilTrotaMundos.ViewModels" 
+             x:DataType="viewmodels:FormularioChecklistServicioViewModel"
+             x:Class="AppMovilTrotaMundos.Views.FormularioCheckListServicio">
+
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <local:IntToBoolConverter x:Key="IntToBoolConverter" />
+            <local:Base64ToImageSourceConverter x:Key="Base64ToImageSourceConverter" />
+            <local:EditingStatusConverter x:Key="EditingStatusConverter"/>
+            <local:InverseBoolConverter x:Key="InverseBoolConverter"/>
+            <local:SemaforoColorConverter x:Key="SemaforoColorConverter" />
+
+        </ResourceDictionary>
+        <!-- Corrige la etiqueta de cierre -->
+    </ContentPage.Resources>
+
+    <ContentPage.Content>
+        <ScrollView>
+            <StackLayout Padding="10">
+                <Grid ColumnSpacing="15" RowSpacing="10">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+
+                    <!-- Título -->
+                    <Label Text="Servicio General"
+           FontAttributes="Bold"
+           FontSize="Large"
+           HorizontalOptions="End"
+           Grid.Row="0"
+           Grid.ColumnSpan="2" />
+
+                    <!-- Número de Orden -->
+                               <Label Text="{Binding TiempoTranscurrido}"
+FontSize="Large"
+HorizontalOptions="Center"
+VerticalOptions="CenterAndExpand" />
+
+                    <Label Text="Id CheckList:"
+       VerticalOptions="Center"
+       Grid.Row="1"
+       Grid.Column="0" />
+                    <Entry Text="{Binding CheckList.id_checklist, Mode=TwoWay}"
+       Placeholder="CheckList"
+       Grid.Row="1"
+       Grid.Column="1" />
+
+                    <!-- Enlaza el Número de Serie -->
+                    <Label Text="No. de Serie:"
+       VerticalOptions="Center"
+       Grid.Row="2"
+       Grid.Column="0" />
+                    <Entry Text="{Binding CheckList.NumeroSerie, Mode=OneWay}" 
+       IsReadOnly="True"
+       Grid.Row="2" 
+       Grid.Column="1" />
+
+
+                    <!-- Fecha -->
+                    <Label Text="Fecha:"
+           VerticalOptions="Center"
+           Grid.Row="3"
+           Grid.Column="0" />
+                    <DatePicker Date="{Binding CheckList.Fecha}"
+                Grid.Row="3"
+                Grid.Column="1" />
+
+  
+                </Grid>
+
+                <!-- Switches for binary fields -->
+
+                <StackLayout Orientation="Horizontal" Spacing="10">
+                    <Label Text="Lectura de códigos de fallas en sistemas." VerticalOptions="Center"/>
+                    <Switch IsToggled="{Binding CheckList.lectura_codigos, Converter={StaticResource IntToBoolConverter}}" />
+                    <Entry Text="{Binding CheckList.lectura_codigos_observacion}" Placeholder="Observaciones"/>
+                    <Image Source="{Binding CheckList.lectura_codigos_foto, Converter={StaticResource Base64ToImageSourceConverter}}" WidthRequest="10"
+                        HeightRequest="10" Aspect="AspectFit">
+                        <Image.GestureRecognizers>
+                            <TapGestureRecognizer 
+                                Command="{Binding ExpandImageCommand}" 
+                                CommandParameter="{Binding CheckList.lectura_codigos_foto}"/>
+                        </Image.GestureRecognizers>
+                    </Image>
+                    <Button Command="{Binding TomarLecturaCodigosFotoCommand}" BackgroundColor="Transparent">
+                        <Button.ImageSource>
+                            <FileImageSource File="camara_icon.png"/>
+                        </Button.ImageSource>
+                    </Button>
+                    <!-- Semáforo -->
+                    <!--<StackLayout Orientation="Horizontal" Spacing="2" VerticalOptions="Center">
+                        <Frame Padding="0" WidthRequest="18" HeightRequest="18" CornerRadius="9"
+                               BackgroundColor="{Binding CheckList.lectura_codigos_semaforo, Converter={StaticResource SemaforoColorConverter}, ConverterParameter=Rojo}">
+                            <Frame.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding SeleccionarSemaforoCommand}" CommandParameter="Rojo,lectura_codigos_semaforo"/>
+                            </Frame.GestureRecognizers>
+                        </Frame>
+                        <Frame Padding="0" WidthRequest="18" HeightRequest="18" CornerRadius="9"
+                               BackgroundColor="{Binding CheckList.lectura_codigos_semaforo, Converter={StaticResource SemaforoColorConverter}, ConverterParameter=Amarillo}">
+                            <Frame.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding SeleccionarSemaforoCommand}" CommandParameter="Amarillo,lectura_codigos_semaforo"/>
+                            </Frame.GestureRecognizers>
+                        </Frame>
+                        <Frame Padding="0" WidthRequest="18" HeightRequest="18" CornerRadius="9"
+                               BackgroundColor="{Binding CheckList.lectura_codigos_semaforo, Converter={StaticResource SemaforoColorConverter}, ConverterParameter=Verde}">
+                            <Frame.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding SeleccionarSemaforoCommand}" CommandParameter="Verde,lectura_codigos_semaforo"/>
+                            </Frame.GestureRecognizers>
+                        </Frame>
+                    </StackLayout>-->
+                </StackLayout>
+
+
+
+
+                <StackLayout Orientation="Horizontal">
+                    <Label Text="Funcionamiento del servofreno" VerticalOptions="Center" />
+                    <Switch IsToggled="{Binding CheckList.servofreno, Converter={StaticResource IntToBoolConverter}}" />
+                    <Entry Text="{Binding CheckList.servofreno_observacion}" Placeholder="Observaciones"/>
+                    <Image Source="{Binding CheckList.servofreno_foto, Converter={StaticResource Base64ToImageSourceConverter}}" WidthRequest="10"
+    HeightRequest="10" Aspect="AspectFit">
+                        <Image.GestureRecognizers>
+                            <TapGestureRecognizer 
+                Command="{Binding ExpandImageCommand}" 
+                CommandParameter="{Binding CheckList.servofreno_foto}"/>
+                        </Image.GestureRecognizers>
+                    </Image>
+                    <Button Command="{Binding TomarServoFrenoFotoCommand}" BackgroundColor="Transparent">
+                        <Button.ImageSource>
+                            <FileImageSource File="camara_icon.png"/>
+                        </Button.ImageSource>
+                    </Button>
+                </StackLayout>
+
+                
+                <StackLayout Orientation="Horizontal">
+                    <Label Text="Funcionamiento del pedal de freno." VerticalOptions="Center" />
+                    <Switch IsToggled="{Binding CheckList.pedal_freno,Converter={StaticResource IntToBoolConverter}}"/>
+                    <Entry Text="{Binding CheckList.pedal_freno_observacion}" Placeholder="Observaciones"/>
+                    <Image Source="{Binding CheckList.pedal_freno_foto, Converter={StaticResource Base64ToImageSourceConverter}}" WidthRequest="10"
+    HeightRequest="10" Aspect="AspectFit">
+                        <Image.GestureRecognizers>
+                            <TapGestureRecognizer 
+                Command="{Binding ExpandImageCommand}" 
+                CommandParameter="{Binding CheckList.pedal_freno_foto}"/>
+                        </Image.GestureRecognizers>
+                    </Image>
+                    <Button Command="{Binding TomarPedalFrenoFotoCommand}" BackgroundColor="Transparent">
+                        <Button.ImageSource>
+                            <FileImageSource File="camara_icon.png"/>
+                        </Button.ImageSource>
+                    </Button>
+
+                </StackLayout>
+                <StackLayout Orientation="Horizontal">
+                    <Label Text="Funcionamiento del pedal de estacionamiento." />
+                    <Switch IsToggled="{Binding CheckList.pedal_estacionamiento,Converter={StaticResource IntToBoolConverter}}"/>
+                    <Entry Text="{Binding CheckList.pedal_estacionamiento_observacion}" Placeholder="Observaciones"/>
+                    <Image Source="{Binding CheckList.pedal_estacionamiento_foto, Converter={StaticResource Base64ToImageSourceConverter}}" 
+    HeightRequest="10" Aspect="AspectFit">
+                        <Image.GestureRecognizers>
+                            <TapGestureRecognizer 
+                Command="{Binding ExpandImageCommand}" 
+                CommandParameter="{Binding CheckList.pedal_estacionamiento_foto}"/>
+                        </Image.GestureRecognizers>
+                    </Image>
+                    <Button Command="{Binding TomarPedalEstacionamientoFotoCommand}" BackgroundColor="Transparent">
+                        <Button.ImageSource>
+                            <FileImageSource File="camara_icon.png"/>
+                        </Button.ImageSource>
+                    </Button>
+
+                </StackLayout>
+
+                <StackLayout Orientation="Horizontal">
+                    <Label Text="Cinturones de seguridad (funcionmaiento y fijaciones)." />
+                    <Switch IsToggled="{Binding CheckList.cinturon_seguridad,Converter={StaticResource IntToBoolConverter}}"/>
+                    <Entry Text="{Binding CheckList.cinturon_seguridad_observacion}" Placeholder="Observaciones"/>
+                    <Image Source="{Binding CheckList.cinturon_seguridad_foto, Converter={StaticResource Base64ToImageSourceConverter}}" WidthRequest="10"
+    HeightRequest="10" Aspect="AspectFit">
+                        <Image.GestureRecognizers>
+                            <TapGestureRecognizer 
+                Command="{Binding ExpandImageCommand}" 
+                CommandParameter="{Binding CheckList.cinturon_seguridad_foto}"/>
+                        </Image.GestureRecognizers>
+                    </Image>
+                    <Button Command="{Binding TomarCinturonSeguridadFotoCommand}" BackgroundColor="Transparent">
+                        <Button.ImageSource>
+                            <FileImageSource File="camara_icon.png"/>
+                        </Button.ImageSource>
+                    </Button>
+
+                </StackLayout>
+
+                <StackLayout Orientation="Horizontal">
+                    <Label Text="Cuadro de instrumentos (funcionamiento, iluminación, testigos)." />
+                    <Switch IsToggled="{Binding CheckList.cuadro_instrumentos,Converter={StaticResource IntToBoolConverter}}"/>
+                    <Entry Text="{Binding CheckList.cuadro_instrumentos_observacion}" Placeholder="Observaciones"/>
+                    <Image Source="{Binding CheckList.cuadro_instrumentos_foto, Converter={StaticResource Base64ToImageSourceConverter}}" WidthRequest="10"
+    HeightRequest="10" Aspect="AspectFit">
+                        <Image.GestureRecognizers>
+                            <TapGestureRecognizer 
+                Command="{Binding ExpandImageCommand}" 
+                CommandParameter="{Binding CheckList.cuadro_instrumentos_foto}"/>
+                        </Image.GestureRecognizers>
+                    </Image>
+                    <Button Command="{Binding TomarCuadroInstrumentosFotoCommand}" BackgroundColor="Transparent">
+                        <Button.ImageSource>
+                            <FileImageSource File="camara_icon.png"/>
+                        </Button.ImageSource>
+                    </Button>
+
+                </StackLayout>
+
+                <StackLayout Orientation="Horizontal">
+                    <Label Text="Funcionamiento Aire Acondicionado/Calefación." />
+                    <Switch IsToggled="{Binding CheckList.aire_acondicionado,Converter={StaticResource IntToBoolConverter}}"/>
+                    <Entry Text="{Binding CheckList.aire_acondicionado_observacion}" Placeholder="Observaciones"/>
+                    <Image Source="{Binding CheckList.aire_acondicionado_foto, Converter={StaticResource Base64ToImageSourceConverter}}" WidthRequest="10"
+    HeightRequest="10" Aspect="AspectFit">
+                        <Image.GestureRecognizers>
+                            <TapGestureRecognizer 
+                Command="{Binding ExpandImageCommand}" 
+                CommandParameter="{Binding CheckList.aire_acondicionado_foto}"/>
+                        </Image.GestureRecognizers>
+                    </Image>
+                    <Button Command="{Binding TomarAireAcondicionadoFotoCommand}" BackgroundColor="Transparent">
+                        <Button.ImageSource>
+                            <FileImageSource File="camara_icon.png"/>
+                        </Button.ImageSource>
+                    </Button>
+
+                </StackLayout>
+
+                <StackLayout Orientation="Horizontal">
+                    <Label Text="Bocina de claxón." />
+                    <Switch IsToggled="{Binding CheckList.bocina_claxon,Converter={StaticResource IntToBoolConverter}}"/>
+                    <Entry Text="{Binding CheckList.bocina_claxon_observacion}" Placeholder="Observaciones"/>
+                    <Image Source="{Binding CheckList.bocina_claxon_foto,  Converter={StaticResource Base64ToImageSourceConverter}}" WidthRequest="10"
+    HeightRequest="10" Aspect="AspectFit">
+                        <Image.GestureRecognizers>
+                            <TapGestureRecognizer 
+                Command="{Binding ExpandImageCommand}" 
+                CommandParameter="{Binding CheckList.bocina_claxon_foto}"/>
+                        </Image.GestureRecognizers>
+                    </Image>
+                    <Button Command="{Binding TomarBocinaClaxonFotoCommand}" BackgroundColor="Transparent">
+                        <Button.ImageSource>
+                            <FileImageSource File="camara_icon.png"/>
+                        </Button.ImageSource>
+                    </Button>
+
+                </StackLayout>
+
+                <StackLayout Orientation="Horizontal">
+                    <Label Text="Iluminación interior completa (cortesía, vanidad, guantera, etc.)" />
+                    <Switch IsToggled="{Binding CheckList.iluminacion_interior,Converter={StaticResource IntToBoolConverter}}"/>
+                    <Entry Text="{Binding CheckList.iluminacion_interior_observacion}" Placeholder="Observaciones"/>
+                    <Image Source="{Binding CheckList.iluminacion_interior_foto, Converter={StaticResource Base64ToImageSourceConverter}}" WidthRequest="10"
+    HeightRequest="10" Aspect="AspectFit">
+                        <Image.GestureRecognizers>
+                            <TapGestureRecognizer 
+                Command="{Binding ExpandImageCommand}" 
+                CommandParameter="{Binding CheckList.iluminacion_interior_foto}"/>
+                        </Image.GestureRecognizers>
+                    </Image>
+                    <Button Command="{Binding TomarIluminacionInteriorFotoCommand}" BackgroundColor="Transparent">
+                        <Button.ImageSource>
+                            <FileImageSource File="camara_icon.png"/>
+                        </Button.ImageSource>
+                    </Button>
+
+                </StackLayout>
+
+                <StackLayout Orientation="Horizontal">
+                    <Label Text="Iluminación externa (cuartos, bajas, altas, reversa, niebla, nivel)." />
+                    <Switch IsToggled="{Binding CheckList.iluminacion_externa,Converter={StaticResource IntToBoolConverter}}"/>
+                    <Entry Text="{Binding CheckList.iluminacion_externa_observacion}" Placeholder="Observaciones"/>
+                    <Image Source="{Binding CheckList.iluminacion_externa_foto, Converter={StaticResource Base64ToImageSourceConverter}}" WidthRequest="10"
+    HeightRequest="10" Aspect="AspectFit">
+                        <Image.GestureRecognizers>
+                            <TapGestureRecognizer 
+                Command="{Binding ExpandImageCommand}" 
+                CommandParameter="{Binding CheckList.iluminacion_externa_foto}"/>
+                        </Image.GestureRecognizers>
+                    </Image>
+                    <Button Command="{Binding TomarIluminacionExternaFotoCommand}" BackgroundColor="Transparent">
+                        <Button.ImageSource>
+                            <FileImageSource File="camara_icon.png"/>
+                        </Button.ImageSource>
+                    </Button>
+
+                </StackLayout>
+
+                <StackLayout Orientation="Horizontal">
+                    <Label Text="Sistema limpiaparabrisas completo, chorritos, plumas." />
+                    <Switch IsToggled="{Binding CheckList.limpiaparabrisas,Converter={StaticResource IntToBoolConverter}}"/>
+                    <Entry Text="{Binding CheckList.limpiaparabrisas_observacion}" Placeholder="Observaciones"/>
+                    <Image Source="{Binding CheckList.limpiaparabrisas_foto,  Converter={StaticResource Base64ToImageSourceConverter}}" WidthRequest="10"
+    HeightRequest="10" Aspect="AspectFit">
+                        <Image.GestureRecognizers>
+                            <TapGestureRecognizer 
+                Command="{Binding ExpandImageCommand}" 
+                CommandParameter="{Binding CheckList.limpiaparabrisas_foto}"/>
+                        </Image.GestureRecognizers>
+                    </Image>
+                    <Button Command="{Binding TomarLimpiaparabrisasFotoCommand}" BackgroundColor="Transparent">
+                        <Button.ImageSource>
+                            <FileImageSource File="camara_icon.png"/>
+                        </Button.ImageSource>
+                    </Button>
+
+                </StackLayout>
+
+                <StackLayout Orientation="Horizontal">
+                    <Label Text="Sistema limpia medallón completo, chorritos, plumas." />
+                    <Switch IsToggled="{Binding CheckList.limpia_medallon,Converter={StaticResource IntToBoolConverter}}"/>
+                    <Entry Text="{Binding CheckList.limpia_medallon_observacion}" Placeholder="Observaciones"/>
+                    <Image Source="{Binding CheckList.limpia_medallon_foto,  Converter={StaticResource Base64ToImageSourceConverter}}" WidthRequest="10"
+    HeightRequest="10" Aspect="AspectFit">
+                        <Image.GestureRecognizers>
+                            <TapGestureRecognizer 
+                Command="{Binding ExpandImageCommand}" 
+                CommandParameter="{Binding CheckList.limpia_medallon_foto}"/>
+                        </Image.GestureRecognizers>
+                    </Image>
+                    <Button Command="{Binding TomarLimpiaMedallonFotoCommand}" BackgroundColor="Transparent">
+                        <Button.ImageSource>
+                            <FileImageSource File="camara_icon.png"/>
+                        </Button.ImageSource>
+                    </Button>
+
+                </StackLayout>
+
+                <StackLayout Orientation="Horizontal">
+                    <Label Text="Control de neumáticos de fricción (desgaste y presión)." />
+                    <Switch IsToggled="{Binding CheckList.neumaticos_friccion,Converter={StaticResource IntToBoolConverter}}"/>
+                    <Entry Text="{Binding CheckList.neumaticos_friccion_observacion}" Placeholder="Observaciones"/>
+                    <Image Source="{Binding CheckList.neumaticos_friccion_foto, Converter={StaticResource Base64ToImageSourceConverter}}" WidthRequest="10"
+    HeightRequest="10" Aspect="AspectFit">
+                        <Image.GestureRecognizers>
+                            <TapGestureRecognizer 
+                Command="{Binding ExpandImageCommand}" 
+                CommandParameter="{Binding CheckList.neumaticos_friccion_foto}"/>
+                        </Image.GestureRecognizers>
+                    </Image>
+                    <Button Command="{Binding TomarNeumaticosFriccionFotoCommand}" BackgroundColor="Transparent">
+                        <Button.ImageSource>
+                            <FileImageSource File="camara_icon.png"/>
+                        </Button.ImageSource>
+                    </Button>
+
+                </StackLayout>
+
+
+                <StackLayout Orientation="Horizontal">
+                    <Label Text="Otros:" />
+                    <Switch IsToggled="{Binding CheckList.otros_habitaculo_motor,Converter={StaticResource IntToBoolConverter}}"/>
+                    <Entry Text="{Binding CheckList.otros_habitaculo_motor_observacion}" Placeholder="Observaciones"/>
+                    <Image Source="{Binding CheckList.otros_habitaculo_motor_foto,Converter={StaticResource Base64ToImageSourceConverter}}" WidthRequest="10"
+    HeightRequest="10" Aspect="AspectFit">
+                        <Image.GestureRecognizers>
+                            <TapGestureRecognizer 
+                Command="{Binding ExpandImageCommand}" 
+                CommandParameter="{Binding CheckList.otros_habitaculo_motor_foto}"/>
+                        </Image.GestureRecognizers>
+                    </Image>
+                    <Button Command="{Binding TomarOtrosHabitaculoMotorFotoCommand}" BackgroundColor="Transparent">
+                        <Button.ImageSource>
+                            <FileImageSource File="camara_icon.png"/>
+                        </Button.ImageSource>
+                    </Button>
+
+                </StackLayout>
+
+                <StackLayout Orientation="Horizontal">
+                    <Label Text="Estado de fugas de aceite de motor y transmisión" />
+                    <Switch IsToggled="{Binding CheckList.estado_fugas_aceite,Converter={StaticResource IntToBoolConverter}}"/>
+                    <Entry Text="{Binding CheckList.estado_fugas_aceite_observacion}" Placeholder="Observaciones"/>
+                    <Image Source="{Binding CheckList.estado_fugas_aceite_foto, Converter={StaticResource Base64ToImageSourceConverter}}" WidthRequest="10"
+    HeightRequest="10" Aspect="AspectFit">
+                        <Image.GestureRecognizers>
+                            <TapGestureRecognizer 
+                Command="{Binding ExpandImageCommand}" 
+                CommandParameter="{Binding CheckList.estado_fugas_aceite_foto}"/>
+                        </Image.GestureRecognizers>
+                    </Image>
+                    <Button Command="{Binding TomarEstadoFugasAceiteFotoCommand}" BackgroundColor="Transparent">
+                        <Button.ImageSource>
+                            <FileImageSource File="camara_icon.png"/>
+                        </Button.ImageSource>
+                    </Button>
+
+                </StackLayout>
+
+                <StackLayout Orientation="Horizontal">
+                    <Label Text="Estado de nivel y calidad de lubricantes en transmisión." />
+                    <Switch IsToggled="{Binding CheckList.estado_nivel_calidad_lubricante_transmision,Converter={StaticResource IntToBoolConverter}}"/>
+                    <Entry Text="{Binding CheckList.estado_nivel_calidad_lubricante_transmision_observacion}" Placeholder="Observaciones"/>
+                    <Image Source="{Binding CheckList.estado_nivel_calidad_lubricante_transmision_foto, Converter={StaticResource Base64ToImageSourceConverter}}" WidthRequest="10"
+    HeightRequest="10" Aspect="AspectFit">
+                        <Image.GestureRecognizers>
+                            <TapGestureRecognizer 
+                Command="{Binding ExpandImageCommand}" 
+                CommandParameter="{Binding CheckList.estado_nivel_calidad_lubricante_transmision_foto}"/>
+                        </Image.GestureRecognizers>
+                    </Image>
+                    <Button Command="{Binding TomarEstadoNivelCalidaTransmisionFotoCommand}" BackgroundColor="Transparent">
+                        <Button.ImageSource>
+                            <FileImageSource File="camara_icon.png"/>
+                        </Button.ImageSource>
+                    </Button>
+
+                </StackLayout>
+
+                <StackLayout Orientation="Horizontal">
+                    <Label Text="Estado de nivel y calidad de lubricantes en diferencial" />
+                    <Switch IsToggled="{Binding CheckList.estado_nivel_calidad_lubricante_diferencial,Converter={StaticResource IntToBoolConverter}}"/>
+                    <Entry Text="{Binding CheckList.estado_nivel_calidad_lubricante_diferencial_observacion}" Placeholder="Observaciones"/>
+                    <Image Source="{Binding CheckList.estado_nivel_calidad_lubricante_diferencial_foto,Converter={StaticResource Base64ToImageSourceConverter}}" WidthRequest="10"
+    HeightRequest="10" Aspect="AspectFit">
+                        <Image.GestureRecognizers>
+                            <TapGestureRecognizer 
+                Command="{Binding ExpandImageCommand}" 
+                CommandParameter="{Binding CheckList.estado_nivel_calidad_lubricante_diferencial_foto}"/>
+                        </Image.GestureRecognizers>
+                    </Image>
+                    <Button Command="{Binding TomarNivelCalidadDiferencialFotoCommand}" BackgroundColor="Transparent">
+                        <Button.ImageSource>
+                            <FileImageSource File="camara_icon.png"/>
+                        </Button.ImageSource>
+                    </Button>
+
+                </StackLayout>
+
+                <StackLayout Orientation="Horizontal">
+                    <Label Text="Estado de cubrepolvos de flechas homocinéticas" />
+                    <Switch IsToggled="{Binding CheckList.cubrepolvos_flechas,Converter={StaticResource IntToBoolConverter}}"/>
+                    <Entry Text="{Binding CheckList.cubrepolvos_flechas_observacion}" Placeholder="Observaciones"/>
+                    <Image Source="{Binding CheckList.cubrepolvos_flechas_foto, Converter={StaticResource Base64ToImageSourceConverter}}" WidthRequest="10"
+    HeightRequest="10" Aspect="AspectFit">
+                        <Image.GestureRecognizers>
+                            <TapGestureRecognizer 
+                Command="{Binding ExpandImageCommand}" 
+                CommandParameter="{Binding CheckList.cubrepolvos_flechas_foto}"/>
+                        </Image.GestureRecognizers>
+                    </Image>
+                    <Button Command="{Binding TomarCubrepolvosFlechasFotoCommand}" BackgroundColor="Transparent">
+                        <Button.ImageSource>
+                            <FileImageSource File="camara_icon.png"/>
+                        </Button.ImageSource>
+                    </Button>
+
+                </StackLayout>
+
+                <StackLayout Orientation="Horizontal">
+                    <Label Text="Estado de componentes de dirección." />
+                    <Switch IsToggled="{Binding CheckList.componentes_direccion,Converter={StaticResource IntToBoolConverter}}"/>
+                    <Entry Text="{Binding CheckList.componentes_direccion_observacion}" Placeholder="Observaciones"/>
+                    <Image Source="{Binding CheckList.componentes_direccion_foto, Converter={StaticResource Base64ToImageSourceConverter}}" WidthRequest="10"
+    HeightRequest="10" Aspect="AspectFit">
+                        <Image.GestureRecognizers>
+                            <TapGestureRecognizer 
+                Command="{Binding ExpandImageCommand}" 
+                CommandParameter="{Binding CheckList.componentes_direccion_foto}"/>
+                        </Image.GestureRecognizers>
+                    </Image>
+                    <Button Command="{Binding TomarComponentesDireccionFotoCommand}" BackgroundColor="Transparent">
+                        <Button.ImageSource>
+                            <FileImageSource File="camara_icon.png"/>
+                        </Button.ImageSource>
+                    </Button>
+
+                </StackLayout>
+
+                <StackLayout Orientation="Horizontal">
+                    <Label Text="Estado de componentes de suspensión." />
+                    <Switch IsToggled="{Binding CheckList.componentes_suspesion,Converter={StaticResource IntToBoolConverter}}"/>
+                    <Entry Text="{Binding CheckList.componentes_suspesion_observacion}" Placeholder="Observaciones"/>
+                    <Image Source="{Binding CheckList.componentes_suspesion_foto, Converter={StaticResource Base64ToImageSourceConverter}}" WidthRequest="10"
+    HeightRequest="10" Aspect="AspectFit">
+                        <Image.GestureRecognizers>
+                            <TapGestureRecognizer 
+                Command="{Binding ExpandImageCommand}" 
+                CommandParameter="{Binding CheckList.componentes_suspesion_foto}"/>
+                        </Image.GestureRecognizers>
+                    </Image>
+                    <Button Command="{Binding TomarComponentesSuspensionFotoCommand}" BackgroundColor="Transparent">
+                        <Button.ImageSource>
+                            <FileImageSource File="camara_icon.png"/>
+                        </Button.ImageSource>
+                    </Button>
+
+                </StackLayout>
+
+                <StackLayout Orientation="Horizontal">
+                    <Label Text="Estado del sistema de escape completo." />
+                    <Switch IsToggled="{Binding CheckList.sistema_escape_completo,Converter={StaticResource IntToBoolConverter}}"/>
+                    <Entry Text="{Binding CheckList.sistema_escape_completo_observacion}" Placeholder="Observaciones"/>
+                    <Image Source="{Binding CheckList.sistema_escape_completo_foto, Converter={StaticResource Base64ToImageSourceConverter}}" WidthRequest="10"
+    HeightRequest="10" Aspect="AspectFit">
+                        <Image.GestureRecognizers>
+                            <TapGestureRecognizer 
+                Command="{Binding ExpandImageCommand}" 
+                CommandParameter="{Binding CheckList.sistema_escape_completo_foto}"/>
+                        </Image.GestureRecognizers>
+                    </Image>
+                    <Button Command="{Binding TomarSistemaEscapeCompletoFotoCommand}" BackgroundColor="Transparent">
+                        <Button.ImageSource>
+                            <FileImageSource File="camara_icon.png"/>
+                        </Button.ImageSource>
+                    </Button>
+
+                </StackLayout>
+
+                <StackLayout Orientation="Horizontal">
+                    <Label Text="Estado del sistema de alimentación de combustible (fugas)." />
+                    <Switch IsToggled="{Binding CheckList.sistema_alimentacion_combustible,Converter={StaticResource IntToBoolConverter}}"/>
+                    <Entry Text="{Binding CheckList.sistema_alimentacion_combustible_observacion}" Placeholder="Observaciones"/>
+                    <Image Source="{Binding CheckList.sistema_alimentacion_combustible_foto,Converter={StaticResource Base64ToImageSourceConverter}}" WidthRequest="10"
+    HeightRequest="10" Aspect="AspectFit">
+                        <Image.GestureRecognizers>
+                            <TapGestureRecognizer 
+                Command="{Binding ExpandImageCommand}" 
+                CommandParameter="{Binding CheckList.sistema_alimentacion_combustible_foto}"/>
+                        </Image.GestureRecognizers>
+                    </Image>
+                    <Button Command="{Binding TomarSistemaAlimentacionCombustibleFotoCommand}" BackgroundColor="Transparent">
+                        <Button.ImageSource>
+                            <FileImageSource File="camara_icon.png"/>
+                        </Button.ImageSource>
+                    </Button>
+
+                </StackLayout>
+
+                <StackLayout Orientation="Horizontal">
+                    <Label Text="Filtro de combustible." />
+                    <Switch IsToggled="{Binding CheckList.filtro_combustible,Converter={StaticResource IntToBoolConverter}}"/>
+                    <Entry Text="{Binding CheckList.filtro_combustible_observacion}" Placeholder="Observaciones"/>
+                    <Image Source="{Binding CheckList.filtro_combustible_foto, Converter={StaticResource Base64ToImageSourceConverter}}" WidthRequest="10"
+    HeightRequest="10" Aspect="AspectFit">
+                        <Image.GestureRecognizers>
+                            <TapGestureRecognizer 
+                Command="{Binding ExpandImageCommand}" 
+                CommandParameter="{Binding CheckList.filtro_combustible_foto}"/>
+                        </Image.GestureRecognizers>
+                    </Image>
+                    <Button Command="{Binding TomarFiltroCombustibleFotoCommand}" BackgroundColor="Transparent">
+                        <Button.ImageSource>
+                            <FileImageSource File="camara_icon.png"/>
+                        </Button.ImageSource>
+                    </Button>
+
+                </StackLayout>
+
+                <StackLayout Orientation="Horizontal">
+                    <Label Text="Control de fugas de dirección hidráulica." />
+                    <Switch IsToggled="{Binding CheckList.control_fugas_direccion_hidraulica,Converter={StaticResource IntToBoolConverter}}"/>
+                    <Entry Text="{Binding CheckList.control_fugas_direccion_hidraulica_observacion}" Placeholder="Observaciones"/>
+                    <Image Source="{Binding CheckList.control_fugas_direccion_hidraulica_foto,Converter={StaticResource Base64ToImageSourceConverter}}" WidthRequest="10"
+    HeightRequest="10" Aspect="AspectFit">
+                        <Image.GestureRecognizers>
+                            <TapGestureRecognizer 
+                Command="{Binding ExpandImageCommand}" 
+                CommandParameter="{Binding CheckList.control_fugas_direccion_hidraulica_foto}"/>
+                        </Image.GestureRecognizers>
+                    </Image>
+                    <Button Command="{Binding TomarControlFugasHidraulicaFotoCommand}" BackgroundColor="Transparent">
+                        <Button.ImageSource>
+                            <FileImageSource File="camara_icon.png"/>
+                        </Button.ImageSource>
+                    </Button>
+
+                </StackLayout>
+
+                <StackLayout Orientation="Horizontal">
+                    <Label Text="Otros:" />
+                    <Switch IsToggled="{Binding CheckList.otros_vehiculo_en_piso,Converter={StaticResource IntToBoolConverter}}"/>
+                    <Entry Text="{Binding CheckList.otros_vehiculo_en_piso_observacion}" Placeholder="Observaciones"/>
+                    <Image Source="{Binding CheckList.otros_vehiculo_en_piso_foto, Converter={StaticResource Base64ToImageSourceConverter}}" WidthRequest="10"
+    HeightRequest="10" Aspect="AspectFit">
+                        <Image.GestureRecognizers>
+                            <TapGestureRecognizer 
+                Command="{Binding ExpandImageCommand}" 
+                CommandParameter="{Binding CheckList.otros_vehiculo_en_piso_foto}"/>
+                        </Image.GestureRecognizers>
+                    </Image>
+                    <Button Command="{Binding TomarOtrosVehiculoPisoFotoCommand}" BackgroundColor="Transparent">
+                        <Button.ImageSource>
+                            <FileImageSource File="camara_icon.png"/>
+                        </Button.ImageSource>
+                    </Button>
+
+                </StackLayout>
+
+                <StackLayout Orientation="Horizontal">
+                    <Label Text="Control de rodamiento y mazas de rueda" />
+                    <Switch IsToggled="{Binding CheckList.rodamiento_mazas_rueda,Converter={StaticResource IntToBoolConverter}}"/>
+                    <Entry Text="{Binding CheckList.rodamiento_mazas_rueda_observacion}" Placeholder="Observaciones"/>
+                    <Image Source="{Binding CheckList.rodamiento_mazas_rueda_foto, Converter={StaticResource Base64ToImageSourceConverter}}" WidthRequest="10"
+    HeightRequest="10" Aspect="AspectFit">
+                        <Image.GestureRecognizers>
+                            <TapGestureRecognizer 
+                Command="{Binding ExpandImageCommand}" 
+                CommandParameter="{Binding CheckList.rodamiento_mazas_rueda_foto}"/>
+                        </Image.GestureRecognizers>
+                    </Image>
+                    <Button Command="{Binding TomarRodamientoMazasRuedasFotoCommand}" BackgroundColor="Transparent">
+                        <Button.ImageSource>
+                            <FileImageSource File="camara_icon.png"/>
+                        </Button.ImageSource>
+                    </Button>
+
+                </StackLayout>
+
+                <StackLayout Orientation="Horizontal">
+                    <Label Text="Holgura/juego en partes de suspensión y dirección." />
+                    <Switch IsToggled="{Binding CheckList.holgura_partes_suspension_rueda,Converter={StaticResource IntToBoolConverter}}"/>
+                    <Entry Text="{Binding CheckList.holgura_partes_suspension_rueda_observacion}" Placeholder="Observaciones"/>
+                    <Image Source="{Binding CheckList.holgura_partes_suspension_rueda_foto, Converter={StaticResource Base64ToImageSourceConverter}}" WidthRequest="10"
+    HeightRequest="10" Aspect="AspectFit">
+                        <Image.GestureRecognizers>
+                            <TapGestureRecognizer 
+                Command="{Binding ExpandImageCommand}" 
+                CommandParameter="{Binding CheckList.holgura_partes_suspension_rueda_foto}"/>
+                        </Image.GestureRecognizers>
+                    </Image>
+                    <Button Command="{Binding TomarHolguraPartesSuspensionFotoCommand}" BackgroundColor="Transparent">
+                        <Button.ImageSource>
+                            <FileImageSource File="camara_icon.png"/>
+                        </Button.ImageSource>
+                    </Button>
+
+                </StackLayout>
+
+                <StackLayout Orientation="Horizontal">
+                    <Label Text="Control de neumáticos (desgaste y presión)." />
+                    <Switch IsToggled="{Binding CheckList.control_neumaticos_desgaste_presion,Converter={StaticResource IntToBoolConverter}}"/>
+                    <Entry Text="{Binding CheckList.control_neumaticos_desgaste_presion_observacion}" Placeholder="Observaciones"/>
+                    <Image Source="{Binding CheckList.control_neumaticos_desgaste_presion_foto, Converter={StaticResource Base64ToImageSourceConverter}}" WidthRequest="10"
+    HeightRequest="10" Aspect="AspectFit">
+                        <Image.GestureRecognizers>
+                            <TapGestureRecognizer 
+                Command="{Binding ExpandImageCommand}" 
+                CommandParameter="{Binding CheckList.control_neumaticos_desgaste_presion_foto}"/>
+                        </Image.GestureRecognizers>
+                    </Image>
+                    <Button Command="{Binding TomarControlNeumaticosDesgasteFotoCommand}" BackgroundColor="Transparent">
+                        <Button.ImageSource>
+                            <FileImageSource File="camara_icon.png"/>
+                        </Button.ImageSource>
+                    </Button>
+
+                </StackLayout>
+
+                <StackLayout Orientation="Horizontal">
+                    <Label Text="Profundidad." />
+                    <Switch IsToggled="{Binding CheckList.profundidad,Converter={StaticResource IntToBoolConverter}}"/>
+                    <Entry Text="{Binding CheckList.profundidad_observacion}" Placeholder="Observaciones"/>
+                    <Image Source="{Binding CheckList.profundidad_foto, Converter={StaticResource Base64ToImageSourceConverter}}" WidthRequest="10"
+    HeightRequest="10" Aspect="AspectFit">
+                        <Image.GestureRecognizers>
+                            <TapGestureRecognizer 
+                Command="{Binding ExpandImageCommand}" 
+                CommandParameter="{Binding CheckList.profundidad_foto}"/>
+                        </Image.GestureRecognizers>
+                    </Image>
+                    <Button Command="{Binding TomarProfundidadFotoCommand}" BackgroundColor="Transparent">
+                        <Button.ImageSource>
+                            <FileImageSource File="camara_icon.png"/>
+                        </Button.ImageSource>
+                    </Button>
+
+                </StackLayout>
+
+                <StackLayout Orientation="Horizontal">
+                    <Label Text="Presión." />
+                    <Switch IsToggled="{Binding CheckList.presion,Converter={StaticResource IntToBoolConverter}}"/>
+                    <Entry Text="{Binding CheckList.presion_observacion}" Placeholder="Observaciones"/>
+                    <Image Source="{Binding CheckList.presion_foto, Converter={StaticResource Base64ToImageSourceConverter}}" WidthRequest="10"
+    HeightRequest="10" Aspect="AspectFit">
+                        <Image.GestureRecognizers>
+                            <TapGestureRecognizer 
+                Command="{Binding ExpandImageCommand}" 
+                CommandParameter="{Binding CheckList.presion_foto}"/>
+                        </Image.GestureRecognizers>
+                    </Image>
+                    <Button Command="{Binding TomarPresionFotoCommand}" BackgroundColor="Transparent">
+                        <Button.ImageSource>
+                            <FileImageSource File="camara_icon.png"/>
+                        </Button.ImageSource>
+                    </Button>
+
+                </StackLayout>
+
+                <StackLayout Orientation="Horizontal">
+                    <Label Text="Otros:" />
+                    <Switch IsToggled="{Binding CheckList.otros_altura_media,Converter={StaticResource IntToBoolConverter}}"/>
+                    <Entry Text="{Binding CheckList.otros_altura_media_observacion}" Placeholder="Observaciones"/>
+                    <Image Source="{Binding CheckList.otros_altura_media_foto,Converter={StaticResource Base64ToImageSourceConverter}}" WidthRequest="10"
+    HeightRequest="10" Aspect="AspectFit">
+                        <Image.GestureRecognizers>
+                            <TapGestureRecognizer 
+                Command="{Binding ExpandImageCommand}" 
+                CommandParameter="{Binding CheckList.otros_altura_media_foto}"/>
+                        </Image.GestureRecognizers>
+                    </Image>
+                    <Button Command="{Binding TomarOtrosAlturaMediaFotoCommand}" BackgroundColor="Transparent">
+                        <Button.ImageSource>
+                            <FileImageSource File="camara_icon.png"/>
+                        </Button.ImageSource>
+                    </Button>
+
+                </StackLayout>
+
+                <StackLayout Orientation="Horizontal">
+                    <Label Text="Nivel y calidad de aceite de motor." />
+                    <Switch IsToggled="{Binding CheckList.nivel_calidad_aceite_motor,Converter={StaticResource IntToBoolConverter}}"/>
+                    <Entry Text="{Binding CheckList.nivel_calidad_aceite_motor_observacion}" Placeholder="Observaciones"/>
+                    <Image Source="{Binding CheckList.nivel_calidad_aceite_motor_foto, Converter={StaticResource Base64ToImageSourceConverter}}" WidthRequest="10"
+    HeightRequest="10" Aspect="AspectFit">
+                        <Image.GestureRecognizers>
+                            <TapGestureRecognizer 
+                Command="{Binding ExpandImageCommand}" 
+                CommandParameter="{Binding CheckList.nivel_calidad_aceite_motor_foto}"/>
+                        </Image.GestureRecognizers>
+                    </Image>
+                    <Button Command="{Binding TomarNivelCalidadAceiteMotorFotoCommand}" BackgroundColor="Transparent">
+                        <Button.ImageSource>
+                            <FileImageSource File="camara_icon.png"/>
+                        </Button.ImageSource>
+                    </Button>
+
+                </StackLayout>
+
+                <StackLayout Orientation="Horizontal">
+                    <Label Text="Filtro de aire" />
+                    <Switch IsToggled="{Binding CheckList.filtro_aire,Converter={StaticResource IntToBoolConverter}}"/>
+                    <Entry Text="{Binding CheckList.filtro_aire_observacion}" Placeholder="Observaciones"/>
+                    <Image Source="{Binding CheckList.filtro_aire_foto, Converter={StaticResource Base64ToImageSourceConverter}}" WidthRequest="10"
+    HeightRequest="10" Aspect="AspectFit">
+                        <Image.GestureRecognizers>
+                            <TapGestureRecognizer 
+                Command="{Binding ExpandImageCommand}" 
+                CommandParameter="{Binding CheckList.filtro_aire_foto}"/>
+                        </Image.GestureRecognizers>
+                    </Image>
+                    <Button Command="{Binding TomarFiltroAireFotoCommand}" BackgroundColor="Transparent">
+                        <Button.ImageSource>
+                            <FileImageSource File="camara_icon.png"/>
+                        </Button.ImageSource>
+                    </Button>
+
+                </StackLayout>
+
+                <StackLayout Orientation="Horizontal">
+                    <Label Text="Filtro de Polen" />
+                    <Switch IsToggled="{Binding CheckList.filtro_polen,Converter={StaticResource IntToBoolConverter}}"/>
+                    <Entry Text="{Binding CheckList.filtro_polen_observacion}" Placeholder="Observaciones"/>
+                    <Image Source="{Binding CheckList.filtro_polen_foto,Converter={StaticResource Base64ToImageSourceConverter}}" WidthRequest="10"
+    HeightRequest="10" Aspect="AspectFit">
+                        <Image.GestureRecognizers>
+                            <TapGestureRecognizer 
+                Command="{Binding ExpandImageCommand}" 
+                CommandParameter="{Binding CheckList.filtro_polen_foto}"/>
+                        </Image.GestureRecognizers>
+                    </Image>
+                    <Button Command="{Binding TomarFiltroPolenFotoCommand}" BackgroundColor="Transparent">
+                        <Button.ImageSource>
+                            <FileImageSource File="camara_icon.png"/>
+                        </Button.ImageSource>
+                    </Button>
+
+                </StackLayout>
+
+                <StackLayout Orientation="Horizontal">
+                    <Label Text="Filtro PCV." />
+                    <Switch IsToggled="{Binding CheckList.filtro_pcv,Converter={StaticResource IntToBoolConverter}}"/>
+                    <Entry Text="{Binding CheckList.filtro_pcv_observacion}" Placeholder="Observaciones"/>
+                    <Image Source="{Binding CheckList.filtro_pcv_foto, Converter={StaticResource Base64ToImageSourceConverter}}" WidthRequest="10"
+    HeightRequest="10" Aspect="AspectFit">
+                        <Image.GestureRecognizers>
+                            <TapGestureRecognizer 
+                Command="{Binding ExpandImageCommand}" 
+                CommandParameter="{Binding CheckList.filtro_pcv_foto}"/>
+                        </Image.GestureRecognizers>
+                    </Image>
+                    <Button Command="{Binding TomarFiltroPCVFotoCommand}" BackgroundColor="Transparent">
+                        <Button.ImageSource>
+                            <FileImageSource File="camara_icon.png"/>
+                        </Button.ImageSource>
+                    </Button>
+
+                </StackLayout>
+
+                <StackLayout Orientation="Horizontal">
+                    <Label Text="Valvula PCV." />
+                    <Switch IsToggled="{Binding CheckList.valvula_pcv,Converter={StaticResource IntToBoolConverter}}"/>
+                    <Entry Text="{Binding CheckList.valvula_pcv_observacion}" Placeholder="Observaciones"/>
+                    <Image Source="{Binding CheckList.valvula_pcv_foto, Converter={StaticResource Base64ToImageSourceConverter}}" WidthRequest="10"
+    HeightRequest="10" Aspect="AspectFit">
+                        <Image.GestureRecognizers>
+                            <TapGestureRecognizer 
+                Command="{Binding ExpandImageCommand}" 
+                CommandParameter="{Binding CheckList.valvula_pcv_foto}"/>
+                        </Image.GestureRecognizers>
+                    </Image>
+                    <Button Command="{Binding TomarValvulaPCVFotoCommand}" BackgroundColor="Transparent">
+                        <Button.ImageSource>
+                            <FileImageSource File="camara_icon.png"/>
+                        </Button.ImageSource>
+                    </Button>
+
+                </StackLayout>
+
+                <StackLayout Orientation="Horizontal">
+                    <Label Text="Bujías de encendido." />
+                    <Switch IsToggled="{Binding CheckList.bujias_encendido,Converter={StaticResource IntToBoolConverter}}"/>
+                    <Entry Text="{Binding CheckList.bujias_encendido_observacion}" Placeholder="Observaciones"/>
+                    <Image Source="{Binding CheckList.bujias_encendido_foto, Converter={StaticResource Base64ToImageSourceConverter}}" WidthRequest="10"
+    HeightRequest="10" Aspect="AspectFit">
+                        <Image.GestureRecognizers>
+                            <TapGestureRecognizer 
+                Command="{Binding ExpandImageCommand}" 
+                CommandParameter="{Binding CheckList.bujias_encendido_foto}"/>
+                        </Image.GestureRecognizers>
+                    </Image>
+                    <Button Command="{Binding TomarBujiasEncendidoFotoCommand}" BackgroundColor="Transparent">
+                        <Button.ImageSource>
+                            <FileImageSource File="camara_icon.png"/>
+                        </Button.ImageSource>
+                    </Button>
+
+                </StackLayout>
+
+                <StackLayout Orientation="Horizontal">
+                    <Label Text="Cables de bujías y/o bobinas de ignición." />
+                    <Switch IsToggled="{Binding CheckList.cables_bujias_bobinas_ignicion,Converter={StaticResource IntToBoolConverter}}"/>
+                    <Entry Text="{Binding CheckList.cables_bujias_bobinas_ignicion_observacion}" Placeholder="Observaciones"/>
+                    <Image Source="{Binding CheckList.cables_bujias_bobinas_ignicion_foto, Converter={StaticResource Base64ToImageSourceConverter}}" WidthRequest="10"
+    HeightRequest="10" Aspect="AspectFit">
+                        <Image.GestureRecognizers>
+                            <TapGestureRecognizer 
+                Command="{Binding ExpandImageCommand}" 
+                CommandParameter="{Binding CheckList.cables_bujias_bobinas_ignicion_foto}"/>
+                        </Image.GestureRecognizers>
+                    </Image>
+                    <Button Command="{Binding TomarCablesBujiasBobinasFotoCommand}" BackgroundColor="Transparent">
+                        <Button.ImageSource>
+                            <FileImageSource File="camara_icon.png"/>
+                        </Button.ImageSource>
+                    </Button>
+
+                </StackLayout>
+
+                <StackLayout Orientation="Horizontal">
+                    <Label Text="Nivel y calidad de anticongelante/antiebullente." />
+                    <Switch IsToggled="{Binding CheckList.nivel_anticongenlante,Converter={StaticResource IntToBoolConverter}}"/>
+                    <Entry Text="{Binding CheckList.nivel_anticongenlante_observacion}" Placeholder="Observaciones"/>
+                    <Image Source="{Binding CheckList.nivel_anticongenlante_foto, Converter={StaticResource Base64ToImageSourceConverter}}" WidthRequest="10"
+    HeightRequest="10" Aspect="AspectFit">
+                        <Image.GestureRecognizers>
+                            <TapGestureRecognizer 
+                Command="{Binding ExpandImageCommand}" 
+                CommandParameter="{Binding CheckList.nivel_anticongenlante_foto}"/>
+                        </Image.GestureRecognizers>
+                    </Image>
+                    <Button Command="{Binding TomarNivelAnticongelanteFotoCommand}" BackgroundColor="Transparent">
+                        <Button.ImageSource>
+                            <FileImageSource File="camara_icon.png"/>
+                        </Button.ImageSource>
+                    </Button>
+
+                </StackLayout>
+
+                <StackLayout Orientation="Horizontal">
+                    <Label Text="Tapón de radiador o depósito recuperador." />
+                    <Switch IsToggled="{Binding CheckList.tapon_radiador,Converter={StaticResource IntToBoolConverter}}"/>
+                    <Entry Text="{Binding CheckList.tapon_radiador_observacion}" Placeholder="Observaciones"/>
+                    <Image Source="{Binding CheckList.tapon_radiador_foto, Converter={StaticResource Base64ToImageSourceConverter}}" WidthRequest="10"
+    HeightRequest="10" Aspect="AspectFit">
+                        <Image.GestureRecognizers>
+                            <TapGestureRecognizer 
+                Command="{Binding ExpandImageCommand}" 
+                CommandParameter="{Binding CheckList.tapon_radiador_foto}"/>
+                        </Image.GestureRecognizers>
+                    </Image>
+                    <Button Command="{Binding TomarTaponRadiadorFotoCommand}" BackgroundColor="Transparent">
+                        <Button.ImageSource>
+                            <FileImageSource File="camara_icon.png"/>
+                        </Button.ImageSource>
+                    </Button>
+
+                </StackLayout>
+
+                <StackLayout Orientation="Horizontal">
+                    <Label Text="Mangueras de sistema (radiador y calefacción)." />
+                    <Switch IsToggled="{Binding CheckList.mangueras_sistema,Converter={StaticResource IntToBoolConverter}}"/>
+                    <Entry Text="{Binding CheckList.mangueras_sistema_observacion}" Placeholder="Observaciones"/>
+                    <Image Source="{Binding CheckList.mangueras_sistema_foto, Converter={StaticResource Base64ToImageSourceConverter}}" WidthRequest="10"
+    HeightRequest="10" Aspect="AspectFit">
+                        <Image.GestureRecognizers>
+                            <TapGestureRecognizer 
+                Command="{Binding ExpandImageCommand}" 
+                CommandParameter="{Binding CheckList.mangueras_sistema_foto}"/>
+                        </Image.GestureRecognizers>
+                    </Image>
+                    <Button Command="{Binding TomarManguerasSistemaFotoCommand}" BackgroundColor="Transparent">
+                        <Button.ImageSource>
+                            <FileImageSource File="camara_icon.png"/>
+                        </Button.ImageSource>
+                    </Button>
+
+                </StackLayout>
+
+                <StackLayout Orientation="Horizontal">
+                    <Label Text="Desempeño de ventilador ya sea eléctrico o térmico." />
+                    <Switch IsToggled="{Binding CheckList.desempeño_ventilador,Converter={StaticResource IntToBoolConverter}}"/>
+                    <Entry Text="{Binding CheckList.desempeño_ventilador_observacion}" Placeholder="Observaciones"/>
+                    <Image Source="{Binding CheckList.desempeño_ventilador_foto, Converter={StaticResource Base64ToImageSourceConverter}}" WidthRequest="10"
+    HeightRequest="10" Aspect="AspectFit">
+                        <Image.GestureRecognizers>
+                            <TapGestureRecognizer 
+                Command="{Binding ExpandImageCommand}" 
+                CommandParameter="{Binding CheckList.desempeño_ventilador_foto}"/>
+                        </Image.GestureRecognizers>
+                    </Image>
+                    <Button Command="{Binding TomarDesempeñoVentiladorFotoCommand}" BackgroundColor="Transparent">
+                        <Button.ImageSource>
+                            <FileImageSource File="camara_icon.png"/>
+                        </Button.ImageSource>
+                    </Button>
+
+                </StackLayout>
+
+                <StackLayout Orientation="Horizontal">
+                    <Label Text="Nivel y calidad de líquido limpiaparabrisas." />
+                    <Switch IsToggled="{Binding CheckList.calidad_liquido_limpiaparabrisas,Converter={StaticResource IntToBoolConverter}}"/>
+                    <Entry Text="{Binding CheckList.calidad_liquido_limpiaparabrisas_observacion}" Placeholder="Observaciones"/>
+                    <Image Source="{Binding CheckList.calidad_liquido_limpiaparabrisas_foto, Converter={StaticResource Base64ToImageSourceConverter}}" WidthRequest="10"
+    HeightRequest="10" Aspect="AspectFit">
+                        <Image.GestureRecognizers>
+                            <TapGestureRecognizer 
+                Command="{Binding ExpandImageCommand}" 
+                CommandParameter="{Binding CheckList.calidad_liquido_limpiaparabrisas_foto}"/>
+                        </Image.GestureRecognizers>
+                    </Image>
+                    <Button Command="{Binding TomarCalidadLiquidoParabrisasFotoCommand}" BackgroundColor="Transparent">
+                        <Button.ImageSource>
+                            <FileImageSource File="camara_icon.png"/>
+                        </Button.ImageSource>
+                    </Button>
+
+                </StackLayout>
+
+                <StackLayout Orientation="Horizontal">
+                    <Label Text="Nivel y calidad de aceite de la dirección hidráulica." />
+                    <Switch IsToggled="{Binding CheckList.calidad_aceite_direccion_hidraulica,Converter={StaticResource IntToBoolConverter}}"/>
+                    <Entry Text="{Binding CheckList.calidad_aceite_direccion_hidraulica_observacion}" Placeholder="Observaciones"/>
+                    <Image Source="{Binding CheckList.calidad_aceite_direccion_hidraulica_foto, Converter={StaticResource Base64ToImageSourceConverter}}" WidthRequest="10"
+    HeightRequest="10" Aspect="AspectFit">
+                        <Image.GestureRecognizers>
+                            <TapGestureRecognizer 
+                Command="{Binding ExpandImageCommand}" 
+                CommandParameter="{Binding CheckList.calidad_aceite_direccion_hidraulica_foto}"/>
+                        </Image.GestureRecognizers>
+                    </Image>
+                    <Button Command="{Binding TomarCaldiadAceiteHidraulicaFotoCommand}" BackgroundColor="Transparent">
+                        <Button.ImageSource>
+                            <FileImageSource File="camara_icon.png"/>
+                        </Button.ImageSource>
+                    </Button>
+
+                </StackLayout>
+
+                <StackLayout Orientation="Horizontal">
+                    <Label Text="Nivel y calidad de aceite de la transmisión con bayoneta." />
+                    <Switch IsToggled="{Binding CheckList.calidad_aceite_transmision_bayoneta,Converter={StaticResource IntToBoolConverter}}"/>
+                    <Entry Text="{Binding CheckList.calidad_aceite_transmision_bayoneta_observacion}" Placeholder="Observaciones"/>
+                    <Image Source="{Binding CheckList.calidad_aceite_transmision_bayoneta_foto, Converter={StaticResource Base64ToImageSourceConverter}}" WidthRequest="10"
+    HeightRequest="10" Aspect="AspectFit">
+                        <Image.GestureRecognizers>
+                            <TapGestureRecognizer 
+                Command="{Binding ExpandImageCommand}" 
+                CommandParameter="{Binding CheckList.calidad_aceite_transmision_bayoneta_foto}"/>
+                        </Image.GestureRecognizers>
+                    </Image>
+                    <Button Command="{Binding TomarCalidadAceiteTransmisionFotoCommand}" BackgroundColor="Transparent">
+                        <Button.ImageSource>
+                            <FileImageSource File="camara_icon.png"/>
+                        </Button.ImageSource>
+                    </Button>
+
+                </StackLayout>
+
+                <StackLayout Orientation="Horizontal">
+                    <Label Text="Nivel líquido de la batería y condiciones de la misma." />
+                    <Switch IsToggled="{Binding CheckList.liquido_bateria_condiciones,Converter={StaticResource IntToBoolConverter}}"/>
+                    <Entry Text="{Binding CheckList.liquido_bateria_condiciones_observacion}" Placeholder="Observaciones"/>
+                    <Image Source="{Binding CheckList.liquido_bateria_condiciones_foto, Converter={StaticResource Base64ToImageSourceConverter}}" WidthRequest="10"
+    HeightRequest="10" Aspect="AspectFit">
+                        <Image.GestureRecognizers>
+                            <TapGestureRecognizer 
+                Command="{Binding ExpandImageCommand}" 
+                CommandParameter="{Binding CheckList.liquido_bateria_condiciones_foto}"/>
+                        </Image.GestureRecognizers>
+                    </Image>
+                    <Button Command="{Binding TomarLiquidoBateriaConcidionesFotoCommand}" BackgroundColor="Transparent">
+                        <Button.ImageSource>
+                            <FileImageSource File="camara_icon.png"/>
+                        </Button.ImageSource>
+                    </Button>
+
+                </StackLayout>
+
+                <StackLayout Orientation="Horizontal">
+                    <Label Text="Bandas Poly V." />
+                    <Switch IsToggled="{Binding CheckList.bandas_poly_v,Converter={StaticResource IntToBoolConverter}}"/>
+                    <Entry Text="{Binding CheckList.bandas_poly_v_observacion}" Placeholder="Observaciones"/>
+                    <Image Source="{Binding CheckList.bandas_poly_v_foto, Converter={StaticResource Base64ToImageSourceConverter}}" WidthRequest="10"
+    HeightRequest="10" Aspect="AspectFit">
+                        <Image.GestureRecognizers>
+                            <TapGestureRecognizer 
+                Command="{Binding ExpandImageCommand}" 
+                CommandParameter="{Binding CheckList.bandas_poly_v_foto}"/>
+                        </Image.GestureRecognizers>
+                    </Image>
+                    <Button Command="{Binding TomarBandasPolyVFotoCommand}" BackgroundColor="Transparent">
+                        <Button.ImageSource>
+                            <FileImageSource File="camara_icon.png"/>
+                        </Button.ImageSource>
+                    </Button>
+
+                </StackLayout>
+
+                <StackLayout Orientation="Horizontal">
+                    <Label Text="Poleas de banda." />
+                    <Switch IsToggled="{Binding CheckList.poleas_banda,Converter={StaticResource IntToBoolConverter}}"/>
+                    <Entry Text="{Binding CheckList.poleas_banda_observacion}" Placeholder="Observaciones"/>
+                    <Image Source="{Binding CheckList.poleas_banda_foto, Converter={StaticResource Base64ToImageSourceConverter}}" WidthRequest="10"
+    HeightRequest="10" Aspect="AspectFit">
+                        <Image.GestureRecognizers>
+                            <TapGestureRecognizer 
+                Command="{Binding ExpandImageCommand}" 
+                CommandParameter="{Binding CheckList.poleas_banda_foto}"/>
+                        </Image.GestureRecognizers>
+                    </Image>
+                    <Button Command="{Binding TomarPoleasBandaFotoCommand}" BackgroundColor="Transparent">
+                        <Button.ImageSource>
+                            <FileImageSource File="camara_icon.png"/>
+                        </Button.ImageSource>
+                    </Button>
+
+                </StackLayout>
+
+                <StackLayout Orientation="Horizontal">
+                    <Label Text="Banda de tiempo:" />
+                    <Switch IsToggled="{Binding CheckList.banda_tiempo,Converter={StaticResource IntToBoolConverter}}"/>
+                    <Entry Text="{Binding CheckList.banda_tiempo_observacion}" Placeholder="Observaciones"/>
+                    <Image Source="{Binding CheckList.banda_tiempo_foto, Converter={StaticResource Base64ToImageSourceConverter}}" WidthRequest="10"
+    HeightRequest="10" Aspect="AspectFit">
+                        <Image.GestureRecognizers>
+                            <TapGestureRecognizer 
+                Command="{Binding ExpandImageCommand}" 
+                CommandParameter="{Binding CheckList.banda_tiempo_foto}"/>
+                        </Image.GestureRecognizers>
+                    </Image>
+                    <Button Command="{Binding TomarBandaTiempoFotoCommand}" BackgroundColor="Transparent">
+                        <Button.ImageSource>
+                            <FileImageSource File="camara_icon.png"/>
+                        </Button.ImageSource>
+                    </Button>
+
+                </StackLayout>
+
+                <StackLayout Orientation="Horizontal">
+                    <Label Text="Otros:" />
+                    <Switch IsToggled="{Binding CheckList.otros_altura_total,Converter={StaticResource IntToBoolConverter}}"/>
+                    <Entry Text="{Binding CheckList.otros_altura_total_observacion}" Placeholder="Observaciones"/>
+                    <Image Source="{Binding CheckList.otros_altura_total_foto, Converter={StaticResource Base64ToImageSourceConverter}}" WidthRequest="10"
+    HeightRequest="10" Aspect="AspectFit">
+                        <Image.GestureRecognizers>
+                            <TapGestureRecognizer 
+                Command="{Binding ExpandImageCommand}" 
+                CommandParameter="{Binding CheckList.otros_altura_total_foto}"/>
+                        </Image.GestureRecognizers>
+                    </Image>
+                    <Button Command="{Binding TomarOtrosAlturaTotalFotoCommand}" BackgroundColor="Transparent">
+                        <Button.ImageSource>
+                            <FileImageSource File="camara_icon.png"/>
+                        </Button.ImageSource>
+                    </Button>
+
+                </StackLayout>
+
+                <StackLayout Orientation="Horizontal">
+                    <Label Text="Reset de intervalo de servicio." />
+                    <Switch IsToggled="{Binding CheckList.reset_intervalo_servicio,Converter={StaticResource IntToBoolConverter}}"/>
+                    <Entry Text="{Binding CheckList.reset_intervalo_servicio_observacion}" Placeholder="Observaciones"/>
+                    <Image Source="{Binding CheckList.reset_intervalo_servicio_foto, Converter={StaticResource Base64ToImageSourceConverter}}" WidthRequest="10"
+    HeightRequest="10" Aspect="AspectFit">
+                        <Image.GestureRecognizers>
+                            <TapGestureRecognizer 
+                Command="{Binding ExpandImageCommand}" 
+                CommandParameter="{Binding CheckList.reset_intervalo_servicio_foto}"/>
+                        </Image.GestureRecognizers>
+                    </Image>
+                    <Button Command="{Binding TomarResetIntervaloServicioFotoCommand}" BackgroundColor="Transparent">
+                        <Button.ImageSource>
+                            <FileImageSource File="camara_icon.png"/>
+                        </Button.ImageSource>
+                    </Button>
+
+                </StackLayout>
+
+                <StackLayout Orientation="Horizontal">
+                    <Label Text="Ajuste de tornillos de neumáticos con torquímetro." />
+                    <Switch IsToggled="{Binding CheckList.ajuste_tornillos_neumaticos_torquimetro,Converter={StaticResource IntToBoolConverter}}"/>
+                    <Entry Text="{Binding CheckList.ajuste_tornillos_neumaticos_torquimetro_observacion}" Placeholder="Observaciones"/>
+                    <Image Source="{Binding CheckList.ajuste_tornillos_neumaticos_torquimetro_foto, Converter={StaticResource Base64ToImageSourceConverter}}" WidthRequest="10"
+    HeightRequest="10" Aspect="AspectFit">
+                        <Image.GestureRecognizers>
+                            <TapGestureRecognizer 
+                Command="{Binding ExpandImageCommand}" 
+                CommandParameter="{Binding CheckList.ajuste_tornillos_neumaticos_torquimetro_foto}"/>
+                        </Image.GestureRecognizers>
+                    </Image>
+                    <Button Command="{Binding TomarAjusteTornillosNeumaticosFotoCommand}" BackgroundColor="Transparent">
+                        <Button.ImageSource>
+                            <FileImageSource File="camara_icon.png"/>
+                        </Button.ImageSource>
+                    </Button>
+
+                </StackLayout>
+
+                <StackLayout Orientation="Horizontal" Spacing="10">
+                    <Label Text="Limpiar y lubricar puertas y cerraduras." VerticalOptions="Center" />
+                    <Switch IsToggled="{Binding CheckList.limpiar_libricar_puertas_cerraduras, Converter={StaticResource IntToBoolConverter}}" />
+                    <Entry Text="{Binding CheckList.limpiar_libricar_puertas_cerraduras_observacion}" Placeholder="Observaciones" />
+                    <Image Source="{Binding CheckList.limpiar_libricar_puertas_cerraduras_foto, Converter={StaticResource Base64ToImageSourceConverter}}" WidthRequest="10"
+    HeightRequest="10" Aspect="AspectFit">
+                        <Image.GestureRecognizers>
+                            <TapGestureRecognizer 
+                Command="{Binding ExpandImageCommand}" 
+                CommandParameter="{Binding CheckList.limpiar_libricar_puertas_cerraduras_foto}"/>
+                        </Image.GestureRecognizers>
+                    </Image>
+                    <Button Command="{Binding TomarLimpiarLubricarPuertasFotoCommand}" BackgroundColor="Transparent">
+                        <Button.ImageSource>
+                            <FileImageSource File="camara_icon.png"/>
+                        </Button.ImageSource>
+                    </Button>
+                </StackLayout>
+
+                <StackLayout Orientation="Horizontal">
+                    <Label Text="Completar plan de mantenimiento." />
+                    <Switch IsToggled="{Binding CheckList.completar_plan_mantenimiento,Converter={StaticResource IntToBoolConverter}}"/>
+                    <Entry Text="{Binding CheckList.completar_plan_mantenimiento_observacion}" Placeholder="Observaciones"/>
+                    <Image Source="{Binding CheckList.completar_plan_mantenimiento_foto, Converter={StaticResource Base64ToImageSourceConverter}}" WidthRequest="10"
+    HeightRequest="10" Aspect="AspectFit">
+                        <Image.GestureRecognizers>
+                            <TapGestureRecognizer 
+                Command="{Binding ExpandImageCommand}" 
+                CommandParameter="{Binding CheckList.completar_plan_mantenimiento_foto}"/>
+                        </Image.GestureRecognizers>
+                    </Image>
+                    <Button Command="{Binding TomarCompletarPlanMantenimientoFotoCommand}" BackgroundColor="Transparent">
+                        <Button.ImageSource>
+                            <FileImageSource File="camara_icon.png"/>
+                        </Button.ImageSource>
+                    </Button>
+
+                </StackLayout>
+
+                <Button Text="{Binding IsEditing, StringFormat='Guardar Servicio'}"
+   Command="{Binding ModificarCheckServicioCommand}" 
+   IsVisible="{Binding IsEditing}" />
+
+                <Button Text="Guardar Servicio"
+   Command="{Binding GuardarCommand}" 
+   IsVisible="{Binding IsEditing, Converter={StaticResource InverseBoolConverter}}" />
+
+
+                <!--<Button Text="Guardar Servicio"
+                        Command="{Binding GuardarCommand}" />-->
+
+
+            </StackLayout>
+        </ScrollView>
+    </ContentPage.Content>
+</ContentPage>

@@ -1,0 +1,46 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:local="clr-namespace:AppMovilTrotaMundos.Views"
+             xmlns:vm="clr-namespace:AppMovilTrotaMundos.ViewModels"
+             x:Class="AppMovilTrotaMundos.Views.CheckListServicio"
+             Title="Servicio">
+
+    <ContentPage.Content>
+        <StackLayout Padding="10">
+            <!-- Buscador y botón para agregar vehículo -->
+            <Grid ColumnDefinitions="*,Auto">
+                <Entry x:Name="SearchEntry"
+                       Placeholder="Buscar Servicio..."
+                       Text="{Binding SearchText}"
+                       Grid.Column="0"/>
+                <Button Text="Agregar Servicio"
+                        Grid.Column="1"
+                        Command="{Binding AgregarCheckListCommand}"
+                        BackgroundColor="LightGreen"/>
+            </Grid>
+
+            <!-- Lista de vehículos -->
+            <CollectionView ItemsSource="{Binding FiltradosCheckList}"
+                            SelectionMode="Single"
+                            SelectionChanged="OnSelectionChanged">
+                <CollectionView.ItemTemplate>
+                    <DataTemplate>
+                        <Frame Padding="10" Margin="5" HasShadow="True">
+                            <StackLayout>
+                                <Label Text="{Binding id_checklist}" FontSize="24" />
+                                <Label Text="{Binding NumeroSerie}" FontSize="24" />
+                                <Label Text="{Binding Id_ordendeservicio}" FontSize="18" />
+                                <Label Text="{Binding Fecha}" FontSize="18" />
+                                <Button Text="Iniciar Servicio"
+Command="{Binding Source={RelativeSource AncestorType={x:Type vm:CheckListServicioViewModel}}, Path=ModificarCheckListServicioCommand}"
+CommandParameter="{Binding .}"
+BackgroundColor="LightGreen"/>
+                            </StackLayout>
+                        </Frame>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>

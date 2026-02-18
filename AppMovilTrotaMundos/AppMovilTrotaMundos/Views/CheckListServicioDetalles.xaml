@@ -1,0 +1,158 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:local="clr-namespace:AppMovilTrotaMundos.Models"
+             x:Class="AppMovilTrotaMundos.Views.CheckListServicioDetalles"
+             Title="Detalles del CheckList">
+
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <local:Base64ToImageSourceConverter x:Key="Base64ToImageSourceConverter" />
+        </ResourceDictionary>
+    </ContentPage.Resources>
+
+    <ContentPage.Content>
+        <ScrollView>
+            <StackLayout Padding="10">
+                <Frame Padding="10" CornerRadius="5" BorderColor="#E0E0E0">
+                    <StackLayout Spacing="5">
+                        <Label Text="Número de Serie:" FontSize="18" FontAttributes="Bold" TextColor="#333" />
+                        <Label Text="{Binding CheckList.NumeroSerie}" FontSize="16" TextColor="#666" />
+
+                        <Label Text="Fecha:" FontSize="18" FontAttributes="Bold" TextColor="#333" />
+                        <Label Text="{Binding CheckList.Fecha}" FontSize="16" TextColor="#666" />
+
+                        <Label Text="No Orden:" FontSize="18" FontAttributes="Bold" TextColor="#333" />
+                        <Label Text="{Binding CheckList.Id_ordendeservicio}" FontSize="16" TextColor="#666" />
+                       
+                    </StackLayout>
+                </Frame>
+
+
+                <Image Source="{Binding CheckList.lectura_codigos_foto, Converter={StaticResource Base64ToImageSourceConverter}}"
+                       Aspect="AspectFit" HeightRequest="150" />
+                <Image Source="{Binding CheckList.servofreno_foto, Converter={StaticResource Base64ToImageSourceConverter}}"
+                       Aspect="AspectFit" HeightRequest="150" />
+                <Image Source="{Binding CheckList.pedal_freno_foto, Converter={StaticResource Base64ToImageSourceConverter}}"
+                       Aspect="AspectFit" HeightRequest="150" />
+                <Image Source="{Binding CheckList.pedal_estacionamiento_foto, Converter={StaticResource Base64ToImageSourceConverter}}"
+                       Aspect="AspectFit" HeightRequest="150" />
+                <Image Source="{Binding CheckList.cinturon_seguridad_foto, Converter={StaticResource Base64ToImageSourceConverter}}"
+                       Aspect="AspectFit" HeightRequest="150" />
+                <Image Source="{Binding CheckList.cuadro_instrumentos_foto, Converter={StaticResource Base64ToImageSourceConverter}}"
+                       Aspect="AspectFit" HeightRequest="150" />
+                <Image Source="{Binding CheckList.aire_acondicionado_foto, Converter={StaticResource Base64ToImageSourceConverter}}"
+                       Aspect="AspectFit" HeightRequest="150" />
+                <Image Source="{Binding CheckList.bocina_claxon_foto, Converter={StaticResource Base64ToImageSourceConverter}}"
+                       Aspect="AspectFit" HeightRequest="150" />
+                <Image Source="{Binding CheckList.iluminacion_interior_foto, Converter={StaticResource Base64ToImageSourceConverter}}"
+                       Aspect="AspectFit" HeightRequest="150" />
+                <Image Source="{Binding CheckList.iluminacion_externa_foto, Converter={StaticResource Base64ToImageSourceConverter}}"
+                       Aspect="AspectFit" HeightRequest="150" />
+                <Image Source="{Binding CheckList.limpiaparabrisas_foto, Converter={StaticResource Base64ToImageSourceConverter}}"
+                       Aspect="AspectFit" HeightRequest="150" />
+                <Image Source="{Binding CheckList.limpia_medallon_foto, Converter={StaticResource Base64ToImageSourceConverter}}"
+                       Aspect="AspectFit" HeightRequest="150" />
+                <Image Source="{Binding CheckList.neumaticos_friccion_foto, Converter={StaticResource Base64ToImageSourceConverter}}"
+                       Aspect="AspectFit" HeightRequest="150" />
+                <Image Source="{Binding CheckList.otros_vehiculo_en_piso_foto, Converter={StaticResource Base64ToImageSourceConverter}}"
+                       Aspect="AspectFit" HeightRequest="150" />
+                <Image Source="{Binding CheckList.estado_fugas_aceite_foto, Converter={StaticResource Base64ToImageSourceConverter}}"
+                       Aspect="AspectFit" HeightRequest="150" />
+                <Image Source="{Binding CheckList.estado_nivel_calidad_lubricante_transmision_foto, Converter={StaticResource Base64ToImageSourceConverter}}"
+                       Aspect="AspectFit" HeightRequest="150" />
+                <Image Source="{Binding CheckList.estado_nivel_calidad_lubricante_diferencial_foto, Converter={StaticResource Base64ToImageSourceConverter}}"
+                       Aspect="AspectFit" HeightRequest="150" />
+                <Image Source="{Binding CheckList.cubrepolvos_flechas_foto, Converter={StaticResource Base64ToImageSourceConverter}}"
+                       Aspect="AspectFit" HeightRequest="150" />
+                <Image Source="{Binding CheckList.componentes_direccion_foto, Converter={StaticResource Base64ToImageSourceConverter}}"
+                       Aspect="AspectFit" HeightRequest="150" />
+                <Image Source="{Binding CheckList.componentes_suspesion_foto, Converter={StaticResource Base64ToImageSourceConverter}}"
+                       Aspect="AspectFit" HeightRequest="150" />
+                <Image Source="{Binding CheckList.sistema_escape_completo_foto, Converter={StaticResource Base64ToImageSourceConverter}}"
+                       Aspect="AspectFit" HeightRequest="150" />
+                <Image Source="{Binding CheckList.sistema_alimentacion_combustible_foto, Converter={StaticResource Base64ToImageSourceConverter}}"
+                       Aspect="AspectFit" HeightRequest="150" />
+                <Image Source="{Binding CheckList.filtro_combustible_foto, Converter={StaticResource Base64ToImageSourceConverter}}"
+                       Aspect="AspectFit" HeightRequest="150" />
+                <Image Source="{Binding CheckList.control_fugas_direccion_hidraulica_foto, Converter={StaticResource Base64ToImageSourceConverter}}"
+                       Aspect="AspectFit" HeightRequest="150" />
+                <Image Source="{Binding CheckList.otros_altura_media_foto, Converter={StaticResource Base64ToImageSourceConverter}}"
+                       Aspect="AspectFit" HeightRequest="150" />
+                <Image Source="{Binding CheckList.holgura_partes_suspension_rueda_foto, Converter={StaticResource Base64ToImageSourceConverter}}"
+                       Aspect="AspectFit" HeightRequest="150" />
+                <Image Source="{Binding CheckList.control_neumaticos_desgaste_presion_foto, Converter={StaticResource Base64ToImageSourceConverter}}"
+                       Aspect="AspectFit" HeightRequest="150" />
+                <Image Source="{Binding CheckList.profundidad_foto, Converter={StaticResource Base64ToImageSourceConverter}}"
+                       Aspect="AspectFit" HeightRequest="150" />
+                <Image Source="{Binding CheckList.presion_foto, Converter={StaticResource Base64ToImageSourceConverter}}"
+                       Aspect="AspectFit" HeightRequest="150" />
+                <Image Source="{Binding CheckList.otros_altura_total_foto, Converter={StaticResource Base64ToImageSourceConverter}}"
+                       Aspect="AspectFit" HeightRequest="150" />
+                <Image Source="{Binding CheckList.nivel_calidad_aceite_motor_foto, Converter={StaticResource Base64ToImageSourceConverter}}"
+                       Aspect="AspectFit" HeightRequest="150" />
+                <Image Source="{Binding CheckList.filtro_aire_foto, Converter={StaticResource Base64ToImageSourceConverter}}"
+                       Aspect="AspectFit" HeightRequest="150" />
+                <Image Source="{Binding CheckList.filtro_polen_foto, Converter={StaticResource Base64ToImageSourceConverter}}"
+                       Aspect="AspectFit" HeightRequest="150" />
+                <Image Source="{Binding CheckList.filtro_pcv_foto, Converter={StaticResource Base64ToImageSourceConverter}}"
+                       Aspect="AspectFit" HeightRequest="150" />
+                <Image Source="{Binding CheckList.valvula_pcv_foto, Converter={StaticResource Base64ToImageSourceConverter}}"
+                       Aspect="AspectFit" HeightRequest="150" />
+                <Image Source="{Binding CheckList.bujias_encendido_foto, Converter={StaticResource Base64ToImageSourceConverter}}"
+                       Aspect="AspectFit" HeightRequest="150" />
+                <Image Source="{Binding CheckList.cables_bujias_bobinas_ignicion_foto, Converter={StaticResource Base64ToImageSourceConverter}}"
+                       Aspect="AspectFit" HeightRequest="150" />
+                <Image Source="{Binding CheckList.nivel_anticongenlante_foto, Converter={StaticResource Base64ToImageSourceConverter}}"
+                       Aspect="AspectFit" HeightRequest="150" />
+                <Image Source="{Binding CheckList.tapon_radiador_foto, Converter={StaticResource Base64ToImageSourceConverter}}"
+                       Aspect="AspectFit" HeightRequest="150" />
+                <Image Source="{Binding CheckList.mangueras_sistema_foto, Converter={StaticResource Base64ToImageSourceConverter}}"
+                       Aspect="AspectFit" HeightRequest="150" />
+                <Image Source="{Binding CheckList.desempeño_ventilador_foto, Converter={StaticResource Base64ToImageSourceConverter}}"
+                       Aspect="AspectFit" HeightRequest="150" />
+                <Image Source="{Binding CheckList.calidad_liquido_limpiaparabrisas_foto, Converter={StaticResource Base64ToImageSourceConverter}}"
+                       Aspect="AspectFit" HeightRequest="150" />
+                <Image Source="{Binding CheckList.calidad_aceite_direccion_hidraulica_foto, Converter={StaticResource Base64ToImageSourceConverter}}"
+                       Aspect="AspectFit" HeightRequest="150" />
+
+
+                <Image Source="{Binding CheckList.calidad_aceite_transmision_bayoneta_foto, Converter={StaticResource Base64ToImageSourceConverter}}"
+                       Aspect="AspectFit" HeightRequest="150" />
+
+                <Image Source="{Binding CheckList.liquido_bateria_condiciones_foto, Converter={StaticResource Base64ToImageSourceConverter}}"
+                       Aspect="AspectFit" HeightRequest="150" />
+
+                <Image Source="{Binding CheckList.bandas_poly_v_foto, Converter={StaticResource Base64ToImageSourceConverter}}"
+                       Aspect="AspectFit" HeightRequest="150" />
+
+                <Image Source="{Binding CheckList.poleas_banda_foto, Converter={StaticResource Base64ToImageSourceConverter}}"
+                       Aspect="AspectFit" HeightRequest="150" />
+
+                <Image Source="{Binding CheckList.banda_tiempo_foto, Converter={StaticResource Base64ToImageSourceConverter}}"
+                       Aspect="AspectFit" HeightRequest="150" />
+
+                <Image Source="{Binding CheckList.otros_habitaculo_motor_foto, Converter={StaticResource Base64ToImageSourceConverter}}"
+                       Aspect="AspectFit" HeightRequest="150" />
+
+                <Image Source="{Binding CheckList.reset_intervalo_servicio_foto, Converter={StaticResource Base64ToImageSourceConverter}}"
+                       Aspect="AspectFit" HeightRequest="150" />
+
+                <Image Source="{Binding CheckList.ajuste_tornillos_neumaticos_torquimetro_foto, Converter={StaticResource Base64ToImageSourceConverter}}"
+                       Aspect="AspectFit" HeightRequest="150" />
+
+                <Image Source="{Binding CheckList.limpiar_libricar_puertas_cerraduras_foto, Converter={StaticResource Base64ToImageSourceConverter}}"
+                       Aspect="AspectFit" HeightRequest="150" />
+
+                <Image Source="{Binding CheckList.completar_plan_mantenimiento_foto, Converter={StaticResource Base64ToImageSourceConverter}}"
+                       Aspect="AspectFit" HeightRequest="150" />
+
+                <Image Source="{Binding CheckList.rodamiento_mazas_rueda_foto, Converter={StaticResource Base64ToImageSourceConverter}}"
+                       Aspect="AspectFit" HeightRequest="150" />
+
+
+
+            </StackLayout>
+        </ScrollView>
+    </ContentPage.Content>
+</ContentPage>
