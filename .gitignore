@@ -1,0 +1,11 @@
+
+# Build folders
+bin/
+obj/
+*.apk
+*.aab
+*.dll
+packages/
+.vs/
+.vscode/
+
